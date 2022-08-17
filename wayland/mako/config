@@ -1,0 +1,67 @@
+sort=-priority
+font=scientifica 8
+anchor=bottom-right
+layer=top
+group-by=summary,body
+default-timeout=5000
+border-size=0
+border-radius=8
+
+[urgency=low]
+background-color=#1ea559aa
+text-color=#FFFFFFFF
+progress-color=source #6ae492aa
+
+[urgency=normal]
+background-color=#1877b7aa
+text-color=#FFFFFFFF
+progress-color=source #5ba6eaaa
+
+[urgency=critical]
+background-color=#b62460aa
+text-color=#FFFFFFFF
+progress-color=source #f66596aa
+
+[category="system"]
+anchor=bottom-left
+layer=overlay
+
+[category="reminder"]
+anchor=center
+default-timeout=0
+layer=overlay
+
+[app-name="Cantata"]
+anchor=top-left
+layer=overlay
+
+[app-name="check-battery"]
+anchor=top-right
+default-timeout=0
+
+[app-name="check-battery" urgency=low]
+background-color=#b5a55faa
+text-color=#FFFFFFFF
+progress-color=source #cfbd75aa
+
+[app-name="hydrate"]
+text-alignment=center
+
+[app-name="light"]
+background-color=#b5a55faa
+text-color=#FFFFFFFF
+progress-color=source #cfbd75aa
+
+[app-name="Slack"]
+# on-button-left=exec swaymsg -t command [class="Slack"] scratchpad show
+default-timeout=0
+ignore-timeout=1
+layer=overlay
+
+[app-name="KDE Connect"]
+
+[urgency=critical]
+default-timeout=0
+ignore-timeout=1
+anchor=center
+layer=overlay
