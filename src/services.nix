@@ -11,5 +11,7 @@ in {
   imports = [];
   config = {
     services.check-battery.enable = true;
+    services.kdeconnect.indicator = true;
+    services.blueman-applet.enable = true;
   };
 }
