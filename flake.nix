@@ -6,10 +6,16 @@
       url = github:kamadorueda/alejandra;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    homelib = {
+      url = github:signalwalker/nix.home.lib;
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.alejandra.follows = "alejandra";
+    };
     homebase = {
       url = github:signalwalker/nix.home.base;
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
+      inputs.homelib.follows = "homelib";
     };
     # browser
     mozilla = {
@@ -38,12 +44,12 @@
     ...
   }:
     with builtins; let
-      homelib = inputs.homebase.inputs.homelib;
+      homelib = inputs.homelib;
       std = nixpkgs.lib;
       hlib = homelib.lib;
       nixpkgsFor = hlib.genNixpkgsFor {
         inherit nixpkgs;
-        overlays = system: (homebase.lib.selectOverlays ["default" system]) ++ (self.lib.selectOverlays ["default" system "firefox"]);
+        overlays = system: (inputs.homebase.lib.selectOverlays ["default" system]) ++ (self.lib.selectOverlays ["default" system "firefox"]);
       };
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;

@@ -186,7 +186,6 @@
     "home-manager_2": {
       "inputs": {
         "nixpkgs": [
-          "homebase",
           "homelib",
           "nixpkgs"
         ],
@@ -212,17 +211,19 @@
           "alejandra"
         ],
         "home-manager": "home-manager",
-        "homelib": "homelib",
+        "homelib": [
+          "homelib"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1660961507,
-        "narHash": "sha256-sAeauNovLgrNC0xgA9THjU51Eh23TatKeIgnGcuH/uE=",
+        "lastModified": 1660973301,
+        "narHash": "sha256-gu8JYXNhvGHIu/KPjsSjcYTFXgs4R/wdkcf0xCv+U0A=",
         "owner": "signalwalker",
         "repo": "nix.home.base",
-        "rev": "1c86b3ef93ecb6858713828ded06f7313027451d",
+        "rev": "6414b508eb8e79a1f38b4eb97b0e3c7d67471039",
         "type": "github"
       },
       "original": {
@@ -234,21 +235,19 @@
     "homelib": {
       "inputs": {
         "alejandra": [
-          "homebase",
           "alejandra"
         ],
         "home-manager": "home-manager_2",
         "nixpkgs": [
-          "homebase",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1660764270,
-        "narHash": "sha256-j82MOTuspONzL1bekEjNP5mFeLNGwecpbjBdB9Nt6iw=",
+        "lastModified": 1660972982,
+        "narHash": "sha256-Cw2DjRrsRjM+8VYdvZwR9GWnxYMY/EqYlFr0snU/rT0=",
         "owner": "signalwalker",
         "repo": "nix.home.lib",
-        "rev": "e6d17d6f7e9ff022ab26f56988b6f8a54de402cb",
+        "rev": "ccd0454806a505965fba3b4e87377bf6582f0239",
         "type": "github"
       },
       "original": {
@@ -316,11 +315,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1660906708,
-        "narHash": "sha256-CEsB4ZzvrYKpnviUN1h07Su11QbnQqh1L2keb0QBwbE=",
+        "lastModified": 1660936389,
+        "narHash": "sha256-GZcCsjq8EUA65MXdPQDvZdXkKcuhCnlvaSBpS/aqFwY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c3dec21923392916c61dcbf10661209a9c5c32fb",
+        "rev": "921b28fa6ed61f6275fdebfec25b630dd1e4f378",
         "type": "github"
       },
       "original": {
@@ -351,6 +350,7 @@
         "alejandra": "alejandra",
         "ash-scripts": "ash-scripts",
         "homebase": "homebase",
+        "homelib": "homelib",
         "mozilla": "mozilla",
         "nixpkgs": "nixpkgs",
         "polybar-scripts": "polybar-scripts",
