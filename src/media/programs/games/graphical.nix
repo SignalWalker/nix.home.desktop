@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  profile,
   ...
 }:
 with builtins; let
@@ -18,31 +17,30 @@ in {
       "Banjo-Kazooie (USA)"
       "Mischief Makers (USA)"
     ];
-  in
-    lib.optionalAttrs profile.graphical {
-      home.packages = with pkgs; [
-        mgba
-      ];
-      # programs.modloader64-gui = {
-      #   enable = true;
-      #   cores = attrValues pkgs.modloader64.cores;
-      #   mods = attrValues pkgs.modloader64.mods;
-      #   roms = [];
-      #   # map
-      #   # (rom:
-      #   #   pkgs.runCommandLocal "${rom}.z64"
-      #   #   {
-      #   #     nativeBuildInputs = with pkgs; [p7zip];
-      #   #     downloadedFile = pkgs."nointro.n64"."${rom}.7z";
-      #   #   }
-      #   #   ''
-      #   #     echo "Extracting $downloadedFile to $out..."
-      #   #     7z e $downloadedFile -so > $out
-      #   #   '')
-      #   # roms;
-      #   config = {
-      #     showAdvancedTab = true;
-      #   };
-      # };
-    };
+  in {
+    home.packages = with pkgs; [
+      mgba
+    ];
+    # programs.modloader64-gui = {
+    #   enable = true;
+    #   cores = attrValues pkgs.modloader64.cores;
+    #   mods = attrValues pkgs.modloader64.mods;
+    #   roms = [];
+    #   # map
+    #   # (rom:
+    #   #   pkgs.runCommandLocal "${rom}.z64"
+    #   #   {
+    #   #     nativeBuildInputs = with pkgs; [p7zip];
+    #   #     downloadedFile = pkgs."nointro.n64"."${rom}.7z";
+    #   #   }
+    #   #   ''
+    #   #     echo "Extracting $downloadedFile to $out..."
+    #   #     7z e $downloadedFile -so > $out
+    #   #   '')
+    #   # roms;
+    #   config = {
+    #     showAdvancedTab = true;
+    #   };
+    # };
+  };
 }
