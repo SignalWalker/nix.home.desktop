@@ -18,10 +18,9 @@ in {
   imports = [];
   config = lib.mkIf (cfg.enable && cfg.wallpaper.enable && cfg.wallpaper.default-bg != null) {
     home.packages = with pkgs; [
-      hyprpaper
       swaybg
     ];
-    xdg.configFile."hypr/hyprpaper.conf".source = ./hyprpaper/hyprpaper.conf;
+    # xdg.configFile."hypr/hyprpaper.conf".source = ./hyprpaper/hyprpaper.conf;
     signal.desktop.wayland.startupCommands = "swaybg -c '#000000' -m center -i ${cfg.wallpaper.default-bg} &";
   };
 }
