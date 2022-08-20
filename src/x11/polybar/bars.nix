@@ -36,10 +36,11 @@ with builtins; let
       fonts = dcfg.theme.font;
       bmp = dlib.theme.bmpFcPatterns;
     in
-    (dlib.theme.bmpPatternsIn [ 13 10 ]) ++ (foldl' (acc: fontSet: acc ++ (map toPattern fontSet)) [] [
-      (toInsts fonts.mono { pixelsize = 13; })
-      (toInsts fonts.symbols { pixelsize = 10; })
-    ]);
+      (dlib.theme.bmpPatternsIn [13 10])
+      ++ (foldl' (acc: fontSet: acc ++ (map toPattern fontSet)) [] [
+        (toInsts fonts.mono {pixelsize = 13;})
+        (toInsts fonts.symbols {pixelsize = 10;})
+      ]);
   };
 in
   std.mapAttrs' (bar: settings: std.nameValuePair "bar/${bar}" (std.recursiveUpdate baseBar settings)) {

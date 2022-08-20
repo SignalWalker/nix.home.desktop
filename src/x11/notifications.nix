@@ -9,7 +9,7 @@ with builtins; let
 in {
   options.signal.desktop.x11.notifications = with lib; {
     backend = mkOption {
-      type = types.enum [ "dunst" "wired" ];
+      type = types.enum ["dunst" "wired"];
       default = "dunst";
     };
   };

@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.desktop.wayland;
 in {
   options.signal.desktop.wayland = with lib; {
-    enable = (mkEnableOption "Wayland-specific configuration") // { default = true; };
+    enable = (mkEnableOption "Wayland-specific configuration") // {default = true;};
     xwayland = {
       enable = (mkEnableOption "XWayland support") // {default = true;};
     };

@@ -10,7 +10,7 @@ with builtins; let
 in {
   options.signal.desktop.terminal = with lib; {
     app = mkOption {
-      type = types.enum [ "kitty" ];
+      type = types.enum ["kitty"];
       default = "kitty";
     };
     command = mkOption {
@@ -20,6 +20,5 @@ in {
   };
   imports = lib.signal.fs.listFiles ./terminal;
   config = {
-
   };
 }

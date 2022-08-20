@@ -106,7 +106,7 @@ in {
         std.mapAttrs' (name: planExt: let
           nameL = std.toLower name;
           family = "Iosevka Signal ${name}";
-          plan = basePlan // planExt // { inherit family; };
+          plan = basePlan // planExt // {inherit family;};
         in
           nameValuePair "${nameL}" {
             package = pkgs.iosevka.override {
@@ -121,20 +121,24 @@ in {
       iosevka = let
         varBase = {
           package = pkgs.iosevka-bin;
-          formats = [ "TrueType" ];
-          styles = [ "Regular" "Bold" "Oblique" "Italic" ];
+          formats = ["TrueType"];
+          styles = ["Regular" "Bold" "Oblique" "Italic"];
         };
       in {
-        mono = varBase // { family = "Iosevka"; };
-        term = varBase // { family = "Iosevka Term"; };
-        sans = varBase // {
-          package = pkgs.iosevka-bin.override { variant = "aile"; };
-          family = "Iosevka Aile";
-        };
-        slab = varBase // {
-          package = pkgs.iosevka-bin.override { variant = "etoile"; };
-          family = "Iosevka Etoile";
-        };
+        mono = varBase // {family = "Iosevka";};
+        term = varBase // {family = "Iosevka Term";};
+        sans =
+          varBase
+          // {
+            package = pkgs.iosevka-bin.override {variant = "aile";};
+            family = "Iosevka Aile";
+          };
+        slab =
+          varBase
+          // {
+            package = pkgs.iosevka-bin.override {variant = "etoile";};
+            family = "Iosevka Etoile";
+          };
       };
       sarasa = let
         langs = ["CL" "SC" "TC" "HC" "J" "K"];

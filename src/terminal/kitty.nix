@@ -3,12 +3,12 @@ inputs @ {
   pkgs,
   lib,
   ...
-}: with builtins; let
+}:
+with builtins; let
   cfg = config.signal.desktop.terminal;
   kcfg = config.signal.desktop.terminal.kitty;
 in {
   options.signal.desktop.terminal.kitty = with lib; {
-
   };
   config = lib.mkIf (cfg.app == "kitty") {
     xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;

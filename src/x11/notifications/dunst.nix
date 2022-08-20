@@ -17,7 +17,10 @@ in {
     };
     font = mkOption {
       type = config.lib.signal.types.fontInst;
-      default = { font = head (config.lib.signal.desktop.theme.bmpsAt 13); size = 13; };
+      default = {
+        font = head (config.lib.signal.desktop.theme.bmpsAt 13);
+        size = 13;
+      };
     };
   };
   imports = [];

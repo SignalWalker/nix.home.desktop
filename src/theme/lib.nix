@@ -117,10 +117,12 @@ in {
       bmpSizeMap = let
         bmp = tcfg.font.bmp;
       in
-        foldl' (acc: font:
-          assert font.pixelsizes != null;
-          acc // (std.genAttrs (map toString font.pixelsizes)) (psize: (acc.${psize} or []) ++ [font])
-        ) {} bmp;
+        foldl' (
+          acc: font:
+            assert font.pixelsizes != null;
+              acc // (std.genAttrs (map toString font.pixelsizes)) (psize: (acc.${psize} or []) ++ [font])
+        ) {}
+        bmp;
       bmpPatternMap = let
         sMap = dlib.theme.bmpSizeMap;
       in

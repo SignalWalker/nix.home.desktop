@@ -43,7 +43,7 @@
       hlib = homelib.lib;
       nixpkgsFor = hlib.genNixpkgsFor {
         inherit nixpkgs;
-        overlays = [ inputs.mozilla.overlays.firefox ];
+        overlays = [inputs.mozilla.overlays.firefox];
       };
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
@@ -62,7 +62,7 @@
       };
       homeConfigurations =
         mapAttrs (system: pkgs: let
-          extraMod = { pkgs, ... }: {
+          extraMod = {pkgs, ...}: {
             config.programs.firefox.package = pkgs.latest.firefox-nightly-bin;
           };
         in {
