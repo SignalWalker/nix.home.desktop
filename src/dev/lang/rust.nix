@@ -10,7 +10,7 @@ with builtins; let
   toml = pkgs.formats.toml {};
 in {
   options.signal.dev.lang.rust = with lib; {
-    enable = (mkEnableOption "Rust language") // { default = true; };
+    enable = (mkEnableOption "Rust language") // {default = true;};
     rustup = {
       home = mkOption {
         type = types.str;
@@ -44,14 +44,14 @@ in {
       # config.signal.dev.lang.c.llvmPackages.clang
       # latest.rustChannels.nightly.rustup
     ];
-    home.sessionPath = [ "${cfg.cargo.home}/bin" ];
+    home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
       source = toml.generate "config.toml" cfg.cargo.config;
     };
     signal.dev.lang.rust.cargo.config = {
       target."x86_64-unknown-linux-gnu" = {
         linker = "clang";
-        rustflags = [ "-Clink-arg=-fuse-ld=${cfg.cargo.linker}" "-Zshare-generics=y" ];
+        rustflags = ["-Clink-arg=-fuse-ld=${cfg.cargo.linker}" "-Zshare-generics=y"];
       };
       profile."release" = {
         lto = true;

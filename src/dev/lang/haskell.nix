@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.lang.haskell;
 in {
   options.signal.dev.lang.haskell = with lib; {
-    enable = (mkEnableOption "Haskell language") // { default = true; };
+    enable = (mkEnableOption "Haskell language") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {
@@ -20,6 +20,6 @@ in {
       haskell-language-server
       ormolu
     ];
-    home.sessionPath = [ "${config.home.homeDirectory}/.cabal/bin" ];
+    home.sessionPath = ["${config.home.homeDirectory}/.cabal/bin"];
   };
 }

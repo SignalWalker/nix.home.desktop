@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.lang.nix;
 in {
   options.signal.dev.lang.nix = with lib; {
-    enable = (mkEnableOption "Nix language") // { default = true; };
+    enable = (mkEnableOption "Nix language") // {default = true;};
   };
   imports = lib.signal.fs.listFiles ./nix;
   config = lib.mkIf (cfg.enable) {

@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.git;
 in {
   options.signal.dev.git = with lib; {
-    enable = (mkEnableOption "Git configuration") // { default = true; };
+    enable = (mkEnableOption "Git configuration") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {

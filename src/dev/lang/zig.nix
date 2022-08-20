@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.lang.zig;
 in {
   options.signal.dev.lang.zig = with lib; {
-    enable = (mkEnableOption "Zig language") // { default = true; };
+    enable = (mkEnableOption "Zig language") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {

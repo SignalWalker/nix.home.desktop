@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.editor.neovim;
 in {
   options.signal.dev.editor.neovim = with lib; {
-    enable = (mkEnableOption "Neovim editor") // { default = true; };
+    enable = (mkEnableOption "Neovim editor") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {
@@ -19,7 +19,10 @@ in {
     };
     programs.neovim = {
       enable = false;
-      package = if (config.system.isNixOS or true) then pkgs.neovim else (lib.signal.linkSystemApp pkgs { app = "nvim"; });
+      package =
+        if (config.system.isNixOS or true)
+        then pkgs.neovim
+        else (lib.signal.linkSystemApp pkgs {app = "nvim";});
     };
     home.packages =
       (std.optional (!config.programs.neovim.enable) config.programs.neovim.package)

@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.linker;
 in {
   options.signal.dev.linker = with lib; {
-    enable = (mkEnableOption "linker configuration") // { default = true; };
+    enable = (mkEnableOption "linker configuration") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {
