@@ -1,0 +1,29 @@
+#! /usr/bin/env fish
+
+set argc (count $argv)
+if test $argc -ne 1; echo "argc != 1; argc == $argc"; return 1; end
+
+set link $argv[1]
+
+if not test -L $link
+    echo "either cannot access $link, or it is not a symlink"
+    return 1
+end
+
+set targ (readlink $link)
+
+if not test -e $targ
+    echo "cannot access link target: $targ"
+    return 1
+end
+
+echo "removing $link"
+rm -- $link
+   or return $status
+
+echo "moving $targ to $link"
+mv -T -- $targ $link
+    or return $status
+
+echo "done; ll $link $targ"
+ll $link $targ

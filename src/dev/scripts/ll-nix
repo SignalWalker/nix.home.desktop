@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+lsd -lhF --group-dirs first "$(nix-path ${argv[0]})/${argv[1]}"

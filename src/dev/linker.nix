@@ -6,17 +6,17 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.linker;
+  cfg = config.signal.dev.linker;
 in {
-  options.dev.linker = with lib; {
-    enable = mkEnableOption "linker configuration";
+  options.signal.dev.linker = with lib; {
+    enable = (mkEnableOption "linker configuration") // { default = true; };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       mold
     ];
-    dev.lang.c.linker = "mold";
+    signal.dev.lang.c.linker = "mold";
     # dev.lang.rust.cargo.linker = "mold";
   };
 }

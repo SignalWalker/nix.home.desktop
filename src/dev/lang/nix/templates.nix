@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  config = lib.mkIf (config.dev.enable && config.dev.lang.nix.enable) {
+  config = lib.mkIf (config.signal.dev.lang.nix.enable) {
     xdg.userDirs.templateFile."hm-module" = {
       text = ''
         {

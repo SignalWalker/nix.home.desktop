@@ -6,11 +6,11 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.rust;
+  cfg = config.signal.dev.lang.rust;
   toml = pkgs.formats.toml {};
 in {
-  options.dev.lang.rust = with lib; {
-    enable = mkEnableOption "Rust language";
+  options.signal.dev.lang.rust = with lib; {
+    enable = (mkEnableOption "Rust language") // { default = true; };
     rustup = {
       home = mkOption {
         type = types.str;
@@ -33,7 +33,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     systemd.user.sessionVariables = {
       RUSTUP_HOME = cfg.rustup.home;
       CARGO_HOME = cfg.cargo.home;
@@ -41,14 +41,14 @@ in {
     };
     home.packages = with pkgs; [
       # rustup
-      # config.dev.lang.c.llvmPackages.clang
+      # config.signal.dev.lang.c.llvmPackages.clang
       # latest.rustChannels.nightly.rustup
     ];
     home.sessionPath = [ "${cfg.cargo.home}/bin" ];
     home.file."${cfg.cargo.home}/config.toml" = {
       source = toml.generate "config.toml" cfg.cargo.config;
     };
-    dev.lang.rust.cargo.config = {
+    signal.dev.lang.rust.cargo.config = {
       target."x86_64-unknown-linux-gnu" = {
         linker = "clang";
         rustflags = [ "-Clink-arg=-fuse-ld=${cfg.cargo.linker}" "-Zshare-generics=y" ];

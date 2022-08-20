@@ -6,10 +6,10 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.cache;
+  cfg = config.signal.dev.cache;
 in {
-  options.dev.cache = with lib; {
-    enable = mkEnableOption "global caching for C/C++/Rust compiler artifacts";
+  options.signal.dev.cache = with lib; {
+    enable = (mkEnableOption "global caching for C/C++/Rust compiler artifacts") // { default = true; };
     cache = {
       path = mkOption {
         type = types.str;
@@ -22,17 +22,17 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       sccache
     ];
-    dev.lang.rust.cargo.config.build.rustc-wrapper = "sccache";
+    signal.dev.lang.rust.cargo.config.build.rustc-wrapper = "sccache";
     systemd.user.sessionVariables = lib.mkMerge [
       {
         SCCACHE_DIR = cfg.cache.path;
         SCCACHE_CACHE_SIZE = cfg.cache.maxSize;
       }
-      (lib.mkIf config.dev.lang.c.enable {
+      (lib.mkIf config.signal.dev.lang.c.enable {
         CMAKE_C_COMPILER_LAUNCHER = "sccache";
         CMAKE_CXX_COMPILER_LAUNCHER = "sccache";
       })

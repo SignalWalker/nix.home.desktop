@@ -6,13 +6,13 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.haskell;
+  cfg = config.signal.dev.lang.haskell;
 in {
-  options.dev.lang.haskell = with lib; {
-    enable = mkEnableOption "Haskell language";
+  options.signal.dev.lang.haskell = with lib; {
+    enable = (mkEnableOption "Haskell language") // { default = true; };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       # ghc
       # stack

@@ -6,13 +6,13 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.haskell;
+  cfg = config.signal.dev.git;
 in {
-  options.dev.git = with lib; {
+  options.signal.dev.git = with lib; {
     enable = (mkEnableOption "Git configuration") // { default = true; };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       gitoxide
       gh

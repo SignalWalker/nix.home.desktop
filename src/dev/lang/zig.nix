@@ -6,13 +6,13 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.zig;
+  cfg = config.signal.dev.lang.zig;
 in {
-  options.dev.lang.zig = with lib; {
-    enable = mkEnableOption "Zig language";
+  options.signal.dev.lang.zig = with lib; {
+    enable = (mkEnableOption "Zig language") // { default = true; };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       zig
       zls

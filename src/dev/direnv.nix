@@ -7,11 +7,11 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev;
+  cfg = config.signal.dev;
 in {
   options = with lib; {};
   imports = [];
-  config = lib.mkIf cfg.enable {
+  config = {
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;

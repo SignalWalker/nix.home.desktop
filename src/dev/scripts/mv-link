@@ -1,0 +1,37 @@
+#! /usr/bin/env fish
+
+function links_to
+    if test (count $argv) -ne 2; echo "links_to args: $argv"; exit 1; end
+    test "(readlink $argv[1])" = "$argv[2]"
+end
+
+set argc (count $argv)
+if test $argc -ne 2; echo "argc != 2; argc == $argc"; exit 1; end
+
+set from $argv[1]
+set to $argv[2]
+
+function from_exists -S; test -e $from; end
+function to_exists -S; test -e $to; end
+
+if links_to $from $to
+    echo "$from is already a symlink to $to"
+    exit 1
+end
+
+if to_exists
+    echo "$to already exists"
+    exit 1
+end
+
+if not from_exists
+    echo "cannot access $from"
+    exit 1
+end
+
+mv -nT -- $from $to
+    or exit $status
+ln -sT -- $to $from
+    or exit $status
+
+ll $from{,/}

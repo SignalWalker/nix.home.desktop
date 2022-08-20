@@ -1,0 +1,13 @@
+#! /usr/bin/env zsh
+
+sshfs -o default_permissions \
+    -o Ciphers=aes128-ctr \
+    -o dir_cache=yes \
+    -o dcache_timeout=115200 \
+    -o cache_timeout=115200 \
+    -o attr_timeout=115200 \
+    -o idmap=user \
+    -o transform_symlinks \
+    -o max_conns=2 \
+    -C -v \
+    $@

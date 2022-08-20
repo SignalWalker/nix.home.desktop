@@ -6,15 +6,13 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.nix;
+  cfg = config.signal.dev.lang.nix;
 in {
-  options.dev.lang.nix = with lib; {
+  options.signal.dev.lang.nix = with lib; {
     enable = (mkEnableOption "Nix language") // { default = true; };
   };
-  imports = [
-    ./nix/templates.nix
-  ];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  imports = lib.signal.fs.listFiles ./nix;
+  config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       statix
       alejandra

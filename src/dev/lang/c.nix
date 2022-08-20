@@ -6,10 +6,10 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.lang.c;
+  cfg = config.signal.dev.lang.c;
 in {
-  options.dev.lang.c = with lib; {
-    enable = mkEnableOption "C/C++ language family";
+  options.signal.dev.lang.c = with lib; {
+    enable = (mkEnableOption "C/C++ language family") // { default = true; };
     llvmPackages = mkOption {
       type = types.attrsOf types.anything;
       default = pkgs.llvmPackages_14;
@@ -20,7 +20,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     home.packages = [
       # cfg.llvmPackages.clang
       # cfg.llvmPackages.clang-manpages

@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+nix build --no-link --print-out-paths ${argv}

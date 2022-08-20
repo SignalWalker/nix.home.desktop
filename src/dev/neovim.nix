@@ -1,26 +1,25 @@
 {
   config,
   pkgs,
-  utils,
   lib,
   ...
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.dev.editor.neovim;
+  cfg = config.signal.dev.editor.neovim;
 in {
-  options.dev.editor.neovim = with lib; {
-    enable = mkEnableOption "Neovim editor";
+  options.signal.dev.editor.neovim = with lib; {
+    enable = (mkEnableOption "Neovim editor") // { default = true; };
   };
   imports = [];
-  config = lib.mkIf (config.dev.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable) {
     systemd.user.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
     programs.neovim = {
       enable = false;
-      package = if (config.home.impure or false) then (utils.wrapSystemApp { app = "nvim"; }) else pkgs.neovim;
+      package = if (config.system.isNixOS or true) then pkgs.neovim else (lib.signal.linkSystemApp pkgs { app = "nvim"; });
     };
     home.packages =
       (std.optional (!config.programs.neovim.enable) config.programs.neovim.package)

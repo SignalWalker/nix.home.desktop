@@ -1,0 +1,5 @@
+#! /usr/bin/env fish
+
+for pkg in (nix profile list)
+    string replace -r 'legacyPackages\.[^.]*' "legacy" $pkg | string match -r '[0-9]+ [^ ]*'
+end
