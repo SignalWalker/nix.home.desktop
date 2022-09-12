@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  flakeInputs,
   ...
 }:
 with builtins; let

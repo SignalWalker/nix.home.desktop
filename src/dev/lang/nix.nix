@@ -11,7 +11,7 @@ in {
   options.signal.dev.lang.nix = with lib; {
     enable = (mkEnableOption "Nix language") // {default = true;};
   };
-  imports = lib.signal.fs.listFiles ./nix;
+  imports = lib.signal.fs.path.listFilePaths ./nix;
   config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       statix

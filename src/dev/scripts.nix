@@ -10,7 +10,7 @@ in {
   options = with lib; {};
   imports = [];
   config = let
-    scripts = lib.signal.fs.listFiles' ./scripts;
+    scripts = lib.signal.fs.path.listFileNames ./scripts;
   in {
     xdg.binFile = std.genAttrs scripts (script: {
       executable = true;

@@ -9,6 +9,6 @@ with builtins; let
   cfg = config.signal.dev;
 in {
   options = with lib; {};
-  imports = lib.signal.fs.listFiles ./lang;
+  imports = lib.signal.fs.path.listFilePaths ./lang;
   config = {};
 }
