@@ -29,7 +29,7 @@ in {
       default = "grim -l 9 -g \"$(slurp -d)\" - | wl-clip -i -selection clipboard";
     };
   };
-  imports = lib.signal.fs.listFiles ./wayland;
+  imports = lib.signal.fs.path.listFilePaths ./wayland;
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       # meta

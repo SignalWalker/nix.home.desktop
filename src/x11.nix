@@ -11,7 +11,7 @@ in {
   options.signal.desktop.x11 = with inputs.lib; {
     enable = mkEnableOption "X11-specific configuration.";
   };
-  imports = lib.signal.fs.listFiles ./x11;
+  imports = lib.signal.fs.path.listFilePaths ./x11;
   config = lib.mkIf cfg.enable {
     programs.feh = {
       enable = cfg.enable;

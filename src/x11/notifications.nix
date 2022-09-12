@@ -13,6 +13,6 @@ in {
       default = "dunst";
     };
   };
-  imports = lib.signal.fs.listFiles ./notifications;
+  imports = lib.signal.fs.path.listFilePaths ./notifications;
   config = {};
 }

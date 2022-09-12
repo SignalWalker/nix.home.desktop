@@ -101,14 +101,7 @@ in {
       };
     in {
       enable = true;
-      package =
-        lib.mkDefault
-        (import config.signal.desktop.flakeInputs.nixpkgs {
-          overlays = pkgs.overlays ++ [config.signal.desktop.flakeInputs.mozilla.overlays.firefox];
-          system = pkgs.${system};
-        })
-        .latest
-        .firefox-nightly-bin;
+      package = pkgs.latest.firefox-nightly-bin;
       profiles =
         (std.mapAttrs (profile: settings: std.recursiveUpdate (removeAttrs common ["bookmarks"]) settings) {
           main = {

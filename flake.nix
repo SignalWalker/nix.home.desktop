@@ -47,50 +47,62 @@
       homelib = inputs.homelib;
       std = nixpkgs.lib;
       hlib = homelib.lib;
-      nixpkgsFor = hlib.genNixpkgsFor {
-        inherit nixpkgs;
-        overlays = system: (inputs.homebase.lib.selectOverlays ["default" system]) ++ (self.lib.selectOverlays ["default" system "firefox"]);
-      };
+      home = hlib.home;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
-      lib.overlays = hlib.aggregateOverlays (attrValues (removeAttrs inputs ["nixpkgs" "alejandra" "polybar-scripts"]));
-      lib.selectOverlays = hlib.selectOverlays' self;
-      homeManagerModules.default = {lib, ...}: {
-        options.signal.desktop.flakeInputs = with lib;
-          mkOption {
-            type = types.attrsOf types.anything;
-            default = inputs;
+      signalModules.default = {
+        name = "home.desktop.default";
+        dependencies =
+          (hlib.signal.dependency.default.fromInputs {
+            inherit inputs;
+            filter = ["homelib" "ash-scripts" "polybar-scripts" "wired"];
+          })
+          // {
+            mozilla = {
+              input = inputs.mozilla;
+              outputs.overlays = ["firefox"];
+            };
           };
-        imports =
-          [
-            ./home-manager.nix
-          ]
-          ++ (hlib.collectInputModules (attrValues (removeAttrs inputs ["self" "polybar-scripts"])));
-        config = {};
-      };
-      homeConfigurations =
-        mapAttrs (system: pkgs: let
-          extraMod = {pkgs, ...}: {
-            config.programs.firefox.package = pkgs.latest.firefox-nightly-bin;
-          };
-        in {
-          default = hlib.genHomeConfiguration {
-            inherit pkgs;
-            modules = [self.homeManagerModules.default extraMod];
-          };
-          with-x11 = hlib.genHomeConfiguration {
-            inherit pkgs;
-            modules = [
-              self.homeManagerModules.default
-              extraMod
-              ({...}: {
-                config.signal.desktop.x11.enable = true;
-              })
+        outputs = dependencies: {
+          homeManagerModules.default = {lib, ...}: {
+            options.signal.desktop.flakeInputs = with lib;
+              mkOption {
+                type = types.attrsOf types.anything;
+                default = dependencies;
+              };
+            imports = [
+              ./home-manager.nix
             ];
+            config = {};
           };
-        })
-        nixpkgsFor;
-      packages = hlib.genHomeActivationPackages self.homeConfigurations;
-      apps = hlib.genHomeActivationApps self.homeConfigurations;
+        };
+      };
+      homeConfigurations = home.genConfigurations self;
+      packages = home.genActivationPackages self.homeConfigurations;
+      apps = home.genActivationApps self.homeConfigurations;
+      # homeConfigurations =
+      #   mapAttrs (system: pkgs: let
+      #     extraMod = {pkgs, ...}: {
+      #       config.programs.firefox.package = pkgs.latest.firefox-nightly-bin;
+      #     };
+      #   in {
+      #     default = hlib.genHomeConfiguration {
+      #       inherit pkgs;
+      #       modules = [self.homeManagerModules.default extraMod];
+      #     };
+      #     with-x11 = hlib.genHomeConfiguration {
+      #       inherit pkgs;
+      #       modules = [
+      #         self.homeManagerModules.default
+      #         extraMod
+      #         ({...}: {
+      #           config.signal.desktop.x11.enable = true;
+      #         })
+      #       ];
+      #     };
+      #   })
+      #   nixpkgsFor;
+      # packages = hlib.genHomeActivationPackages self.homeConfigurations;
+      # apps = hlib.genHomeActivationApps self.homeConfigurations;
     };
 }

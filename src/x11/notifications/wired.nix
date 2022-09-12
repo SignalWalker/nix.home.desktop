@@ -82,105 +82,105 @@ in {
   options.signal.desktop.x11.notifications.wired = with lib; {};
   imports = [];
   config = lib.mkIf (cfg.enable && (ncfg.backend == "wired")) {
-    services.wired = {
-      enable = true;
-      config = ./wired/wired.ron;
-      #config = pkgs.writeText "wired.ron" (toRON (struct {
-      #  max_notifications = 0;
-      #  timeout = 10000;
-      #  poll_interval = 16;
-      #  #idle_threshold = 3600;
-      #  replacing_enabled = true;
-      #  replacing_resets_timeout = true;
-      #  closing_enabled = true;
-      #  history_length = 20;
-      #  focus_follows = "Mouse";
-      #  # print_to_file = "/tmp/wired.log";
-      #  # min_window_width = 1;
-      #  # min_window_height = 1;
-      #  debug = false;
-      #  debug_color = color 0.0 1.0 0.0 1.0;
-      #  debug_color_alt = color 1.0 0.0 0.0 1.0;
-      #  layout_blocks = let
-      #    hook' = struct' "Hook";
-      #    hook = p: s:
-      #      hook' {
-      #        parent_anchor = class p;
-      #        self_anchor = class s;
-      #      };
-      #    vec2 = x: y: struct' "Vec2" {inherit x y;};
-      #    padding = left: right: top: bottom: struct' "Padding" {inherit left right top bottom;};
-      #    dims = wmin: wmax: hmin: hmax:
-      #      struct {
-      #        width = struct {
-      #          min = wmin;
-      #          max = wmax;
-      #        };
-      #        height = struct {
-      #          min = hmin;
-      #          max = hmax;
-      #        };
-      #      };
-      #  in [
-      #    (struct {
-      #      name = "root_image";
-      #      parent = "";
-      #      hook = hook "TL" "TL";
-      #      offset = vec2 7.0 7.0;
-      #      render_criteria = [(class "HintImage")];
-      #      params = tuple' "NotificationBlock" [
-      #        (struct {
-      #            monitor = 0;
-      #            border_width = 3.0;
-      #            border_rounding = 3.0;
-      #            border_color = hex "#ebdbb2";
-      #            border_color_low = hex "#282828";
-      #            border_color_critical = hex "#fb4934";
-      #            border_color_paused = hex "#fabd2f";
-      #            gap = vec2 0.0 8.0;
-      #            notification_hook = hook "BL" "TL";
-      #          })
-      #      ];
-      #    })
-      #    (struct {
-      #      name = "image";
-      #      parent = "root_image";
-      #      hook = hook "TL" "TL";
-      #      offset = vec2 0.0 0.0;
-      #      params = tuple' "ImageBlock" [
-      #        (struct
-      #          {
-      #            image_type = class "Hint";
-      #            padding = padding 7.0 0.0 7.0 7.0;
-      #            rounding = 3.0;
-      #            scale_width = 48;
-      #            scale_height = 48;
-      #            filter_mode = class "Lanczos3";
-      #          })
-      #      ];
-      #    })
-      #    (struct {
-      #      name = "summary_image";
-      #      parent = "image";
-      #      hook = hook "MR" "BL";
-      #      offset = vec2 0.0 0.0;
-      #      params = tuple' "TextBlock" [
-      #        (
-      #          struct
-      #          {
-      #            text = "%s";
-      #            font = "Arial Bold 11";
-      #            ellipsize = class Middle;
-      #            color = hex "#ebdbb2";
-      #            color_hovered = hex "#fbf1c7";
-      #            padding = padding 7.0 7.0 7.0 0.0;
-      #            dimensions = dims 50 150 0 0;
-      #          }
-      #        )
-      #      ];
-      #    })
-      #  ];
-      #}));
-    };
+    #services.wired = {
+    #  enable = true;
+    #  config = ./wired/wired.ron;
+    #  #config = pkgs.writeText "wired.ron" (toRON (struct {
+    #  #  max_notifications = 0;
+    #  #  timeout = 10000;
+    #  #  poll_interval = 16;
+    #  #  #idle_threshold = 3600;
+    #  #  replacing_enabled = true;
+    #  #  replacing_resets_timeout = true;
+    #  #  closing_enabled = true;
+    #  #  history_length = 20;
+    #  #  focus_follows = "Mouse";
+    #  #  # print_to_file = "/tmp/wired.log";
+    #  #  # min_window_width = 1;
+    #  #  # min_window_height = 1;
+    #  #  debug = false;
+    #  #  debug_color = color 0.0 1.0 0.0 1.0;
+    #  #  debug_color_alt = color 1.0 0.0 0.0 1.0;
+    #  #  layout_blocks = let
+    #  #    hook' = struct' "Hook";
+    #  #    hook = p: s:
+    #  #      hook' {
+    #  #        parent_anchor = class p;
+    #  #        self_anchor = class s;
+    #  #      };
+    #  #    vec2 = x: y: struct' "Vec2" {inherit x y;};
+    #  #    padding = left: right: top: bottom: struct' "Padding" {inherit left right top bottom;};
+    #  #    dims = wmin: wmax: hmin: hmax:
+    #  #      struct {
+    #  #        width = struct {
+    #  #          min = wmin;
+    #  #          max = wmax;
+    #  #        };
+    #  #        height = struct {
+    #  #          min = hmin;
+    #  #          max = hmax;
+    #  #        };
+    #  #      };
+    #  #  in [
+    #  #    (struct {
+    #  #      name = "root_image";
+    #  #      parent = "";
+    #  #      hook = hook "TL" "TL";
+    #  #      offset = vec2 7.0 7.0;
+    #  #      render_criteria = [(class "HintImage")];
+    #  #      params = tuple' "NotificationBlock" [
+    #  #        (struct {
+    #  #            monitor = 0;
+    #  #            border_width = 3.0;
+    #  #            border_rounding = 3.0;
+    #  #            border_color = hex "#ebdbb2";
+    #  #            border_color_low = hex "#282828";
+    #  #            border_color_critical = hex "#fb4934";
+    #  #            border_color_paused = hex "#fabd2f";
+    #  #            gap = vec2 0.0 8.0;
+    #  #            notification_hook = hook "BL" "TL";
+    #  #          })
+    #  #      ];
+    #  #    })
+    #  #    (struct {
+    #  #      name = "image";
+    #  #      parent = "root_image";
+    #  #      hook = hook "TL" "TL";
+    #  #      offset = vec2 0.0 0.0;
+    #  #      params = tuple' "ImageBlock" [
+    #  #        (struct
+    #  #          {
+    #  #            image_type = class "Hint";
+    #  #            padding = padding 7.0 0.0 7.0 7.0;
+    #  #            rounding = 3.0;
+    #  #            scale_width = 48;
+    #  #            scale_height = 48;
+    #  #            filter_mode = class "Lanczos3";
+    #  #          })
+    #  #      ];
+    #  #    })
+    #  #    (struct {
+    #  #      name = "summary_image";
+    #  #      parent = "image";
+    #  #      hook = hook "MR" "BL";
+    #  #      offset = vec2 0.0 0.0;
+    #  #      params = tuple' "TextBlock" [
+    #  #        (
+    #  #          struct
+    #  #          {
+    #  #            text = "%s";
+    #  #            font = "Arial Bold 11";
+    #  #            ellipsize = class Middle;
+    #  #            color = hex "#ebdbb2";
+    #  #            color_hovered = hex "#fbf1c7";
+    #  #            padding = padding 7.0 7.0 7.0 0.0;
+    #  #            dimensions = dims 50 150 0 0;
+    #  #          }
+    #  #        )
+    #  #      ];
+    #  #    })
+    #  #  ];
+    #  #}));
+    #};
   };
 }

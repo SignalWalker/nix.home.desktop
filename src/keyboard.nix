@@ -41,7 +41,7 @@ with builtins; let
         "};"
       ]);
 in {
-  imports = lib.signal.fs.listFiles ./keyboard;
+  imports = lib.signal.fs.path.listFilePaths ./keyboard;
   options.services.X11.xkeymap = with lib; let
     mkXKBModule = xkbTag: opts @ {...}:
       T.submodule {

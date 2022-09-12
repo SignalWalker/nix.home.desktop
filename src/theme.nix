@@ -220,7 +220,7 @@ in {
       };
     };
   };
-  imports = lib.signal.fs.listFiles ./theme;
+  imports = lib.signal.fs.path.listFilePaths ./theme;
   config = {
     # home.packages = map (font: font.package) (fcfg.sans ++ fcfg.slab ++ fcfg.mono ++ fcfg.terminal ++ fcfg.bmp ++ fcfg.symbols);
     fonts.fontconfig.enable = true;

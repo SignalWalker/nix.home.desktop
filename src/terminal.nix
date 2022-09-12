@@ -18,7 +18,7 @@ in {
       default = cfg.app;
     };
   };
-  imports = lib.signal.fs.listFiles ./terminal;
+  imports = lib.signal.fs.path.listFilePaths ./terminal;
   config = {
   };
 }

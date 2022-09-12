@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
 in {
   options.signal.desktop = with lib; {};
-  imports = lib.signal.fs.listFiles ./src;
+  imports = lib.signal.fs.path.listFilePaths ./src;
   config = {
     home.stateVersion = "22.11";
   };
