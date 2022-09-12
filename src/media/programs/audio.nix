@@ -2,9 +2,8 @@
   config,
   pkgs,
   lib,
-  utils,
   ...
 }:
 with builtins; {
-  imports = lib.signal.fs.listFiles ./audio;
+  imports = lib.signal.fs.path.listFilePaths ./audio;
 }
