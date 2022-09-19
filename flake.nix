@@ -77,29 +77,5 @@
       };
       packages = home.package.fromHomeConfigurations self.homeConfigurations;
       apps = home.app.fromHomeConfigurations self.homeConfigurations;
-      # homeConfigurations =
-      #   mapAttrs (system: pkgs: let
-      #     extraMod = {pkgs, ...}: {
-      #       config.programs.firefox.package = pkgs.latest.firefox-nightly-bin;
-      #     };
-      #   in {
-      #     default = hlib.genHomeConfiguration {
-      #       inherit pkgs;
-      #       modules = [self.homeManagerModules.default extraMod];
-      #     };
-      #     with-x11 = hlib.genHomeConfiguration {
-      #       inherit pkgs;
-      #       modules = [
-      #         self.homeManagerModules.default
-      #         extraMod
-      #         ({...}: {
-      #           config.signal.desktop.x11.enable = true;
-      #         })
-      #       ];
-      #     };
-      #   })
-      #   nixpkgsFor;
-      # packages = hlib.genHomeActivationPackages self.homeConfigurations;
-      # apps = hlib.genHomeActivationApps self.homeConfigurations;
     };
 }

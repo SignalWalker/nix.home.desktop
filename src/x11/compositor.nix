@@ -19,7 +19,7 @@ in {
       package =
         if (config.system.isNixOS or true)
         then pkgs.picom
-        else (lib.signal.linkSystemApp pkgs {app = "picom";});
+        else (lib.signal.home.linkSystemApp pkgs {app = "picom";});
       settings = {
         blur = {
           background = false;

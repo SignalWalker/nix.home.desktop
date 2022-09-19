@@ -33,7 +33,7 @@ in {
       package =
         if (config.system.isNixOS or true)
         then pkgs.kitty
-        else (lib.signal.linkSystemApp pkgs {app = "kitty";});
+        else (lib.signal.home.linkSystemApp pkgs {app = "kitty";});
       environment = {};
       font = let
         font = head config.signal.desktop.theme.font.terminal;
