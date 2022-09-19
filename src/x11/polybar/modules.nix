@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  scripts = "${config.signal.desktop.flakeInputs.polybar-scripts}/polybar-scripts";
+  scripts = "${config.signal.desktop.polybarScripts.src}/polybar-scripts";
 in
   std.mapAttrs' (module: settings: std.nameValuePair "module/${module}" settings) {
     # system

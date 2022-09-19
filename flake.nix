@@ -48,38 +48,35 @@
       std = nixpkgs.lib;
       hlib = homelib.lib;
       home = hlib.home;
+      signal = hlib.signal;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       signalModules.default = {
         name = "home.desktop.default";
-        dependencies =
-          (hlib.signal.dependency.default.fromInputs {
-            inherit inputs;
-            filter = ["homelib" "ash-scripts" "polybar-scripts" "wired"];
-          })
-          // {
-            mozilla = {
-              input = inputs.mozilla;
-              outputs.overlays = ["firefox"];
-            };
+        dependencies = signal.flake.set.toDependencies {
+          flakes = inputs;
+          filter = ["alejandra"];
+          outputs = {
+            mozilla.overlays = ["firefox"];
           };
+        };
         outputs = dependencies: {
-          homeManagerModules.default = {lib, ...}: {
-            options.signal.desktop.flakeInputs = with lib;
-              mkOption {
-                type = types.attrsOf types.anything;
-                default = dependencies;
-              };
+          homeManagerModules = {lib, ...}: {
             imports = [
               ./home-manager.nix
             ];
-            config = {};
+            config = {
+              signal.desktop.polybarScripts = dependencies.polybar-scripts;
+            };
           };
         };
       };
-      homeConfigurations = home.genConfigurations self;
-      packages = home.genActivationPackages self.homeConfigurations;
-      apps = home.genActivationApps self.homeConfigurations;
+      homeConfigurations = home.configuration.fromFlake {
+        flake = self;
+        flakeName = "home.desktop";
+      };
+      packages = home.package.fromHomeConfigurations self.homeConfigurations;
+      apps = home.app.fromHomeConfigurations self.homeConfigurations;
       # homeConfigurations =
       #   mapAttrs (system: pkgs: let
       #     extraMod = {pkgs, ...}: {
