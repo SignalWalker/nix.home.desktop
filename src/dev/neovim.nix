@@ -22,7 +22,7 @@ in {
       package =
         if (config.system.isNixOS or true)
         then pkgs.neovim
-        else (lib.signal.linkSystemApp pkgs {app = "nvim";});
+        else (lib.signal.home.linkSystemApp pkgs {app = "nvim";});
     };
     home.packages =
       (std.optional (!config.programs.neovim.enable) config.programs.neovim.package)
