@@ -14,7 +14,7 @@ in {
       enable = true;
       package = pkgs.xremap;
       services = {
-        "main" = {
+        "primary" = {
           watch.configFile = false;
           watch.devices = true;
           watch.ignore = [];
