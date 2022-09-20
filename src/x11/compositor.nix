@@ -51,6 +51,5 @@ in {
         };
       };
     };
-    signal.desktop.x11.xsession.startupCommands = "picom &";
   };
 }

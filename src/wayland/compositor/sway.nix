@@ -22,6 +22,20 @@ in {
       right = "l";
     in {
       enable = true;
+      package = lib.mkIf (!config.system.isNixOS) (pkgs.sway.override {
+        sway-unwrapped = pkgs.lib.makeOverridable ({
+          isNixOS ? null,
+          enableXWayland ? null,
+        }:
+          (lib.signal.home.linkSystemApp pkgs {app = "sway";})
+          // {
+            version = "system";
+          }) {};
+        extraSessionCommands = config.wayland.windowManager.sway.extraSessionCommands;
+        extraOptions = config.wayland.windowManager.sway.extraOptions;
+        withBaseWrapper = config.wayland.windowManager.sway.wrapperFeatures.base;
+        withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
+      });
       config = {
         bars = [
           # {
@@ -99,7 +113,7 @@ in {
             "${mod}+Shift+q" = "kill";
             "${mod}+d" = "exec ${menu}";
             "${mod}+Ctrl+r" = "reload";
-            "${mod}+Ctrl+Alt+Shift+q" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+            "${mod}+Ctrl+Alt+Shift+q" = "exec swaymsg exit";
 
             "${mod}+Shift+space" = "floating toggle";
             "${mod}+space" = "focus mode_toggle";
@@ -186,7 +200,7 @@ in {
         inherit menu;
         defaultWorkspace = "workspace number 1";
         startup = [
-          {command = "${config.signal.desktop.wayland.__startupScript}";}
+          {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
         ];
       };
       swaynag = {
@@ -200,9 +214,6 @@ in {
           lid:off output eDP-1 dpms on
         }
       '';
-      extraOptions = [
-        "--unsupported-gpu"
-      ];
       extraSessionCommands = let
         vars = config.signal.desktop.wayland.sessionVariables;
         keys = attrNames vars;

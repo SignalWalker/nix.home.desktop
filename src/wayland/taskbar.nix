@@ -20,7 +20,7 @@ in {
         withMediaPlayer = true;
       };
       systemd = {
-        enable = false; # config.wayland.windowManager.hyprland.systemdIntegration;
+        enable = cfg.taskbar.enable; # config.wayland.windowManager.hyprland.systemdIntegration;
       };
       style = ./waybar/style.css;
       settings.mainBar = {
