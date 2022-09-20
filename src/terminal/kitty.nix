@@ -94,7 +94,7 @@ in {
         tab_bar_edge = "bottom";
         tab_bar_style = "powerline";
         ## keyboard
-        kitty_mod = "ctrl+alt+super"; # a.k.a. the hyper key
+        kitty_mod = "hyper";
         ## mouse
         mouse_hide_wait = "3.0";
         detect_urls = true;
