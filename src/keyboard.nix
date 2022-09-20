@@ -11,7 +11,7 @@ in {
   imports = [];
   config = {
     services.xremap = {
-      enable = true;
+      enable = lib.mkDefault true;
       package = pkgs.xremap;
       services = {
         "primary" = {
