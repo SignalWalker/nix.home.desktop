@@ -37,6 +37,12 @@
       url = github:Toqozz/wired-notify;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # keyboard
+    xremap = {
+      url = github:signalwalker/xremap;
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.alejandra.follows = "alejandra";
+    };
   };
   outputs = inputs @ {
     self,

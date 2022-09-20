@@ -96,7 +96,6 @@
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": [
-          "homebase",
           "xremap",
           "nixpkgs"
         ]
@@ -271,15 +270,14 @@
         ],
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "xremap": "xremap"
+        ]
       },
       "locked": {
-        "lastModified": 1663694936,
-        "narHash": "sha256-M2vAyV+oyc+aXaTeWOVuLgqNaAxsaxZ21GZXXXPX0bI=",
+        "lastModified": 1663695258,
+        "narHash": "sha256-q9DUKgY7v/Q8qYDBSCum1FJhbC+opJeuMQcsqILM3GY=",
         "owner": "signalwalker",
         "repo": "nix.home.base",
-        "rev": "5a11399281305691c36dd76bbc2c8c69ee601127",
+        "rev": "d8b95e3bee4e22353d11643ca9a4b74556777fbe",
         "type": "github"
       },
       "original": {
@@ -410,7 +408,8 @@
         "mozilla": "mozilla",
         "nixpkgs": "nixpkgs",
         "polybar-scripts": "polybar-scripts",
-        "wired": "wired"
+        "wired": "wired",
+        "xremap": "xremap"
       }
     },
     "rust-analyzer-src": {
@@ -501,12 +500,10 @@
     "xremap": {
       "inputs": {
         "alejandra": [
-          "homebase",
           "alejandra"
         ],
         "crane": "crane",
         "nixpkgs": [
-          "homebase",
           "nixpkgs"
         ]
       },
