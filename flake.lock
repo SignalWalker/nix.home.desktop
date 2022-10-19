@@ -79,11 +79,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1666207920,
-        "narHash": "sha256-NSMcYjQqN77X2aG3S1OR80DVg79uAWG8SpfCjibNW7M=",
+        "lastModified": 1666212903,
+        "narHash": "sha256-k0mOALPpfmZAOdjC69Fq2PqENKtxx0CvmWOrNVXkBq8=",
         "owner": "signalwalker",
         "repo": "scripts-rs",
-        "rev": "1f2a1b37e5a8873707e047205021919f7f7be284",
+        "rev": "d5e670065c5a8c43d0a7a6c7813823de4e2a0bf6",
         "type": "github"
       },
       "original": {
