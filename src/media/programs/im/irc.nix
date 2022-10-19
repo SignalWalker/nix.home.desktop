@@ -11,7 +11,7 @@ in
   options.signal.media.im.irc = with lib; {
     enable = (mkEnableOption "IRC") // { default = true; };
     systemd = {
-      enable = (mkEnableOption "systemd integration") // { default = true; };
+      enable = (mkEnableOption "systemd integration") // { default = false; };
     };
   };
   disabledModules = [ ];
