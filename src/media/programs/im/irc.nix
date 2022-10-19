@@ -32,7 +32,7 @@ in
           WantedBy = [ "default.target" ];
         };
         Service = {
-          Type = simple;
+          Type = "simple";
           ExecStart = "weechat-headless";
         };
       };
