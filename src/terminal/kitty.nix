@@ -94,7 +94,7 @@ in {
         tab_bar_edge = "bottom";
         tab_bar_style = "powerline";
         ## keyboard
-        kitty_mod = "hyper";
+        kitty_mod = "super"; # note: this is actually Mod4, which is Hyper_L when using the keyboard settings defined in this flake (kitty considers Hyper_L to be numlock, for some reason)
         ## mouse
         mouse_hide_wait = "3.0";
         detect_urls = true;

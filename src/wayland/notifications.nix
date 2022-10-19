@@ -29,6 +29,5 @@ in {
         ExecStart = "mako";
       };
     };
-    signal.desktop.wayland.startupCommands = "systemctl --user start mako.service";
   };
 }

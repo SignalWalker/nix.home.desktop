@@ -1,0 +1,6 @@
+#! /usr/bin/env sh
+set -e
+img="$(grimshot save $1)"
+echo "Saved screenshot to $img"
+wl-copy --trim-newline < $img
+notify-send --hint=STRING:image-path:$img Screenshot $img

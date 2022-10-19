@@ -27,9 +27,9 @@ in {
     __startupScript = mkOption {
       type = types.path;
     };
-    screenshotCmd = mkOption {
-      type = types.str;
-      default = "grim -l 9 -g \"$(slurp -d)\" - | wl-clip -i -selection clipboard";
+    screenshotScript = mkOption {
+      type = types.path;
+      default = ./wayland/scripts/screenshot;
     };
   };
   imports = lib.signal.fs.path.listFilePaths ./wayland;
@@ -58,7 +58,6 @@ in {
       };
     };
     services.kanshi.systemdTarget = "wayland-session.target";
-    programs.waybar.systemd.target = "wayland-session.target";
     services.swayidle.systemdTarget = "wayland-session.target";
     signal.desktop.wayland.__systemdStartupScript = let
       vars = config.signal.desktop.wayland.sessionVariables;

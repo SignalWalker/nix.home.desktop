@@ -12,7 +12,7 @@ in {
     enable = (mkEnableOption "launcher menu config") // {default = true;};
     defaultCommand = mkOption {
       type = types.str;
-      default = "wofi --show drun";
+      default = "wofi --show drun,run";
     };
   };
   imports = [];

@@ -20,7 +20,7 @@ in {
       profilePath = ".config/xprofile";
       numlock.enable = true;
       preferStatusNotifierItems = true;
-      windowManager.command = "sx ${xmonad}";
+      windowManager.command = "${xmonad}";
       # windowManager.xmonad = {
       #   enable = true;
       #   enableContribAndExtras = true;

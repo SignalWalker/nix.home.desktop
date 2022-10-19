@@ -1,0 +1,19 @@
+#! /usr/bin/env zsh
+
+extraCriteria="true"
+if [[ "$1" == "dismiss" ]]; then
+    extraCriteria=".visible"
+fi
+if [[ "$1" == "summon" ]]; then
+    extraCriteria="(.visible|not)"
+fi
+if [[ "$1" == "toggle" ]]; then
+    extraCriteria="true"
+fi
+
+pids=$(swaymsg -t get_tree | jq '..|select(if type == "object" then has("pid") else false end) | select(.type == "floating_con" and '$extraCriteria' and ('$2')) | .pid')
+for pid in ${(@f)pids}; do
+    swaycmd="[pid=$pid] scratchpad show"
+    echo $swaycmd
+    swaymsg $swaycmd
+done
