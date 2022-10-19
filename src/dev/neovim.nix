@@ -28,7 +28,7 @@ in {
       (std.optional (!config.programs.neovim.enable) config.programs.neovim.package)
       ++ (with pkgs; [
         tree-sitter
-        nvimpager
+        # nvimpager
       ])
       ++ (with pkgs.vimPlugins; [
         packer-nvim

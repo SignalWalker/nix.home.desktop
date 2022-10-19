@@ -23,6 +23,11 @@ in {
       userName = "Ash Walker";
       userEmail = config.accounts.email.accounts.primary.address;
       lfs.enable = true;
+      signing = {
+        key = lib.mkDefault null;
+        gpgPath = if config.programs.gpg.enable then "${config.programs.gpg.package}/bin/gpg" else "/usr/bin/gpg";
+        signByDefault = true;
+      };
       extraConfig = {
         core = {
           autocrlf = "input";
