@@ -15,7 +15,7 @@ in {
   config = lib.mkIf (config.signal.desktop.wayland.enable && cfg.enable) {
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
-      menu = config.signal.desktop.wayland.menu.defaultCommand;
+      menu = config.signal.desktop.wayland.menu.cmd;
       up = "k";
       down = "j";
       left = "h";

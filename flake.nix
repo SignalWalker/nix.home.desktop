@@ -43,6 +43,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
     };
+    # editor
+    helixSrc = {
+      url = "github:helix-editor/helix";
+      inputs.nixpkgs.follows = "helix";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -73,6 +79,7 @@
             ];
             config = {
               signal.desktop.polybarScripts = dependencies.polybar-scripts;
+              signal.desktop.editor.helix.src = inputs.helixSrc;
             };
           };
         };

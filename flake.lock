@@ -239,6 +239,22 @@
         "type": "github"
       }
     },
+    "helixSrc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666400690,
+        "narHash": "sha256-VzJWMqOF6mppzv2KsRJ6LpD3xxYhVPk0018Qj1kBblk=",
+        "owner": "helix-editor",
+        "repo": "helix",
+        "rev": "d7d0d5ffb79b6f2e09c6ab8af6e112c41e6f73e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "helix-editor",
+        "repo": "helix",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -406,6 +422,7 @@
       "inputs": {
         "alejandra": "alejandra",
         "ash-scripts": "ash-scripts",
+        "helixSrc": "helixSrc",
         "homebase": "homebase",
         "homelib": "homelib",
         "mozilla": "mozilla",

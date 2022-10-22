@@ -14,20 +14,6 @@ in {
   };
   imports = [];
   config = lib.mkIf (cfg.enable && mcfg.enable) {
-    programs.rofi = let
-      fontSize = 13;
-      font = head (config.lib.signal.desktop.theme.bmpsAt fontSize);
-    in {
-      enable = mcfg.enable;
-      configPath = "${config.xdg.configHome}/rofi/config.rasi";
-      font = "${font.family} ${toString fontSize}";
-      terminal = config.signal.desktop.terminal.command;
-      theme = "gruvbox-dark-hard";
-      extraConfig = {
-        sort = true;
-        sorting-method = "fzf";
-        modi = "drun,run";
-      };
-    };
+    signal.desktop.shared.rofi.enable = true;
   };
 }
