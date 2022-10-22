@@ -6,16 +6,16 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.dev.editor.neovim;
+  cfg = config.signal.dev.editor;
+  nvm = cfg.neovim;
 in {
   options.signal.dev.editor.neovim = with lib; {
     enable = (mkEnableOption "Neovim editor") // {default = true;};
   };
   imports = [];
-  config = lib.mkIf (cfg.enable) {
-    systemd.user.sessionVariables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
+  config = lib.mkIf (cfg.enable && nvm.enable) {
+    signal.dev.editor.editors."neovim" = {
+      cmd.term = "nvim";
     };
     programs.neovim = {
       enable = false;
