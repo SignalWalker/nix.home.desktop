@@ -242,11 +242,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1666400690,
-        "narHash": "sha256-VzJWMqOF6mppzv2KsRJ6LpD3xxYhVPk0018Qj1kBblk=",
+        "lastModified": 1666466741,
+        "narHash": "sha256-YiLY3OOVZMtyAUzgQk4QEmm7XD+NXNlPoY/jMADnfEU=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "d7d0d5ffb79b6f2e09c6ab8af6e112c41e6f73e8",
+        "rev": "ce469abfe2e99b5156c948bff27aaec3fbff7a6e",
         "type": "github"
       },
       "original": {
