@@ -10,6 +10,20 @@ with builtins; let
 in {
   options.signal.desktop.terminal.kitty = with lib; {};
   config = lib.mkIf (cfg.app == "kitty") {
+    signal.desktop.wayland.compositor.scratchpads = [
+      {
+        kb = "Grave";
+        criteria = {app_id = "scratch_term";};
+        resize = 83;
+        startup = "kitty --class scratch_term";
+      }
+      {
+        kb = "Shift+T";
+        criteria = {app_id = "scratch_top";};
+        resize = 83;
+        startup = "kitty --class scratch_top btop";
+      }
+    ];
     xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;
     xdg.binFile."hg" = {
       executable = true;

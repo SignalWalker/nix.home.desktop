@@ -7,10 +7,21 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  options = with lib; {};
+  options.signal.desktop.browser.firefox = with lib; {};
   disabledModules = [];
   imports = [];
   config = {
+    signal.desktop.wayland.compositor.scratchpads = [
+      {
+        kb = "Shift+F";
+        criteria = {app_id = "^firefox*";};
+        resize = 93;
+        startup =
+          if config.system.isNixOS
+          then "firefox"
+          else "firefox-nightly";
+      }
+    ];
     home.sessionVariables = {
       BROWSER = "firefox";
       MOZ_DBUS_REMOTE = 1;
@@ -100,7 +111,7 @@ in {
           };
       };
     in {
-      enable = true;
+      enable = config.system.isNixOS;
       package =
         if config.system.isNixOS
         then pkgs.latest.firefox-nightly-bin

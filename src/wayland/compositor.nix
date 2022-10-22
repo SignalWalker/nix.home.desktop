@@ -28,13 +28,14 @@ with builtins; let
               type = let
                 dimsToStr = dims: "width ${toString (elemAt dims 0)} ppt height ${toString (elemAt dims 1)} ppt";
               in
-                types.nullOr (types.coercedTo (types.either (types.listOf types.int) types.int) (e:
-                  dimsToStr (
-                    if isInt e
-                    then [e e]
-                    else e
-                  ))
-                types.str);
+                types.nullOr (types.coercedTo (types.either (types.listOf types.int) types.int)
+                  (e:
+                    dimsToStr (
+                      if isInt e
+                      then [e e]
+                      else e
+                    ))
+                  types.str);
               default = null;
             };
             center = mkOption {
@@ -57,15 +58,17 @@ with builtins; let
                   default = fn;
                 };
             in {
-              sway_criteria = mkFn (let
-                crit = {floating = "true";} // config.criteria;
-              in "[${foldl' (res: nxt:
-                (
-                  if res == ""
-                  then res
-                  else res + " "
-                )
-                + "${nxt}=\"${crit.${nxt}}\"") "" (attrNames crit)}]");
+              sway_criteria = mkFn (
+                let
+                  crit = {floating = "true";} // config.criteria;
+                in "[${foldl' (res: nxt:
+                  (
+                    if res == ""
+                    then res
+                    else res + " "
+                  )
+                  + "${nxt}=\"${crit.${nxt}}\"") "" (attrNames crit)}]"
+              );
               sway_show = mkFn ("${config.fn.sway_criteria} scratchpad show"
                 + (
                   if config.resize != null
@@ -102,34 +105,10 @@ in {
   config = {
     signal.desktop.wayland.compositor.scratchpads = [
       {
-        kb = "Grave";
-        criteria = {app_id = "scratch_term";};
-        resize = 83;
-        startup = "kitty --class scratch_term";
-      }
-      {
-        kb = "Shift+F";
-        criteria = {app_id = "^firefox*";};
-        resize = 93;
-        startup = "firefox";
-      }
-      {
-        kb = "Shift+E";
-        criteria = {app_id = "^thunderbird*";};
-        resize = 93;
-        startup = "thunderbird-nightly";
-      }
-      {
         kb = "Shift+V";
         criteria = {app_id = "pavucontrol";};
         resize = 50;
         startup = "pavucontrol";
-      }
-      {
-        kb = "Shift+T";
-        criteria = {app_id = "scratch_top";};
-        resize = 83;
-        startup = "kitty --class scratch_top btop";
       }
       {
         kb = "Shift+Slash";
