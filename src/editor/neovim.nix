@@ -23,7 +23,7 @@ in {
   imports = [];
   config = lib.mkIf (cfg.enable && nvm.enable) (lib.mkMerge [
     {
-      home.packages = [cfg.package];
+      home.packages = [nvm.package];
       xdg.desktopEntries = {
         neovide-multigrid = {
           type = "Application";
