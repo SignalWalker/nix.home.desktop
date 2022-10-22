@@ -1,16 +1,16 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 with builtins; let
   std = pkgs.lib;
   cfg = config.signal.desktop.wayland;
   mnu = cfg.menu;
-in
-{
+in {
   options.signal.desktop.wayland.menu = with lib; {
-    enable = (mkEnableOption "launcher menu config") // { default = true; };
+    enable = (mkEnableOption "launcher menu config") // {default = true;};
     cmd = mkOption {
       type = types.str;
       default = "rofi -show combi -modes combi -combi-modes 'drun,run'";
