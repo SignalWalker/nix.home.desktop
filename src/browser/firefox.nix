@@ -102,7 +102,7 @@ in {
     in {
       enable = true;
       package =
-        if config.system.IsNixOS
+        if config.system.isNixOS
         then pkgs.latest.firefox-nightly-bin
         else
           lib.signal.home.linkSystemApp pkgs {
