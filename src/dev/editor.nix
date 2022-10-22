@@ -50,7 +50,7 @@ in {
     lib.signal.dev.types.editor = editor;
     systemd.user.sessionVariables = lib.mkMerge [
       {EDITOR = cfg.default.cmd.term;}
-      (lib.mkIf cfg.default.cmd.visual != null {VISUAL = cfg.default.cmd.visual;})
+      (lib.mkIf (cfg.default.cmd.visual != null) {VISUAL = cfg.default.cmd.visual;})
     ];
   };
   meta = {};
