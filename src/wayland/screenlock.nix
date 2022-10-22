@@ -10,7 +10,7 @@ with builtins; let
   lck = cfg.screenlock;
 in {
   options.signal.desktop.wayland.screenlock = with lib; {
-    enable = (mkEnableOption "screenlock") // { default = true; };
+    enable = (mkEnableOption "screenlock") // {default = true;};
     font = mkOption {
       type = config.lib.signal.types.font;
       default = head config.signal.desktop.theme.font.slab;
@@ -22,7 +22,10 @@ in {
       ignore-empty-password = true;
       indicator-caps-lock = true;
       font = lck.font.family;
-      font-size = config.lib.signal.desktop.theme.font.selectSize { font = lck.font; ideal = 11; };
+      font-size = config.lib.signal.desktop.theme.font.selectSize {
+        font = lck.font;
+        ideal = 11;
+      };
       image = "${config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR"}/pond_bg.png";
       scaling = "fit";
       color = "000000";

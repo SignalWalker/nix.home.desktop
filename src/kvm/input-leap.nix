@@ -28,7 +28,7 @@ in {
       };
       systemd = {
         socket = {
-          enable = (mkEnableOption "input-leap server socket") // { default = true; };
+          enable = (mkEnableOption "input-leap server socket") // {default = true;};
           target = mkOption {
             type = types.str;
             default = "graphical-session.target";
@@ -44,7 +44,7 @@ in {
   config = lib.mkMerge [
     # both
     (lib.mkIf (srv.enable || cli.enable) {
-      home.packages = [ cfg.package ];
+      home.packages = [cfg.package];
     })
     # server
     (lib.mkIf srv.enable {
@@ -52,7 +52,7 @@ in {
         services."input-leap-server" = {
           Unit = {
             Description = "Input-Leap KVM Server";
-            PartOf = [ srv.systemd.socket.target ];
+            PartOf = [srv.systemd.socket.target];
           };
           Service = {
             Type = "simple";
@@ -62,10 +62,10 @@ in {
         sockets."input-leap-server" = {
           Unit = {
             Description = "Input-Leap KVM Server";
-            PartOf = [ srv.systemd.socket.target ];
+            PartOf = [srv.systemd.socket.target];
           };
           Install = {
-            WantedBy = [ srv.systemd.socket.target ];
+            WantedBy = [srv.systemd.socket.target];
           };
           Socket = {
             ListenStream = "${srv.network.listen.addr}:${toString srv.network.listen.port}";
@@ -77,7 +77,6 @@ in {
     })
     # client
     (lib.mkIf cli.enable {
-
-    })
+      })
   ];
 }

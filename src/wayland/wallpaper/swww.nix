@@ -37,15 +37,15 @@ in {
         Unit = {
           Description = "swww wallpaper daemon";
           Documentation = "man:swww(1)";
-          PartOf = [ cfg.systemd.target ];
+          PartOf = [cfg.systemd.target];
         };
         Install = {
-          WantedBy = [ cfg.systemd.target ];
+          WantedBy = [cfg.systemd.target];
         };
         Service = {
           Type = "simple";
           ExecStart = "${cfg.package}/bin/swww init";
-          ExecStartPost = [ "${cfg.package}/bin/swww img ${cfg.img.path}" ];
+          ExecStartPost = ["${cfg.package}/bin/swww img ${cfg.img.path}"];
         };
       };
     };

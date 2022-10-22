@@ -10,7 +10,7 @@ in {
   options.signal.desktop.keyboard = with lib; {
     compositor = {
       modifier = mkOption {
-        type = types.enum [ "Mod1" "Mod2" "Mod3" "Mod4" "Mod5" ];
+        type = types.enum ["Mod1" "Mod2" "Mod3" "Mod4" "Mod5"];
         default = "Mod3";
       };
     };

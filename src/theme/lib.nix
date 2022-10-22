@@ -115,9 +115,23 @@ in {
     };
     lib.signal.desktop.theme = with lib; {
       font = {
-        selectSize = { font, ideal }: let
-            abs = val: if val < 0 then val * -1 else val;
-          in if font.pixelsizes != null then (foldl' (res: val: if res == [] || ((abs (ideal - val)) < (abs (ideal - res))) then val else res) [] font.pixelsizes) else ideal;
+        selectSize = {
+          font,
+          ideal,
+        }: let
+          abs = val:
+            if val < 0
+            then val * -1
+            else val;
+        in
+          if font.pixelsizes != null
+          then
+            (foldl' (res: val:
+              if res == [] || ((abs (ideal - val)) < (abs (ideal - res)))
+              then val
+              else res) []
+            font.pixelsizes)
+          else ideal;
       };
       bmpSizeMap = let
         bmp = tcfg.font.bmp;

@@ -26,28 +26,31 @@ in {
     };
   };
   imports = [];
-  config = let cfg = config.services.wpaperd; in lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      cfg.package
-    ];
-    xdg.configFile."wpaperd/output.conf" = {
-      source = tomlFormat.generate "wpaperd-config" cfg.settings;
-    };
-    systemd.user.services = lib.mkIf cfg.systemd.enable {
-      "wpaperd" = {
-        Unit = {
-          Description = "wpaperd wallpaper daemon";
-          Documentation = "man:wpaperd(1)";
-          PartOf = [ cfg.systemd.target ];
-        };
-        Install = {
-          WantedBy = [ cfg.systemd.target ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${cfg.package}/bin/wpaperd --no-daemon";
+  config = let
+    cfg = config.services.wpaperd;
+  in
+    lib.mkIf cfg.enable {
+      home.packages = with pkgs; [
+        cfg.package
+      ];
+      xdg.configFile."wpaperd/output.conf" = {
+        source = tomlFormat.generate "wpaperd-config" cfg.settings;
+      };
+      systemd.user.services = lib.mkIf cfg.systemd.enable {
+        "wpaperd" = {
+          Unit = {
+            Description = "wpaperd wallpaper daemon";
+            Documentation = "man:wpaperd(1)";
+            PartOf = [cfg.systemd.target];
+          };
+          Install = {
+            WantedBy = [cfg.systemd.target];
+          };
+          Service = {
+            Type = "simple";
+            ExecStart = "${cfg.package}/bin/wpaperd --no-daemon";
+          };
         };
       };
     };
-  };
 }

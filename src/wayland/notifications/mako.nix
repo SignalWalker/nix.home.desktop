@@ -1,23 +1,23 @@
-{ config
-, pkgs
-, lib
-, ...
+{
+  config,
+  pkgs,
+  lib,
+  ...
 }:
 with builtins; let
   std = pkgs.lib;
   wln = config.signal.desktop.wayland;
   ntf = wln.notifications;
-in
-{
-  options = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
+in {
+  options = with lib; {};
+  disabledModules = [];
+  imports = [];
   config = lib.mkIf (wln.enable && ntf.enable) {
     systemd.user.services."mako" = {
       Unit = {
         Description = "Mako notification daemon";
         Documentation = "man:mako(1)";
-        PartOf = [ "wayland-session.target" ];
+        PartOf = ["wayland-session.target"];
       };
       Service = {
         Type = "dbus";
@@ -33,12 +33,10 @@ in
       groupBy = "summary,body";
       defaultTimeout = 5000;
       layer = "top";
-      font =
-        let
-          size = 13;
-          font = head (config.lib.signal.desktop.theme.bmpsAt size);
-        in
-        "${font.family} ${toString size}";
+      font = let
+        size = 13;
+        font = head (config.lib.signal.desktop.theme.bmpsAt size);
+      in "${font.family} ${toString size}";
       # theme
       extraConfig = ''
         border-size=0
@@ -100,5 +98,5 @@ in
       '';
     };
   };
-  meta = { };
+  meta = {};
 }

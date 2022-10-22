@@ -16,12 +16,12 @@ in {
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
       enable = false;
-      package = lib.signal.home.linkSystemApp pkgs { app = "swww"; };
+      package = lib.signal.home.linkSystemApp pkgs {app = "swww";};
     };
     services.wpaperd = {
       enable = !config.services.swww.enable;
       systemd.enable = true;
-      package = lib.signal.home.linkSystemApp pkgs { app = "wpaperd"; };
+      package = lib.signal.home.linkSystemApp pkgs {app = "wpaperd";};
       settings = {
         default = {
           path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
