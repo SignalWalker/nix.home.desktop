@@ -21,6 +21,10 @@ with builtins; let
               type = types.nullOr types.str;
               default = config.cmd.term;
             };
+            gui = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+            };
           };
         };
         imports = [];
