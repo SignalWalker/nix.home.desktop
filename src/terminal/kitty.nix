@@ -1,29 +1,32 @@
-inputs @ {
-  config,
-  pkgs,
-  lib,
-  ...
+inputs @ { config
+, pkgs
+, lib
+, ...
 }:
 with builtins; let
   cfg = config.signal.desktop.terminal;
   kcfg = config.signal.desktop.terminal.kitty;
-in {
-  options.signal.desktop.terminal.kitty = with lib; {};
+in
+{
+  options.signal.desktop.terminal.kitty = with lib; { };
   config = lib.mkIf (cfg.app == "kitty") {
     signal.desktop.wayland.compositor.scratchpads = [
       {
         kb = "Grave";
-        criteria = {app_id = "scratch_term";};
+        criteria = { app_id = "scratch_term"; };
         resize = 83;
         startup = "kitty --class scratch_term";
       }
       {
         kb = "Shift+T";
-        criteria = {app_id = "scratch_top";};
+        criteria = { app_id = "scratch_top"; };
         resize = 83;
         startup = "kitty --class scratch_top btop";
       }
     ];
+    signal.desktop.wayland.startupCommands = ''
+      kitty --class scratch_term &
+    '';
     xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;
     xdg.binFile."hg" = {
       executable = true;
@@ -46,15 +49,17 @@ in {
       package =
         if (config.system.isNixOS or true)
         then pkgs.kitty
-        else (lib.signal.home.linkSystemApp pkgs {app = "kitty";});
-      environment = {};
-      font = let
-        font = head config.signal.desktop.theme.font.terminal;
-      in {
-        inherit (font) package;
-        name = font.family;
-        size = 10;
-      };
+        else (lib.signal.home.linkSystemApp pkgs { app = "kitty"; });
+      environment = { };
+      font =
+        let
+          font = head config.signal.desktop.theme.font.terminal;
+        in
+        {
+          inherit (font) package;
+          name = font.family;
+          size = 10;
+        };
       theme = "Gruvbox Material Dark Hard";
       settings = {
         # scrollback
@@ -128,42 +133,44 @@ in {
         mouse_map kitty_mod+right press ungrabbed mouse_show_command_output
       '';
 
-      keybindings = let
-        vlaunch = "launch --location=vsplit";
-        hlaunch = "launch --location=hsplit";
-      in {
-        # clipboard
-        "ctrl+shift+v" = "paste_from_clipboard";
-        "ctrl+c" = "copy_and_clear_or_interrupt";
-        # windows
-        "kitty_mod+v" = "${vlaunch} --cwd=current";
-        "kitty_mod+s" = "${hlaunch} --cwd=current";
-        "kitty_mod+ctrl+v" = vlaunch;
-        "kitty_mod+ctrl+s" = hlaunch;
-        "kitty_mod+w" = "close_window";
-        "kitty_mod+r" = "start_resizing_window";
-        "kitty_mod+h" = "neighboring_window left";
-        "kitty_mod+j" = "neighboring_window down";
-        "kitty_mod+k" = "neighboring_window up";
-        "kitty_mod+l" = "neighboring_window right";
-        # tabs
-        "kitty_mod+alt+h" = "previous_tab";
-        "kitty_mod+alt+l" = "next_tab";
-        "kitty_mod+alt+v" = "new_tab_with_cwd";
-        "kitty_mod+alt+w" = "close_tab";
-        "kitty_mod+alt+ctrl+h" = "move_tab_backward";
-        "kitty_mod+alt+ctrl+l" = "move_tab_forward";
-        # history
-        "kitty_mod+/" = "show_scrollback";
-        "kitty_mod+alt+/" = "show_last_command_output";
-        "kitty_mod+home" = "scroll_home";
-        "kitty_mod+end" = "scroll_end";
-        "kitty_mod+Page_Up" = "scroll_page_up";
-        "kitty_mod+Page_Down" = "scroll_page_down";
-        "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
-        "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
-        "kitty_mod+delete" = "clear_terminal scrollback active";
-      };
+      keybindings =
+        let
+          vlaunch = "launch --location=vsplit";
+          hlaunch = "launch --location=hsplit";
+        in
+        {
+          # clipboard
+          "ctrl+shift+v" = "paste_from_clipboard";
+          "ctrl+c" = "copy_and_clear_or_interrupt";
+          # windows
+          "kitty_mod+v" = "${vlaunch} --cwd=current";
+          "kitty_mod+s" = "${hlaunch} --cwd=current";
+          "kitty_mod+ctrl+v" = vlaunch;
+          "kitty_mod+ctrl+s" = hlaunch;
+          "kitty_mod+w" = "close_window";
+          "kitty_mod+r" = "start_resizing_window";
+          "kitty_mod+h" = "neighboring_window left";
+          "kitty_mod+j" = "neighboring_window down";
+          "kitty_mod+k" = "neighboring_window up";
+          "kitty_mod+l" = "neighboring_window right";
+          # tabs
+          "kitty_mod+alt+h" = "previous_tab";
+          "kitty_mod+alt+l" = "next_tab";
+          "kitty_mod+alt+v" = "new_tab_with_cwd";
+          "kitty_mod+alt+w" = "close_tab";
+          "kitty_mod+alt+ctrl+h" = "move_tab_backward";
+          "kitty_mod+alt+ctrl+l" = "move_tab_forward";
+          # history
+          "kitty_mod+/" = "show_scrollback";
+          "kitty_mod+alt+/" = "show_last_command_output";
+          "kitty_mod+home" = "scroll_home";
+          "kitty_mod+end" = "scroll_end";
+          "kitty_mod+Page_Up" = "scroll_page_up";
+          "kitty_mod+Page_Down" = "scroll_page_down";
+          "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
+          "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
+          "kitty_mod+delete" = "clear_terminal scrollback active";
+        };
     };
   };
 }

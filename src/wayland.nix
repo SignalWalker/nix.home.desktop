@@ -1,21 +1,21 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 with builtins; let
   std = pkgs.lib;
   cfg = config.signal.desktop.wayland;
-in {
+in
+{
   options.signal.desktop.wayland = with lib; {
-    enable = (mkEnableOption "Wayland-specific configuration") // {default = true;};
+    enable = (mkEnableOption "Wayland-specific configuration") // { default = true; };
     xwayland = {
-      enable = (mkEnableOption "XWayland support") // {default = true;};
+      enable = (mkEnableOption "XWayland support") // { default = true; };
     };
     sessionVariables = mkOption {
       type = types.attrsOf (types.either types.int types.str);
-      default = {};
+      default = { };
     };
     startupCommands = mkOption {
       type = types.lines;
@@ -46,23 +46,23 @@ in {
     signal.desktop.wayland.sessionVariables = lib.mkDefault {
       MOZ_ENABLE_WAYLAND = 1;
       QT_QPA_PLATFORM = "wayland;xcb";
-      SDL_VIDEODRIVER = "wayland";
       WINIT_UNIX_BACKEND = "wayland";
     };
     systemd.user.targets."wayland-session" = {
       Unit = {
         Description = "wayland graphical session";
-        BindsTo = ["graphical-session.target"];
-        After = ["graphical-session-pre.target"];
-        Wants = ["graphical-session-pre.target"];
+        BindsTo = [ "graphical-session.target" ];
+        After = [ "graphical-session-pre.target" ];
+        Wants = [ "graphical-session-pre.target" ];
       };
     };
     services.kanshi.systemdTarget = "wayland-session.target";
     services.swayidle.systemdTarget = "wayland-session.target";
-    signal.desktop.wayland.__systemdStartupScript = let
-      vars = config.signal.desktop.wayland.sessionVariables;
-      keys = attrNames vars;
-    in
+    signal.desktop.wayland.__systemdStartupScript =
+      let
+        vars = config.signal.desktop.wayland.sessionVariables;
+        keys = attrNames vars;
+      in
       pkgs.writeScript "hm-wayland-systemd-startup-script" ''
         #! /usr/bin/env sh
         systemctl --user stop graphical-session.target graphical-session-pre.target
