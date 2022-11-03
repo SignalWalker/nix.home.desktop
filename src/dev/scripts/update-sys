@@ -2,6 +2,6 @@
 
 set -e
 
-nix build --no-link -L --show-trace --recreate-lock-file --impure ~/projects/nix/sys/personal ${argv}
+nix build --no-link -L --show-trace --impure ~/projects/nix/sys/personal ${argv}
 nix profile remove 0
 nix run --impure ~/projects/nix/sys/personal#activate-default ${argv}
