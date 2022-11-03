@@ -37,7 +37,7 @@ in {
     systemd.user.sessionVariables = {
       RUSTUP_HOME = cfg.rustup.home;
       CARGO_HOME = cfg.cargo.home;
-      RUSTC_LD = cfg.cargo.linker; # meson
+      RUSTC_LD = cfg.cargo.linker;
     };
     home.packages = with pkgs; [
       # rustup
@@ -51,7 +51,7 @@ in {
     signal.dev.lang.rust.cargo.config = {
       target."x86_64-unknown-linux-gnu" = {
         linker = "clang";
-        rustflags = ["-Clink-arg=-fuse-ld=${cfg.cargo.linker}"]; # "-Zshare-generics=y"
+        rustflags = ["-Clink-arg=-fuse-ld=${cfg.cargo.linker}" "-Csplit-debuginfo=packed"]; # "-Zshare-generics=y"
       };
       profile."release" = {
         lto = true;
