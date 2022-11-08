@@ -37,7 +37,7 @@ in {
         window = {
           format = "{title}";
           rewrite = {
-            "(.*) - Firefox Nightly" = "🌎 $1";
+            "(.*) — Firefox Nightly" = "🌎 $1";
           };
         };
         battery = {

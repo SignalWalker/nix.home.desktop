@@ -26,10 +26,13 @@ in {
         sway-unwrapped =
           pkgs.lib.makeOverridable
           ({
-            isNixOS ? null,
-            enableXWayland ? null,
+            isNixOS ? config.system.isNixOS,
+            enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
           }:
-            (lib.signal.home.linkSystemApp pkgs {app = "sway";})
+            (lib.signal.home.linkSystemApp pkgs {
+              app = "sway";
+              extraApps = ["/usr/bin/swaybar" "/usr/bin/swaymsg" "/usr/bin/swaynag"];
+            })
             // {
               version = "system";
             })
@@ -101,7 +104,7 @@ in {
           };
         };
         focus = {
-          followMouse = "yes";
+          followMouse = "no";
           forceWrapping = true;
           mouseWarping = false;
         };

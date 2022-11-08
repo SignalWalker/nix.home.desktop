@@ -53,7 +53,7 @@ in {
         Description = "wayland graphical session";
         BindsTo = ["graphical-session.target"];
         After = ["graphical-session-pre.target"];
-        Wants = ["graphical-session-pre.target"];
+        Wants = ["graphical-session-pre.target" "xdg-desktop-autostart.target"];
       };
     };
     services.kanshi.systemdTarget = "wayland-session.target";
@@ -63,11 +63,13 @@ in {
       keys = attrNames vars;
     in
       pkgs.writeScript "hm-wayland-systemd-startup-script" ''
-        #! /usr/bin/env sh
-        systemctl --user stop graphical-session.target graphical-session-pre.target
-        /usr/bin/env dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
-        systemctl --user start wayland-session.target
-        ${config.signal.desktop.wayland.__startupScript}
+              #! /usr/bin/env sh
+        systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+        # `hash` checks for the existence of the dbus command
+              hash dbus-update-activation-environment 2>/dev/null && \
+        	dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+              systemctl --user start wayland-session.target
+              ${config.signal.desktop.wayland.__startupScript}
       '';
     signal.desktop.wayland.__startupScript = pkgs.writeScript "hm-wayland-startup-script" ''
       #! /usr/bin/env sh

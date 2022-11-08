@@ -27,17 +27,20 @@ in {
     };
     programs.mako = {
       enable = ntf.enable;
+      # mechanics
       actions = true;
-      anchor = "bottom-right";
+      defaultTimeout = 5000;
       sort = "-priority";
       groupBy = "summary,body";
-      defaultTimeout = 5000;
+      # theme
+      ## default
       layer = "top";
+      anchor = "bottom-right";
       font = let
         size = 13;
         font = head (config.lib.signal.desktop.theme.bmpsAt size);
       in "${font.family} ${toString size}";
-      # theme
+      ## extra
       extraConfig = ''
         border-size=0
         border-radius=8
@@ -94,6 +97,9 @@ in {
         [app-name="Slack"]
         default-timeout=0
         ignore-timeout=1
+        layer=overlay
+
+        [app-name="Discord"]
         layer=overlay
       '';
     };
