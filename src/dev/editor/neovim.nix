@@ -14,6 +14,10 @@ in {
   };
   imports = [];
   config = lib.mkIf (cfg.enable && nvm.enable) {
+    xdg.configFile."nvim" = {
+      source = ./neovim;
+      recursive = false;
+    };
     signal.dev.editor.editors."neovim" = {
       cmd.term = "nvim";
     };
