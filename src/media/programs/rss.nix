@@ -11,7 +11,7 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-  	home.packages = with pkgs; [ rssguard ];
+    home.packages = with pkgs; [rssguard];
     signal.desktop.wayland.compositor.scratchpads = [
       {
         kb = "Shift+R";
