@@ -18,6 +18,9 @@ in {
       gh
       glab
     ];
+    home.shellAliases = {
+      gx = "gix"; # really don't like the default gitoxide command
+    };
     programs.git = {
       enable = true;
       userName = "Ash Walker";
