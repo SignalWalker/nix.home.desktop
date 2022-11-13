@@ -15,8 +15,8 @@ in {
     signal.desktop.wayland.compositor.scratchpads = [
       {
         kb = "Shift+R";
-        criteria = {app_id = "rssguard";};
-        resize = 83;
+        criteria = {app_id = "com.github.rssguard";};
+        resize = 93;
         startup = "rssguard";
       }
     ];
