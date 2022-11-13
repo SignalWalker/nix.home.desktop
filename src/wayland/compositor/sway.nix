@@ -31,7 +31,7 @@ in {
           }:
             (lib.signal.home.linkSystemApp pkgs {
               app = "sway";
-              extraApps = ["/usr/bin/swaybar" "/usr/bin/swaymsg" "/usr/bin/swaynag"];
+              extraApps = ["swaybar" "swaymsg" "swaynag"];
             })
             // {
               version = "system";
