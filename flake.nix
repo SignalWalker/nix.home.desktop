@@ -38,11 +38,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # keyboard
-    xremap = {
-      url = github:signalwalker/xremap;
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.alejandra.follows = "alejandra";
-    };
+    # xremap = {
+    #   url = github:signalwalker/xremap;
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.alejandra.follows = "alejandra";
+    # };
     # editor
     helixSrc = {
       url = "github:helix-editor/helix";
