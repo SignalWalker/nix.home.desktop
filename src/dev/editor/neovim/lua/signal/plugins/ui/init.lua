@@ -215,7 +215,7 @@ function M.nvimtree()
         remove_keymaps = false,
         select_prompts = true,
         view = {
-            adaptive_size = true,
+            adaptive_size = false,
             centralize_selection = false,
             hide_root_folder = false,
         },
