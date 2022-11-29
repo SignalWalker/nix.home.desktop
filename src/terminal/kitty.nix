@@ -152,7 +152,7 @@ in {
         hlaunch = "launch --location=hsplit";
       in {
         # meta
-        "kitty_mod+ctrl+s" = "kitty_shell";
+        "kitty_mod+t>s" = "kitty_shell";
         # view
         "kitty_mod+minus" = "change_font_size all -2.0";
         "kitty_mod+equal" = "change_font_size all 0";
