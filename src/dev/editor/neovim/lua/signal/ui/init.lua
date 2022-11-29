@@ -1,4 +1,7 @@
 require('signal.ui.keymap')
+if (vim.g.neovide ~= nil) then
+	require('signal.ui.neovide')
+end
 
 vim.opt.cursorline = true
 

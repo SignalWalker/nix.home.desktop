@@ -1,7 +1,3 @@
-if (vim.g.neovide ~= nil) then
-	require('signal.ui.neovide')
-end
-
 vim.opt.termguicolors = true
 
 vim.opt.linespace = 0
