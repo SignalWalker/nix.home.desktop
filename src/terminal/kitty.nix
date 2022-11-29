@@ -35,7 +35,7 @@ in {
     programs.zsh = {
       initExtra = ''
         if [[ "$TERM" = "${config.programs.kitty.settings.term}" ]]; then
-          compdef _rg hg
+          compdef _rg kg
           alias ssh="kitty +kitten ssh"
           alias icat="kitty +kitten icat"
           alias kdiff="kitty +kitten diff"
@@ -154,11 +154,11 @@ in {
         # meta
         "kitty_mod+t>s" = "kitty_shell";
         # view
-        "kitty_mod+minus" = "change_font_size all -2.0";
+        "kitty_mod+minus" = "change_font_size all -1.0";
         "kitty_mod+equal" = "change_font_size all 0";
-        "kitty_mod+plus" = "change_font_size all +2.0";
-        "kitty_mod+kp_minus" = "change_font_size all -2.0";
-        "kitty_mod+kp_plus" = "change_font_size all +2.0";
+        "kitty_mod+plus" = "change_font_size all +1.0";
+        "kitty_mod+kp_minus" = "change_font_size all -1.0";
+        "kitty_mod+kp_plus" = "change_font_size all +1.0";
         # clipboard
         "kitty_mod+p" = "paste_from_clipboard";
         "kitty_mod+y" = "copy_to_clipboard";
