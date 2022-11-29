@@ -28,14 +28,14 @@ in {
       kitty --class scratch_term &
     '';
     xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;
-    xdg.binFile."hg" = {
+    xdg.binFile."kg" = {
       executable = true;
-      source = ./kitty/hg;
+      source = ./kitty/kg;
     };
     programs.zsh = {
       initExtra = ''
-        compdef _rg hg
         if [[ "$TERM" = "${config.programs.kitty.settings.term}" ]]; then
+          compdef _rg hg
           alias ssh="kitty +kitten ssh"
           alias icat="kitty +kitten icat"
           alias kdiff="kitty +kitten diff"
@@ -43,6 +43,22 @@ in {
           alias kdeltas="kitty +kitten transfer --transmit-deltas"
         fi
       '';
+    };
+    programs.git.extraConfig = {
+      diff = {
+        tool = "kitty";
+        guitool = "kitty.gui";
+      };
+      difftool = {
+        prompt = false;
+        trustExitCode = true;
+      };
+      "difftool \"kitty\"" = {
+        cmd = "kitty +kitten diff $LOCAL $REMOTE";
+      };
+      "difftool \"kitty.gui\"" = {
+        cmd = "kitty kitty +kitten diff $LOCAL $REMOTE";
+      };
     };
     programs.kitty = {
       enable = true;
@@ -92,7 +108,7 @@ in {
         linux_display_server = "auto";
         # background
         background_opacity = "0.8";
-        dynamic_background_opacity = false;
+        dynamic_background_opacity = true;
         background_tint = "0.2";
         # text
         bold_font = "auto";
@@ -124,8 +140,8 @@ in {
 
       extraConfig = ''
         mouse_map left click ungrabbed mouse_handle_click selection link prompt
-        mouse_map kitty_mod+left release grabbed,ungrabbed mouse_handle_click link
         mouse_map kitty_mod+left press grabbed discard_event
+        mouse_map kitty_mod+left release grabbed,ungrabbed mouse_handle_click link
         mouse_map left press ungrabbed mouse_selection normal
         mouse_map right press ungrabbed mouse_select_command_output
         mouse_map kitty_mod+right press ungrabbed mouse_show_command_output
@@ -135,8 +151,17 @@ in {
         vlaunch = "launch --location=vsplit";
         hlaunch = "launch --location=hsplit";
       in {
+        # meta
+        "kitty_mod+ctrl+s" = "kitty_shell";
+        # view
+        "kitty_mod+minus" = "change_font_size all -2.0";
+        "kitty_mod+equal" = "change_font_size all 0";
+        "kitty_mod+plus" = "change_font_size all +2.0";
+        "kitty_mod+kp_minus" = "change_font_size all -2.0";
+        "kitty_mod+kp_plus" = "change_font_size all +2.0";
         # clipboard
-        "ctrl+shift+v" = "paste_from_clipboard";
+        "kitty_mod+p" = "paste_from_clipboard";
+        "kitty_mod+y" = "copy_to_clipboard";
         "ctrl+c" = "copy_and_clear_or_interrupt";
         # windows
         "kitty_mod+v" = "${vlaunch} --cwd=current";
@@ -144,11 +169,17 @@ in {
         "kitty_mod+ctrl+v" = vlaunch;
         "kitty_mod+ctrl+s" = hlaunch;
         "kitty_mod+w" = "close_window";
-        "kitty_mod+r" = "start_resizing_window";
         "kitty_mod+h" = "neighboring_window left";
         "kitty_mod+j" = "neighboring_window down";
         "kitty_mod+k" = "neighboring_window up";
         "kitty_mod+l" = "neighboring_window right";
+        "kitty_mod+shift+h" = "move_window_backward";
+        "kitty_mod+shift+l" = "move_window_forward";
+        "kitty_mod+r" = "start_resizing_window";
+        "kitty_mod+alt+shift+h" = "resize_window narrower";
+        "kitty_mod+alt+shift+j" = "resize_window shorter";
+        "kitty_mod+alt+shift+k" = "resize_window taller";
+        "kitty_mod+alt+shift+l" = "resize_window wider";
         # tabs
         "kitty_mod+alt+h" = "previous_tab";
         "kitty_mod+alt+l" = "next_tab";
@@ -159,13 +190,22 @@ in {
         # history
         "kitty_mod+/" = "show_scrollback";
         "kitty_mod+alt+/" = "show_last_command_output";
+        "kitty_mod+up" = "scroll_line_up";
+        "kitty_mod+down" = "scroll_line_down";
         "kitty_mod+home" = "scroll_home";
         "kitty_mod+end" = "scroll_end";
         "kitty_mod+Page_Up" = "scroll_page_up";
         "kitty_mod+Page_Down" = "scroll_page_down";
         "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
         "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
-        "kitty_mod+delete" = "clear_terminal scrollback active";
+        "kitty_mod+delete" = "clear_terminal scroll active";
+        # signals
+        "kitty_mod+ctrl+w" = "signal_child SIGTERM";
+        "kitty_mod+ctrl+shift+w" = "signal_child SIGKILL";
+        # files
+        "kitty_mod+h>y" = "kitten hints --program=@";
+        "kitty_mod+h>o" = "kitten hints --type=hyperlink";
+        "kitty_mod+h>l" = "kitten hints --type=linenum --linenum-action=tab nvim +{line} {path}";
       };
     };
   };
