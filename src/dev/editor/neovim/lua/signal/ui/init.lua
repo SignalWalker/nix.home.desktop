@@ -25,23 +25,25 @@ vim.opt.autowriteall = true
 
 vim.opt.scrolljump = 5
 vim.opt.scrolloff = 3
+vim.opt.sidescrolloff = 5;
 
 vim.opt.shortmess:append('c')
 
 vim.opt.foldenable = false
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 0
+vim.opt.tabstop = 3
 vim.opt.shiftwidth = 0
+vim.opt.softtabstop = -1
 vim.opt.expandtab = false
+vim.opt.breakindent = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.opt.wrap = false
 vim.opt.linebreak = true
-vim.opt.breakindent = true
-vim.opt.autoindent = true
 
 vim.opt.mouse = 'a'
 

@@ -50,6 +50,9 @@ local packages = {
                 'nvim-tree/nvim-web-devicons'
             }
         },
+		hologram = { -- image previews
+			'edluffy/hologram.nvim'
+		},
    --      dashboard = {
    --          'goolord/alpha-nvim',
 			-- requires = { 'nvim-tree/nvim-web-devicons' },
@@ -118,6 +121,7 @@ local packages = {
         -- },
     },
     general = {
+		'tpope/vim-sleuth',
         { -- strip whitespace while editting
             'lewis6991/spaceless.nvim',
             config = function()

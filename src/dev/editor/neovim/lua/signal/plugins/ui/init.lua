@@ -15,6 +15,12 @@ function M.notify()
     vim.keymap.set('n', '<Leader>fvn', ts.extensions.notify.notify, { desc = 'telescope :: notifications' })
 end
 
+function M.hologram()
+	require('hologram').setup{
+		auto_display = true
+	}
+end
+
 function M.hover()
     local hover = require 'hover'
     hover.setup {
