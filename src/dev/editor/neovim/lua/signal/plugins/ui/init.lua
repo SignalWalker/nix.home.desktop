@@ -16,9 +16,12 @@ function M.notify()
 end
 
 function M.hologram()
-	require('hologram').setup{
-		auto_display = true
-	}
+    if (vim.env.TERM == "xterm-kitty") then
+        -- only supported in kitty
+        require('hologram').setup{
+            auto_display = true
+        }
+    end
 end
 
 function M.hover()
