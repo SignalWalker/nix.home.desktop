@@ -188,11 +188,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1669563412,
-        "narHash": "sha256-BFcH7R9pFaBE9YgNzQ4hp+KdKf2T8MRmAmkQln4s9Kw=",
+        "lastModified": 1669738555,
+        "narHash": "sha256-xrFGCyTIW82QtsewV0iWu622GO+poRxAH28lcTRO+kA=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "583c2a5456263865c8aaf8b260909bfe431db549",
+        "rev": "607c74efde40812caa6379a05fcb28f259ea2c8e",
         "type": "github"
       },
       "original": {
@@ -334,11 +334,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1669535121,
-        "narHash": "sha256-koZLM7oWVGrjyHnYDo7/w5qlmUn9UZUKSFNfmIjueE8=",
+        "lastModified": 1669597967,
+        "narHash": "sha256-R+2NaDkXsYkOpFOhmVR8jBZ77Pq55Z6ilaqwFLLn000=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b45ec953794bb07922f0468152ad1ebaf8a084b3",
+        "rev": "be9e3762e719211368d186f547f847737baad720",
         "type": "github"
       },
       "original": {
@@ -351,11 +351,11 @@
     "polybar-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1668600536,
-        "narHash": "sha256-cVLu1ryoMp44G2AXXHHsGtZtZORX8fv97EkMo0Myc2k=",
+        "lastModified": 1669635961,
+        "narHash": "sha256-7DZ9QZo+SbZeCsH9m7l+yIBGna3fY2vNWhv23Knj03U=",
         "owner": "polybar",
         "repo": "polybar-scripts",
-        "rev": "28fc405d5f3f3e5e437fc11db31ea3219cb15d91",
+        "rev": "f814ef21077c358013b4fb5c066d1031ba7f62ef",
         "type": "github"
       },
       "original": {
