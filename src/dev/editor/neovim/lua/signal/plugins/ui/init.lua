@@ -16,12 +16,25 @@ function M.notify()
 end
 
 function M.hologram()
-    if (vim.env.TERM == "xterm-kitty") then
-        -- only supported in kitty
-        require('hologram').setup{
-            auto_display = true
+    require('hologram').setup{
+        auto_display = true
+    }
+end
+
+function M.gui_font_resize()
+    require('gui-font-resize').setup{
+        default_size = 9,
+        change_by = 1,
+        bounds = {
+            maximum = 24,
+            minimum = 6
         }
-    end
+    }
+    vim.keymap.set("n", '<D-Plus>', '<cmd>:GUIFontSizeUp<cr>', { desc = "increase gui font size" })
+    vim.keymap.set("n", '<D-Minus>', '<cmd>:GUIFontSizeDown<cr>', { desc = "decrease gui font size" })
+    vim.keymap.set("n", '<D-Equal>', '<cmd>:GUIFontSizeSet<cr>', { desc = "reset gui font size" })
+    vim.keymap.set("n", '<D-kPlus>', '<cmd>:GUIFontSizeUp<cr>', { desc = "increase gui font size" })
+    vim.keymap.set("n", '<D-kMinus>', '<cmd>:GUIFontSizeDown<cr>', { desc = "decrease gui font size" })
 end
 
 function M.hover()
@@ -76,7 +89,18 @@ function M.trouble()
 end
 
 function M.leap()
-    require('leap').add_default_mappings()
+    -- forward: s
+    -- backward: S
+    local leap = require'leap'
+    leap.add_default_mappings()
+end
+
+function M.flit()
+    -- forward to: f
+    -- backward to: F
+    -- forward before: t
+    -- backward before: T
+    require('flit').setup{}
 end
 
 function M.indent_guides()
@@ -129,16 +153,16 @@ end
 M.dashboard = require('signal.plugins.ui.dashboard')
 
 function M.window_picker()
-	require('window-picker').setup{
-		autoselect_one = true,
-		include_current = false,
-		filter_rules = {
-			bo = {
-				filetype = { 'neo-tree', 'neo-tree-popup', 'notify' },
-				buftype = { 'terminal', 'quickfix' }
-			}
-		},
-	}
+    require('window-picker').setup{
+        autoselect_one = true,
+        include_current = false,
+        filter_rules = {
+            bo = {
+                filetype = { 'neo-tree', 'neo-tree-popup', 'notify' },
+                buftype = { 'terminal', 'quickfix' }
+            }
+        },
+    }
 end
 
 M.neotree = require('signal.plugins.ui.neotree')

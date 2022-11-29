@@ -4,7 +4,7 @@ vim.opt.linespace = 0
 
 -- vim.o.background = "dark"
 
-vim.opt.guifont = 'Iosevka:h8'
+vim.opt.guifont = 'Iosevka:h9'
 
 -- gruvbox
 vim.g.gruvbox_material_better_performance = 1

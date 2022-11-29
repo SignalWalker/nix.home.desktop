@@ -30,13 +30,20 @@ local packages = {
     },
     ui = {
         notify = {
-			'rcarriga/nvim-notify',
-			after = {
-				'telescope.nvim'
-			}
-		},
+            'rcarriga/nvim-notify',
+            after = {
+                'telescope.nvim'
+            }
+        },
         hover = 'lewis6991/hover.nvim',
-        leap = 'ggandor/leap.nvim',
+        leap = { -- cursor jump on s & S
+            'ggandor/leap.nvim',
+            requires = {
+                'tpope/vim-repeat', -- dot repeats
+            }
+        },
+        flit = 'ggandor/flit.nvim', -- better f/t motions
+        spooky = 'ggandor/leap-spooky.nvim', -- actions at a distance using leap motions
         indent_guides = 'lukas-reineke/indent-blankline.nvim',
         which_key = 'folke/which-key.nvim',
         -- chadtree = {
@@ -50,9 +57,11 @@ local packages = {
                 'nvim-tree/nvim-web-devicons'
             }
         },
-		hologram = { -- image previews
-			'edluffy/hologram.nvim'
-		},
+        hologram = { -- image previews
+            'edluffy/hologram.nvim',
+            -- only supported in kitty (avoid loading in, for example, neovide)
+            cond = function() return vim.env.TERM == "xterm-kitty" end
+        },
    --      dashboard = {
    --          'goolord/alpha-nvim',
 			-- requires = { 'nvim-tree/nvim-web-devicons' },
@@ -63,10 +72,10 @@ local packages = {
                 'telescope.nvim'
             }
         },
-		window_picker = {
-			's1n7ax/nvim-window-picker',
-			tag = 'v1.*',
-		},
+        window_picker = {
+            's1n7ax/nvim-window-picker',
+            tag = 'v1.*',
+        },
 		-- neotree = {
 		-- 	'miversen33/netman.nvim',
 		-- 	tag = "2.*",
@@ -119,9 +128,10 @@ local packages = {
         --     'nvim-telescope/telescope-project.nvim',
         --     requires = 'nvim-telescope/telescope.nvim'
         -- },
+        gui_font_resize = 'ktunprasert/gui-font-resize.nvim',
     },
     general = {
-		'tpope/vim-sleuth',
+        'tpope/vim-sleuth',
         { -- strip whitespace while editting
             'lewis6991/spaceless.nvim',
             config = function()
