@@ -24,7 +24,7 @@ in {
     programs.git = {
       enable = true;
       userName = "Ash Walker";
-      userEmail = config.accounts.email.accounts.primary.address;
+      userEmail = config.signal.email.git;
       lfs.enable = true;
       signing = {
         key = lib.mkDefault null;
