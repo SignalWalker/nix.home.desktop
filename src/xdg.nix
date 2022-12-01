@@ -38,7 +38,7 @@ in {
   imports = [];
   config = lib.mkIf cfg.enable {
     xdg.mime.enable = true;
-    xdg.mimeApps.enable = true;
+    xdg.mimeApps.enable = false;
     xdg.mimeApps.defaultApplications =
       foldl'
       (acc: name: let
