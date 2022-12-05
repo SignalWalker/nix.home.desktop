@@ -3,6 +3,7 @@ local M = {}
 function M.rust_tools()
     require('rust-tools').setup {
         server = {
+            on_attach = SIGNAL_LSP_ON_ATTACH(true),
             imports = {
                 granularity = {
                     enforce = true,
@@ -35,15 +36,14 @@ function M.rust_tools()
 end
 
 function M.crates()
-    require('crates').setup {}
-
-    vim.autocmd('BufRead', 'Cargo.toml', function()
-        require('cmp').setup.buffer {
-            sources = {
-                { name = 'crates' },
-            },
+    require('crates').setup {
+        src = {
+            coq = {
+                enable = true,
+                name = "crates.nvim"
+            }
         }
-    end, {})
+    }
 end
 
 function M.neorg()
@@ -71,6 +71,15 @@ function M.neorg()
             --     }
             -- },
         },
+    }
+end
+
+function M.org()
+    local orgmode = require'orgmode'
+    orgmode.setup_ts_grammar()
+    orgmode.setup{
+        org_agenda_files = { '~/notes/agenda/*' },
+        org_default_notes_file = '~/notes/scratch.org'
     }
 end
 

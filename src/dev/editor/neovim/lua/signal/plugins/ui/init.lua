@@ -76,15 +76,7 @@ function M.trouble()
 
     }
 
-    vim.keymap.set('n', '<Leader>xt', '<cmd>TroubleToggle<cr>', { desc = "trouble toggle" })
-    vim.keymap.set('n', '<Leader>xw', '<cmd>TroubleToggle workspace_diagnostics<cr>',
-        { desc = "trouble toggle workspace" })
-    vim.keymap.set('n', '<Leader>xd', '<cmd>TroubleToggle document_diagnostics<cr>',
-        { desc = "trouble toggle document" })
-    vim.keymap.set('n', '<Leader>xl', '<cmd>TroubleToggle loclist<cr>',
-        { desc = "trouble toggle loclist" })
-    vim.keymap.set('n', '<Leader>xq', '<cmd>TroubleToggle quickfix<cr>',
-        { desc = "trouble toggle quickfix" })
+    -- keymaps set in lspconfig on_attach()
 
 end
 
@@ -166,6 +158,16 @@ function M.window_picker()
 end
 
 M.neotree = require('signal.plugins.ui.neotree')
+
+function M.dap_ui()
+    local dapui = require'dapui'
+    dapui.setup{}
+
+    local dap = require'dap'
+    dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open() end
+    dap.listeners.after.event_terminated['dapui_config'] = function() dapui.close() end
+    dap.listeners.after.event_exited['dapui_config'] = function() dapui.close() end
+end
 
 function M.nvimtree()
     vim.g.loaded_netrw = 1
@@ -314,16 +316,7 @@ function M.telescope()
     vim.keymap.set('n', '<Leader>fvk', tsb.keymaps, { desc = 'tsb.keymaps' })
 
     -- lsp
-    vim.keymap.set('n', '<Leader>fla', function() tsb.lsp_code_actions(tst.get_cursor()) end,
-        { desc = 'tsb.lsp_code_actions(tst.get_cursor())' })
-    vim.keymap.set('n', '<Leader>flr', function() tsb.lsp_references(tst.get_cursor()) end,
-        { desc = 'tsb.lsp_references(tst.get_cursor())' })
-    vim.keymap.set('n', '<Leader>fld', function() tsb.lsp_definitions(tst.get_cursor()) end,
-        { desc = 'tsb.lsp_definitions(tst.get_cursor())' })
-    vim.keymap.set('n', '<Leader>flt', function() tsb.lsp_type_definitions(tst.get_cursor()) end,
-        { desc = 'tsb.lsp_type_definitions(tst.get_cursor())' })
-    vim.keymap.set('n', '<Leader>fli', function() tsb.lsp_implementations(tst.get_cursor()) end,
-        { desc = 'tsb.lsp_implementations(tst.get_cursor())' })
+    -- set by on_attach() in lspconfig
     -- vim.keymap.set('n', '<Leader>flo', tsb.lsp_document_diagnostics, {desc = 'tsb.lsp_document_diagnostics'})
     -- vim.keymap.set('n', '<Leader>flw', tsb.lsp_workspace_diagnostics, {desc = 'tsb.lsp_workspace_diagnostics'})
 

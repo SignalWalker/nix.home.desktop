@@ -62,10 +62,10 @@ local packages = {
             -- only supported in kitty (avoid loading in, for example, neovide)
             cond = function() return vim.env.TERM == "xterm-kitty" end
         },
-   --      dashboard = {
-   --          'goolord/alpha-nvim',
-			-- requires = { 'nvim-tree/nvim-web-devicons' },
-   --      },
+        -- dashboard = {
+        --     'goolord/alpha-nvim',
+        --     requires = { 'nvim-tree/nvim-web-devicons' },
+        -- },
         project = {
             'ahmedkhalf/project.nvim',
             after = {
@@ -76,31 +76,31 @@ local packages = {
             's1n7ax/nvim-window-picker',
             tag = 'v1.*',
         },
-		-- neotree = {
-		-- 	'miversen33/netman.nvim',
-		-- 	tag = "2.*",
-		-- 	requires = {
-		-- 		'nvim-lua/plenary.nvim',
-		-- 		'nvim-tree/nvim-web-devicons',
-		-- 		'MunifTanjim/nui.nvim',
-		-- 		's1n7ax/nvim-window-picker'
-		-- 	},
-		-- },
+        -- neotree = {
+        --     'miversen33/netman.nvim',
+        --     tag = "2.*",
+        --     requires = {
+        --         'nvim-lua/plenary.nvim',
+        --         'nvim-tree/nvim-web-devicons',
+        --         'MunifTanjim/nui.nvim',
+        --         's1n7ax/nvim-window-picker'
+        --     },
+        -- },
         nvimtree = {
             'nvim-tree/nvim-tree.lua',
             requires = {
                 'nvim-tree/nvim-web-devicons', -- optional, for file icons
             }
         },
-   --      noice = {
-   --          'folke/noice.nvim',
-   --          requires = {
-   --              'MunifTanjim/nui.nvim',
-   --              'rcarriga/nvim-notify',
-   --              'nvim-treesitter/nvim-treesitter'
-   --          },
-			-- after = 'telescope.nvim'
-   --      },
+        -- noice = {
+        --     'folke/noice.nvim',
+        --     requires = {
+        --         'MunifTanjim/nui.nvim',
+        --         'rcarriga/nvim-notify',
+        --         'nvim-treesitter/nvim-treesitter'
+        --     },
+        --     after = 'telescope.nvim'
+        -- },
         trouble = {
             'folke/trouble.nvim',
             requires = {
@@ -129,6 +129,11 @@ local packages = {
         --     requires = 'nvim-telescope/telescope.nvim'
         -- },
         gui_font_resize = 'ktunprasert/gui-font-resize.nvim',
+        dap_ui = {
+            'rcarriga/nvim-dap-ui',
+            requires = { 'mfussenegger/nvim-dap' },
+            after = { 'nvim-dap' }
+        }
     },
     general = {
         'tpope/vim-sleuth',
@@ -151,8 +156,11 @@ local packages = {
             'neovim/nvim-lspconfig',
             requires = {
                 'b0o/SchemaStore.nvim',
-                'nvim-lua/lsp-status.nvim'
-            }
+                'nvim-lua/lsp-status.nvim',
+                -- formatting
+                'lukas-reineke/lsp-format.nvim'
+            },
+            after = { 'lsp-format' }
         },
         coq = { -- completion
             'ms-jpq/coq_nvim',
@@ -162,21 +170,27 @@ local packages = {
         coq_artifacts = {
             'ms-jpq/coq.artifacts',
             branch = 'artifacts',
-			run = ':COQdeps'
         },
         coq_thirdparty = {
             'ms-jpq/coq.thirdparty',
             branch = '3p',
-			run = ':COQdeps'
+            after = { 'orgmode' }
         },
         gitsigns = 'lewis6991/gitsigns.nvim',
         comment = 'numToStr/Comment.nvim',
-        -- neoformat = 'sbdchd/neoformat'
+        neoformat = 'sbdchd/neoformat',
+        lsp_format = 'lukas-reineke/lsp-format.nvim',
+        dap = 'mfussenegger/nvim-dap',
     },
     lang = {
         rust_tools = {
             'simrat39/rust-tools.nvim',
-            requires = { 'neovim/nvim-lspconfig' }
+            requires = {
+                'neovim/nvim-lspconfig',
+                'nvim-lua/plenary.nvim',
+                'mfussenegger/nvim-dap'
+            },
+            after = { 'nvim-lspconfig' }
         },
         crates = { 'saecki/crates.nvim',
             branch = 'main',
@@ -190,6 +204,11 @@ local packages = {
             requires = { 'nvim-lua/plenary.nvim' },
             ft = { "norg" },
             after = { "nvim-treesitter", "telescope.nvim" },
+        },
+        org = {
+            'nvim-orgmode/orgmode',
+            requires = { 'nvim-treesitter/nvim-treesitter' },
+            after = { 'nvim-treesitter' }
         }
     },
     theme = {
