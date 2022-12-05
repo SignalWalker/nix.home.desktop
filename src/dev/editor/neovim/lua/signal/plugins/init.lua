@@ -160,7 +160,7 @@ local packages = {
                 -- formatting
                 'lukas-reineke/lsp-format.nvim'
             },
-            after = { 'lsp-format' }
+            after = { 'lsp-format.nvim' }
         },
         coq = { -- completion
             'ms-jpq/coq_nvim',
