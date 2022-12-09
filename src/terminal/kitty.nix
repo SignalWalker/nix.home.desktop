@@ -203,9 +203,9 @@ in {
         "kitty_mod+ctrl+w" = "signal_child SIGTERM";
         "kitty_mod+ctrl+shift+w" = "signal_child SIGKILL";
         # files
-        "kitty_mod+h>y" = "kitten hints --program=@";
-        "kitty_mod+h>o" = "kitten hints --type=hyperlink";
-        "kitty_mod+h>l" = "kitten hints --type=linenum --linenum-action=tab nvim +{line} {path}";
+        "kitty_mod+f>y" = "kitten hints --program=@";
+        "kitty_mod+f>o" = "kitten hints --type=hyperlink";
+        "kitty_mod+f>l" = "kitten hints --type=linenum --linenum-action=tab nvim +{line} {path}";
       };
     };
   };
