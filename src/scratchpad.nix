@@ -119,9 +119,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    lib.signal.desktop.types = with lib; {
-      inherit scratchpad;
-    };
+    # lib.signal.desktop.types = with lib; {
+    #   inherit scratchpad;
+    # };
   };
   meta = {};
 }
