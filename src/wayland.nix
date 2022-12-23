@@ -64,23 +64,23 @@ in {
       keys = ["DISPLAY" "WAYLAND_DISPLAY" "SWAYSOCK" "XDG_CURRENT_DESKTOP"] ++ (attrNames vars);
       keysStr = toString keys;
     in
-      pkgs.writeScript "hm-wayland-systemd-startup-script" ''
-        #! /usr/bin/env sh
+      pkgs.writeScript "hm-wayland-systemd-startup-script" (''
+          #! /usr/bin/env sh
 
-      ''
-      ++ (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)))
-      ++ ''
+        ''
+        + (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)))
+        + ''
 
-        systemctl --user import-environment ${keysStr}
+          systemctl --user import-environment ${keysStr}
 
-        # `hash` checks for the existence of the dbus command
-        hash dbus-update-activation-environment 2>/dev/null \
-          && dbus-update-activation-environment --systemd ${keysStr}
+          # `hash` checks for the existence of the dbus command
+          hash dbus-update-activation-environment 2>/dev/null \
+            && dbus-update-activation-environment --systemd ${keysStr}
 
-        systemctl --user start wayland-session.target
+          systemctl --user start wayland-session.target
 
-        ${config.signal.desktop.wayland.__startupScript}
-      '';
+          ${config.signal.desktop.wayland.__startupScript}
+        '');
     signal.desktop.wayland.__startupScript = pkgs.writeScript "hm-wayland-startup-script" ''
       #! /usr/bin/env sh
       ${cfg.startupCommands}

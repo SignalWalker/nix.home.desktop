@@ -25,7 +25,7 @@ in {
         autostart = true;
         automove = true;
       };
-      "Shift+L" = {
+      "Shift+F1" = {
         criteria = {app_id = "scratch_logs";};
         resize = 75;
         startup = "kitty --class scratch_logs -- journalctl -fe";

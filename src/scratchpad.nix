@@ -97,12 +97,12 @@ with builtins; let
             };
           };
           config = {
-            assertions = [
-              {
-                assertion = config.autostart -> (config.startup != null);
-                message = "cannot autostart desktop program without startup command";
-              }
-            ];
+            # assertions = [
+            #   {
+            #     assertion = config.autostart -> (config.startup != null);
+            #     message = "cannot autostart desktop program without startup command";
+            #   }
+            # ];
           };
         })
       ];
@@ -111,7 +111,7 @@ in {
   options = with lib; {
     signal.desktop.scratch = {
       scratchpads = mkOption {
-        type = types.attrsOf (types.unique {} scratchpad);
+        type = types.attrsOf scratchpad;
         default = {};
       };
     };

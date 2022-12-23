@@ -192,8 +192,9 @@ in {
             (genList (i: i + 1) 10))
           // (
             foldl'
-            (acc: cfg:
-              acc
+            (acc: key: let
+              cfg = scratchcfg.${key};
+            in (acc
               // {
                 "${mod}+${cfg.kb}" = cfg.fn.sway_show;
               }
@@ -203,12 +204,12 @@ in {
                   "${mod}+Ctrl+${cfg.kb}" = "exec '${cfg.fn.exec}'";
                 }
                 else {}
-              ))
+              )))
             {
               "${mod}+Minus" = "scratchpad show";
               "${mod}+Shift+Minus" = "move scratchpad";
             }
-            scratchcfg
+            (attrNames scratchcfg)
           );
         modes = {
           "split" = {
@@ -239,7 +240,7 @@ in {
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart
-            then acc ++ [{command = "exec '${scratch.fn.exec}'";}]
+            then acc ++ [{command = "'${scratch.fn.exec}'";}]
             else acc) [] (attrValues scratchcfg));
       };
       swaynag = {
