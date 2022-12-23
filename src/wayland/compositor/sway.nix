@@ -7,6 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   cfg = config.signal.desktop.wayland.compositor.sway;
+  scratchcfg = config.signal.desktop.scratch.scratchpads;
 in {
   options.signal.desktop.wayland.compositor.sway = with lib; {
     enable = mkEnableOption "sway wayland compositor";
@@ -95,6 +96,7 @@ in {
           };
           "type:pointer" = {
             accel_profile = "adaptive";
+            pointer_accel = "1.0";
           };
           "type:keyboard" = {
             xkb_layout = "hypersuper(us)";
@@ -152,7 +154,7 @@ in {
             "XF86AudioMicMute" = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
 
             "${mod}+Ctrl+b" = "border toggle";
-            "${mod}+Ctrl+p" = "sticky toggle";
+            "${mod}+Ctrl+p" = "floating enable, sticky toggle";
 
             "Print" = "exec ${config.signal.desktop.wayland.screenshotScript} active";
             "Ctrl+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} area";
@@ -189,27 +191,24 @@ in {
             {}
             (genList (i: i + 1) 10))
           // (
-            let
-              scratchcfg = config.signal.desktop.wayland.compositor.scratchpads;
-            in
-              foldl'
-              (acc: cfg:
-                acc
-                // {
-                  "${mod}+${cfg.kb}" = cfg.fn.sway_show;
-                }
-                // (
-                  if cfg.fn.exec != null
-                  then {
-                    "${mod}+Ctrl+${cfg.kb}" = "exec '${cfg.fn.exec}'";
-                  }
-                  else {}
-                ))
-              {
-                "${mod}+Minus" = "scratchpad show";
-                "${mod}+Shift+Minus" = "move scratchpad";
+            foldl'
+            (acc: cfg:
+              acc
+              // {
+                "${mod}+${cfg.kb}" = cfg.fn.sway_show;
               }
-              scratchcfg
+              // (
+                if cfg.fn.exec != null
+                then {
+                  "${mod}+Ctrl+${cfg.kb}" = "exec '${cfg.fn.exec}'";
+                }
+                else {}
+              ))
+            {
+              "${mod}+Minus" = "scratchpad show";
+              "${mod}+Shift+Minus" = "move scratchpad";
+            }
+            scratchcfg
           );
         modes = {
           "split" = {
@@ -234,9 +233,14 @@ in {
         terminal = "kitty";
         inherit menu;
         defaultWorkspace = "workspace number 1";
-        startup = [
-          {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
-        ];
+        startup =
+          [
+            {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
+          ]
+          ++ (foldl' (acc: scratch:
+            if scratch.autostart
+            then acc ++ [{command = "exec '${scratch.fn.exec}'";}]
+            else acc) [] (attrValues scratchcfg));
       };
       swaynag = {
         enable = true;
@@ -249,11 +253,6 @@ in {
           lid:off output eDP-1 dpms on
         }
       '';
-      extraSessionCommands = let
-        vars = config.signal.desktop.wayland.sessionVariables;
-        keys = attrNames vars;
-      in
-        concatStringsSep "\n" (map (key: "export ${key}=\"${toString vars.${key}}\"") keys);
       wrapperFeatures = {
         base = true;
         gtk = true;

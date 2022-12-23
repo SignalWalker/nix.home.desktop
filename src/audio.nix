@@ -11,12 +11,13 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = with pkgs; [zotero];
     signal.desktop.scratch.scratchpads = {
-      "Shift+Z" = {
-        criteria = {class = "Zotero";};
-        resize = 93;
-        startup = "zotero";
+      "Shift+V" = {
+        criteria = {app_id = "pavucontrol";};
+        resize = 50;
+        startup = "pavucontrol";
+        autostart = true;
+        automove = true;
       };
     };
   };

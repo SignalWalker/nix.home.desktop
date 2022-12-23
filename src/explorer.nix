@@ -11,12 +11,11 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = with pkgs; [zotero];
     signal.desktop.scratch.scratchpads = {
-      "Shift+Z" = {
-        criteria = {class = "Zotero";};
-        resize = 93;
-        startup = "zotero";
+      "Shift+Slash" = {
+        criteria = {app_id = "org.kde.dolphin";};
+        resize = 83;
+        startup = "dolphin";
       };
     };
   };

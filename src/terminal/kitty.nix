@@ -10,23 +10,29 @@ with builtins; let
 in {
   options.signal.desktop.terminal.kitty = with lib; {};
   config = lib.mkIf (cfg.app == "kitty") {
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Grave";
+    signal.desktop.scratch.scratchpads = {
+      "Grave" = {
         criteria = {app_id = "scratch_term";};
         resize = 83;
         startup = "kitty --class scratch_term";
-      }
-      {
-        kb = "Shift+T";
+        autostart = true;
+        automove = true;
+      };
+      "Shift+T" = {
         criteria = {app_id = "scratch_top";};
         resize = 83;
         startup = "kitty --class scratch_top btop";
-      }
-    ];
-    signal.desktop.wayland.startupCommands = ''
-      kitty --class scratch_term &
-    '';
+        autostart = true;
+        automove = true;
+      };
+      "Shift+L" = {
+        criteria = {app_id = "scratch_logs";};
+        resize = 75;
+        startup = "kitty --class scratch_logs -- journalctl -fe";
+        autostart = true;
+        automove = true;
+      };
+    };
     xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;
     xdg.binFile."kg" = {
       executable = true;

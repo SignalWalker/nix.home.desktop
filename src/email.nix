@@ -12,14 +12,15 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Shift+E";
+    signal.desktop.scratch.scratchpads = {
+      "Shift+E" = {
         criteria = {app_id = "^thunderbird*";};
         resize = 93;
         startup = "thunderbird";
-      }
-    ];
+        automove = true;
+        autostart = true;
+      };
+    };
     signal.email.thunderbird.enable = false;
     programs.thunderbird = {
       enable = true;

@@ -43,10 +43,11 @@ in {
       grim
       slurp
     ];
-    signal.desktop.wayland.sessionVariables = lib.mkDefault {
-      MOZ_ENABLE_WAYLAND = 1;
-      QT_QPA_PLATFORM = "wayland;xcb";
-      WINIT_UNIX_BACKEND = "wayland";
+    signal.desktop.wayland.sessionVariables = {
+      MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
+      QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
+      WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
+      WLR_RENDERER = lib.mkDefault "vulkan";
     };
     systemd.user.targets."wayland-session" = {
       Unit = {
@@ -60,16 +61,25 @@ in {
     services.swayidle.systemdTarget = "wayland-session.target";
     signal.desktop.wayland.__systemdStartupScript = let
       vars = config.signal.desktop.wayland.sessionVariables;
-      keys = attrNames vars;
+      keys = ["DISPLAY" "WAYLAND_DISPLAY" "SWAYSOCK" "XDG_CURRENT_DESKTOP"] ++ (attrNames vars);
+      keysStr = toString keys;
     in
       pkgs.writeScript "hm-wayland-systemd-startup-script" ''
-              #! /usr/bin/env sh
-        systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+        #! /usr/bin/env sh
+
+      ''
+      ++ (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)))
+      ++ ''
+
+        systemctl --user import-environment ${keysStr}
+
         # `hash` checks for the existence of the dbus command
-              hash dbus-update-activation-environment 2>/dev/null && \
-        	dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
-              systemctl --user start wayland-session.target
-              ${config.signal.desktop.wayland.__startupScript}
+        hash dbus-update-activation-environment 2>/dev/null \
+          && dbus-update-activation-environment --systemd ${keysStr}
+
+        systemctl --user start wayland-session.target
+
+        ${config.signal.desktop.wayland.__startupScript}
       '';
     signal.desktop.wayland.__startupScript = pkgs.writeScript "hm-wayland-startup-script" ''
       #! /usr/bin/env sh

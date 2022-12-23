@@ -11,17 +11,16 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Shift+F";
+    signal.desktop.scratch.scratchpads = {
+      "Shift+F" = {
         criteria = {app_id = "^firefox*";};
         resize = 93;
         startup =
           if config.system.isNixOS
           then "firefox"
           else "firefox-nightly";
-      }
-    ];
+      };
+    };
     home.sessionVariables = {
       BROWSER = "firefox";
       MOZ_DBUS_REMOTE = 1;
