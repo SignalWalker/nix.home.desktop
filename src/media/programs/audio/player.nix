@@ -6,6 +6,7 @@
 }:
 with builtins; let
 in {
+  imports = lib.signal.fs.path.listFilePaths ./player;
   config = {
     programs.quodlibet = {
       enable = true;
