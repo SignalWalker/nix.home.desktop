@@ -212,8 +212,8 @@ in {
           );
         modes = {
           "split" = {
-            "${mod}+s" = "splith; mode default";
-            "${mod}+v" = "splitv; mode default";
+            "${mod}+s" = "splitv; mode default";
+            "${mod}+v" = "splith; mode default";
             "Escape" = "mode default";
           };
           "resize" = {
