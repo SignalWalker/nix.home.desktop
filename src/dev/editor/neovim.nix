@@ -12,7 +12,7 @@ in {
   options = with lib; {};
   imports = [];
   config = lib.mkIf ed.enable {
-    programs.neovim = {
+    programs.ashvim = {
       enable = true;
       package =
         if (config.system.isNixOS or true)
