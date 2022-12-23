@@ -12,14 +12,13 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [rssguard];
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Shift+R";
+    signal.desktop.scratch.scratchpads = {
+      "Shift+R" = {
         criteria = {app_id = "com.github.rssguard";};
         resize = 93;
         startup = "rssguard";
-      }
-    ];
+      };
+    };
   };
   meta = {};
 }

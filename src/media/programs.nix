@@ -11,18 +11,20 @@ in {
   imports = lib.signal.fs.path.listFilePaths ./programs;
   config = {
     services.kdeconnect.enable = true;
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Shift+A";
+    signal.desktop.scratch.scratchpads = {
+      "Shift+A" = {
         criteria = {class = "Authy Desktop";};
         startup = "authy";
-      }
-      {
-        kb = "Shift+P";
+        autostart = true;
+        automove = true;
+      };
+      "Shift+P" = {
         criteria = {class = "Bitwarden";};
         resize = 75;
         startup = "bitwarden-desktop";
-      }
-    ];
+        autostart = true;
+        automove = true;
+      };
+    };
   };
 }

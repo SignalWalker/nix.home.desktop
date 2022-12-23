@@ -10,38 +10,22 @@ with builtins; let
 in {
   options.signal.media.im.irc = with lib; {
     enable = (mkEnableOption "IRC") // {default = true;};
-    systemd = {
-      enable = (mkEnableOption "systemd integration") // {default = false;};
-    };
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf cfg.enable (lib.mkMerge [
-    {
-      signal.desktop.wayland.compositor.scratchpads = [
-        {
-          kb = "Shift+I";
-          criteria = {app_id = "scratch_irc";};
-          resize = 83;
-          startup = "kitty --class scratch_irc weechat";
-        }
-      ];
-    }
-    (lib.mkIf cfg.systemd.enable {
-      systemd.user.services."irc-relay" = {
-        Unit = {
-          Description = "IRC relay server";
-          After = ["network.target"];
-        };
-        Install = {
-          WantedBy = ["default.target"];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "weechat-headless";
-        };
+  config = lib.mkIf cfg.enable {
+    programs.hexchat = {
+      enable = true;
+    };
+    signal.desktop.scratch.scratchpads = {
+      "Shift+I" = {
+        criteria = {app_id = "hexchat";};
+        resize = 83;
+        startup = "hexchat";
+        autostart = true;
+        automove = true;
       };
-    })
-  ]);
+    };
+  };
   meta = {};
 }

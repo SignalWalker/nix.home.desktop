@@ -22,14 +22,15 @@ in {
       cfg.package
     ];
 
-    signal.desktop.wayland.compositor.scratchpads = [
-      {
-        kb = "Shift+D";
+    signal.desktop.scratch.scratchpads = {
+      "Shift+D" = {
         criteria = {class = "discord";};
         resize = 93;
         startup = "discord";
-      }
-    ];
+        automove = true;
+        autostart = true;
+      };
+    };
   };
   meta = {};
 }
