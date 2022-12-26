@@ -8,6 +8,7 @@ with builtins; let
   std = pkgs.lib;
   wln = config.signal.desktop.wayland;
   ntf = wln.notifications;
+  theme = config.signal.desktop.theme;
 in {
   options = with lib; {};
   disabledModules = [];
@@ -38,8 +39,8 @@ in {
       anchor = "bottom-right";
       font = let
         size = 13;
-        font = head (config.lib.signal.desktop.theme.bmpsAt size);
-      in "${font.family} ${toString size}";
+        font = head (theme.font.bmpsAt size);
+      in "${font.name} ${toString size}";
       ## extra
       extraConfig = ''
         border-size=0

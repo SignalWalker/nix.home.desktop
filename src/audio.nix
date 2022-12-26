@@ -20,6 +20,9 @@ in {
         automove = true;
       };
     };
+    services.playerctld = {
+      enable = true;
+    };
   };
   meta = {};
 }

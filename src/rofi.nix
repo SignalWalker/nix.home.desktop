@@ -6,21 +6,21 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.shared.rofi;
+  rofi = config.signal.desktop.shared.rofi;
 in {
   options.signal.desktop.shared.rofi = with lib; {
     enable = mkEnableOption "X11/Wayland rofi config";
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf rofi.enable {
     programs.rofi = let
       fontSize = 13;
-      font = head (config.lib.signal.desktop.theme.bmpsAt fontSize);
+      font = head (config.signal.desktop.theme.font.bmpsAt fontSize);
     in {
-      enable = cfg.enable;
+      enable = rofi.enable;
       configPath = "${config.xdg.configHome}/rofi/config.rasi";
-      font = "${font.family} ${toString fontSize}";
+      font = "${font.name} ${toString fontSize}";
       terminal = config.signal.desktop.terminal.command;
       theme = "gruvbox-dark-hard";
       extraConfig = {

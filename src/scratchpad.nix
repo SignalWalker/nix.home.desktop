@@ -64,17 +64,10 @@ with builtins; let
                   default = fn;
                 };
             in {
-              sway_criteria = mkFn (
-                let
-                  crit = {floating = "true";} // config.criteria;
-                in "[${foldl' (res: nxt:
-                  (
-                    if res == ""
-                    then res
-                    else res + " "
-                  )
-                  + "${nxt}=\"${crit.${nxt}}\"") "" (attrNames crit)}]"
-              );
+              mk_sway_criteria_list = mkFn (crit: map (nxt: "${nxt}=\"${crit.${nxt}}\"") (attrNames crit));
+              mk_sway_criteria = mkFn (crit: "[${std.concatStringsSep " " (config.fn.mk_sway_criteria_list crit)}]");
+              sway_criteria_raw = mkFn (config.fn.mk_sway_criteria config.criteria);
+              sway_criteria = mkFn (config.fn.mk_sway_criteria ({floating = "true";} // config.criteria));
               sway_show = mkFn ("${config.fn.sway_criteria} scratchpad show"
                 + (
                   if config.resize != null
@@ -86,6 +79,7 @@ with builtins; let
                   then ", move position center"
                   else ""
                 ));
+              sway_assign = mkFn "for_window ${config.fn.sway_criteria_raw} move scratchpad";
               exec = let
                 notif = msg: "notify-send --category=system Scratchpad \"${msg}\"";
               in

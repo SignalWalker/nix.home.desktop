@@ -25,7 +25,7 @@ in {
         autostart = true;
         automove = true;
       };
-      "Shift+F1" = {
+      "F1" = {
         criteria = {app_id = "scratch_logs";};
         resize = 75;
         startup = "kitty --class scratch_logs -- journalctl -fe";
@@ -76,8 +76,7 @@ in {
       font = let
         font = head config.signal.desktop.theme.font.terminal;
       in {
-        inherit (font) package;
-        name = font.family;
+        inherit (font) package name;
         size = 10;
       };
       theme = "Gruvbox Material Dark Hard";

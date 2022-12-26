@@ -45,23 +45,7 @@ in {
       });
       config = {
         bars = [
-          # {
-          #   command = "waybar";
-          #   position = "top";
-
-          #   # font = "pango:scientifica 8";
-          #   # pango_markup = "enabled";
-
-          #   mode = "dock";
-
-          #   # status_command = "while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done";
-
-          #   colors = {
-          #     statusline = "#ffffff";
-          #     background = "#323232";
-          #     # inactive_workspace = "#32323200 #32323200 #5c5c5c";
-          #   };
-          # }
+          {command = "waybar";}
         ];
         assigns = {};
         colors = {};
@@ -248,12 +232,14 @@ in {
         settings = {};
       };
       systemdIntegration = false;
-      extraConfig = ''
-        bindswitch --reload --locked {
-          lid:on output eDP-1 dpms off
-          lid:off output eDP-1 dpms on
-        }
-      '';
+      extraConfig =
+        ''
+          bindswitch --reload --locked {
+            lid:on output eDP-1 dpms off
+            lid:off output eDP-1 dpms on
+          }
+        ''
+        + (std.concatStringsSep "\n" (foldl' (acc: key: let pad = scratchcfg.${key}; in acc ++ (std.optional (pad.automove != false) pad.fn.sway_assign)) [] (attrNames scratchcfg)));
       wrapperFeatures = {
         base = true;
         gtk = true;

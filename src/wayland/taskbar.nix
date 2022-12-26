@@ -18,26 +18,24 @@ in {
     # signal.desktop.wayland.startupCommands = "waybar &";
     programs.waybar = {
       enable = cfg.taskbar.enable;
-      package = pkgs.waybar.override {
-        withMediaPlayer = true;
-      };
+      package = pkgs.waybar;
       systemd = {
-        enable = cfg.taskbar.enable; # config.wayland.windowManager.hyprland.systemdIntegration;
+        enable = false;
         target = "wayland-session.target";
       };
       settings.mainBar = {
         layer = "bottom";
         position = "top";
-        height = 30;
-        # width = 1920;
-        spacing = 4;
-        modules-left = ["sway/workspaces" "sway/mode" "pulseaudio" "mpd" "custom/media"];
+        height = 0;
+        width = 0;
+        spacing = 2;
+        modules-left = ["sway/workspaces" "sway/mode" "wireplumber" "custom/media"];
         modules-center = ["sway/window"];
         modules-right = ["network" "cpu" "memory" "temperature" "backlight" "battery" "clock" "tray"];
         window = {
           format = "{title}";
           rewrite = {
-            "(.*) — Firefox Nightly" = "🌎 $1";
+            "^(.*) — Firefox.*$" = "🌎 $1";
           };
         };
         battery = {
@@ -57,6 +55,34 @@ in {
             locked = "";
             unlocked = "";
           };
+        };
+        "custom/media" = {
+          format = "♪ {}";
+          interval = 1;
+          exec = ./waybar/get-media.py;
+          exec-if = "pgrep playerctld";
+          return-type = "json";
+        };
+        tray = {
+          show-passive-items = true;
+          spacing = 2;
+        };
+        network = let
+          tooltip = "{ipaddr}/{cidr}➤{gwaddr} ▲{bandwidthUpBytes}▼{bandwidthDownBytes}";
+        in {
+          format-icons = {
+            ethernet = "";
+            wifi = "";
+            linked = "🖧";
+            disconnected = "";
+          };
+          format = "{icon} {ifname}";
+          format-wifi = "{icon} {essid} ({signalStrength}%)";
+          format-disconnected = "{icon} ...";
+          tooltip-format = tooltip;
+          tooltip-format-linked = "Linked";
+          tooltip-format-wifi = "{frequency}MHz ${tooltip}";
+          tooltip-format-disconnected = "Disconnected";
         };
         mpd = {
           format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
@@ -85,37 +111,67 @@ in {
           tooltip-format-disconnected = "MPD (disconnected)";
         };
       };
-      style = ''
+      style = let
+        colorset = theme.colors.signal;
+        fontSize = 11;
+        fonts = (font.bmpsAt fontSize) ++ font.slab ++ font.symbols;
+      in ''
+        /* colors */
+        @import url("file://${colorset.__meta.css.file}");
+        @define-color bg-trans alpha(@bg, 0.66);
+
         /* general */
+        /** font **/
         * {
-          font-family: ${concatStringsSep ", " (map (f: "\"${f.family}\"") (font.slab ++ font.symbols))};
-          font-size: 11px;
+          font-family: ${concatStringsSep ", " (map (f: "\"${f.name}\"") fonts)};
+          font-size: ${toString fontSize}px;
+
+          min-height: 0px;
+          margin: 0px;
+          padding: 0px;
+          border-radius: 0;
+
+          color: @fg;
+        }
+        tooltip {
+          background-color: @bg-trans;
+          border: 1px solid @border;
         }
         window#waybar {
-          background-color: rgba(25, 25, 25, 0.75);
-          color: #ffffff;
+          background-color: transparent;
         }
         /* modules */
-        #mode, #battery, #pulseaudio, #mpd, #media, #network, #cpu, #memory, #temperature, #backlight, #battery, #clock, #tray {
-          padding: 0px 2px;
-          margin: 0px;
+        box.horizontal > widget > label,
+        box.horizontal > widget > box {
+          background-color: @bg-trans;
+          color: @fg;
+          border: 1px solid @border;
+          padding: 0px 3px;
+          margin: 0px 1px 1px 1px;
         }
         /* workspaces */
+        #workspaces {
+          padding: 0px 0px;
+        }
+
         #workspaces button {
-            padding: 0 5px;
+            padding: 0px 0px;
             background-color: transparent;
-            color: #ffffff;
+            color: @fg;
             /* Use box-shadow instead of border so the text isn't offset */
             box-shadow: inset 0 -3px transparent;
             /* Avoid rounded borders under each workspace name */
             border: none;
             border-radius: 0;
         }
-        #workspaces button.focused {
-            box-shadow: inset 0 -3px #ffffff;
+
+        #workspaces button.focused,
+        #workspaces button.active {
+          background-color: @bg-focused;
+          color: @fg-special;
         }
         #workspaces button.urgent {
-            background-color: #eb4d4b;
+          color: @urgent;
         }
       '';
     };

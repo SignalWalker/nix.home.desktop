@@ -14,7 +14,10 @@ in {
   config = {
     signal.desktop.scratch.scratchpads = {
       "Shift+E" = {
-        criteria = {app_id = "^thunderbird*";};
+        criteria = {
+          app_id = "^thunderbird.*";
+          title = "^(?!Write).*";
+        };
         resize = 93;
         startup = "thunderbird";
         automove = true;
