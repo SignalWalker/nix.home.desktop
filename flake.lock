@@ -374,6 +374,7 @@
         "mozilla": "mozilla",
         "nixpkgs": "nixpkgs",
         "polybar-scripts": "polybar-scripts",
+        "waybarSrc": "waybarSrc",
         "wired": "wired"
       }
     },
@@ -453,6 +454,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "waybarSrc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1672043635,
+        "narHash": "sha256-g7kfVZQTCxXKrQnVu93r60BBKnJGISTDWoKbB7UviAY=",
+        "owner": "alexays",
+        "repo": "waybar",
+        "rev": "bfbb2f9a40aa95ff43be5521f4b141d0b812a37d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alexays",
+        "repo": "waybar",
         "type": "github"
       }
     },

@@ -37,6 +37,11 @@
       url = github:Toqozz/wired-notify;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # wayland
+    waybarSrc = {
+      url = github:alexays/waybar;
+      flake = false;
+    };
     # keyboard
     # xremap = {
     #   url = github:signalwalker/xremap;
@@ -80,6 +85,7 @@
             config = {
               signal.desktop.polybarScripts = dependencies.polybar-scripts;
               signal.desktop.editor.helix.src = inputs.helixSrc;
+              signal.desktop.wayland.taskbar.waybar.src = inputs.waybarSrc;
             };
           };
         };

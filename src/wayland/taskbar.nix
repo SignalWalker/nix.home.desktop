@@ -12,13 +12,18 @@ with builtins; let
 in {
   options.signal.desktop.wayland.taskbar = with lib; {
     enable = mkEnableOption "task/status bar";
+    waybar.src = {
+      type = types.path;
+    };
   };
   imports = [];
   config = lib.mkIf (cfg.enable && cfg.taskbar.enable) {
     # signal.desktop.wayland.startupCommands = "waybar &";
     programs.waybar = {
       enable = cfg.taskbar.enable;
-      package = pkgs.waybar;
+      package = pkgs.waybar.overrideAttrs (old: {
+        src = cfg.taskbar.waybar.src;
+      });
       systemd = {
         enable = false;
         target = "wayland-session.target";
@@ -29,14 +34,33 @@ in {
         height = 0;
         width = 0;
         spacing = 2;
-        modules-left = ["sway/workspaces" "sway/mode" "wireplumber" "custom/media"];
+        modules-left = ["sway/workspaces" "sway/mode" "backlight" "wireplumber" "custom/media"];
         modules-center = ["sway/window"];
-        modules-right = ["network" "cpu" "memory" "temperature" "backlight" "battery" "clock" "tray"];
+        modules-right = ["network" "cpu" "memory" "temperature" "battery" "clock" "tray"];
         window = {
           format = "{title}";
           rewrite = {
             "^(.*) — Firefox.*$" = "🌎 $1";
           };
+        };
+        wireplumber = {
+          format = " {volume}%";
+          format-muted = "";
+        };
+        cpu = {
+          format = " {usage}%";
+        };
+        memory = {
+          format = " {percentage}%";
+        };
+        temperature = {
+          format-icons = ["" "" "" "" ""];
+        };
+        clock = {
+          format = " {:%H:%M}";
+        };
+        backlight = {
+          format-icons = ["" "" ""];
         };
         battery = {
           states = {
@@ -147,7 +171,6 @@ in {
           color: @fg;
           border: 1px solid @border;
           padding: 0px 3px;
-          margin: 0px 1px 1px 1px;
         }
         /* workspaces */
         #workspaces {
