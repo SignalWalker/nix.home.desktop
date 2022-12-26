@@ -39,7 +39,7 @@
     };
     # wayland
     waybarSrc = {
-      url = github:alexays/waybar;
+      url = "github:alexays/waybar";
       flake = false;
     };
     # keyboard
