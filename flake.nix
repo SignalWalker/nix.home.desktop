@@ -51,7 +51,7 @@
     # editor
     helixSrc = {
       url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "helix";
+      inputs.nixpkgs.follows = "nixpkgs";
       flake = false;
     };
   };
@@ -84,8 +84,8 @@
             ];
             config = {
               signal.desktop.polybarScripts = dependencies.polybar-scripts;
-              signal.desktop.editor.helix.src = inputs.helixSrc;
-              signal.desktop.wayland.taskbar.waybar.src = inputs.waybarSrc;
+              signal.desktop.editor.helix.src = dependencies.helixSrc;
+              signal.desktop.wayland.taskbar.waybar.src = dependencies.waybarSrc;
             };
           };
         };

@@ -12,7 +12,7 @@ with builtins; let
 in {
   options.signal.desktop.wayland.taskbar = with lib; {
     enable = mkEnableOption "task/status bar";
-    waybar.src = {
+    waybar.src = mkOption {
       type = types.path;
     };
   };
@@ -21,8 +21,8 @@ in {
     # signal.desktop.wayland.startupCommands = "waybar &";
     programs.waybar = {
       enable = cfg.taskbar.enable;
-      package = pkgs.waybar.overrideAttrs (old: {
-        src = cfg.taskbar.waybar.src;
+      package = pkgs.waybar.overrideAttrs (final: prev: {
+        src = toString cfg.taskbar.waybar.src;
       });
       systemd = {
         enable = false;
@@ -54,12 +54,14 @@ in {
           format = " {percentage}%";
         };
         temperature = {
+          format = "{icon} {temperatureC}°C";
           format-icons = ["" "" "" "" ""];
         };
         clock = {
           format = " {:%H:%M}";
         };
         backlight = {
+          format = "{icon} {percent}%";
           format-icons = ["" "" ""];
         };
         battery = {
