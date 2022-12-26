@@ -24,9 +24,14 @@ in {
 
     signal.desktop.scratch.scratchpads = {
       "Shift+M" = {
-        criteria = {class = "Element";};
+        criteria = {
+          class = "Element";
+          window_type = "normal";
+        };
         resize = 93;
         startup = "element-desktop";
+        autostart = true;
+        automove = true;
       };
     };
   };

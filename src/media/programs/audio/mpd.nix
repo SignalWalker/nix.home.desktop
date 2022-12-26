@@ -13,7 +13,7 @@ in {
     music = config.xdg.userDirs.music;
   in {
     services.mpd = {
-      enable = true;
+      enable = false;
       dataDir = "${config.xdg.dataHome}/mpd";
       musicDirectory = "${music}/library";
       playlistDirectory = "${music}/playlists";

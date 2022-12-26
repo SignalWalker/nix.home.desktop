@@ -19,7 +19,10 @@ in {
     };
     signal.desktop.scratch.scratchpads = {
       "Shift+I" = {
-        criteria = {app_id = "hexchat";};
+        criteria = {
+          class = "Hexchat";
+          window_type = "normal";
+        };
         resize = 83;
         startup = "hexchat";
         autostart = true;
