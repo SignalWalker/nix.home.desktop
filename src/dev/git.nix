@@ -34,6 +34,10 @@ in {
           else "/usr/bin/gpg";
         signByDefault = true;
       };
+      ignores = [
+        "/.lnvim.*"
+        "/.envrc"
+      ];
       extraConfig = {
         core = {
           autocrlf = "input";
