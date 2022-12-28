@@ -10,7 +10,7 @@ with builtins; let
   nvm = cfg.neovim;
 in {
   options.signal.desktop.editor.neovim = with lib; {
-    enable = (mkEnableOption "neovim GUI") // {default = config.signal.dev.editor.neovim.enable or false;};
+    enable = (mkEnableOption "neovim GUI") // {default = config.signal.dev.editor.editors.neovim.enable or false;};
     package = mkOption {
       type = types.package;
       default =

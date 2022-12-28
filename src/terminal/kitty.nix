@@ -77,7 +77,7 @@ in {
         font = head config.signal.desktop.theme.font.terminal;
       in {
         inherit (font) package name;
-        size = 10;
+        size = font.selectSize 10;
       };
       theme = "Gruvbox Material Dark Hard";
       settings = {

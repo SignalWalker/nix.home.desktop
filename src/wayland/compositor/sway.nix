@@ -8,6 +8,7 @@ with builtins; let
   std = pkgs.lib;
   cfg = config.signal.desktop.wayland.compositor.sway;
   scratchcfg = config.signal.desktop.scratch.scratchpads;
+  bar = config.signal.desktop.wayland.taskbar;
 in {
   options.signal.desktop.wayland.compositor.sway = with lib; {
     enable = mkEnableOption "sway wayland compositor";
@@ -44,16 +45,15 @@ in {
         withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
       });
       config = {
-        bars = [
-          {command = "waybar";}
-        ];
+        bars = [{command = bar.execCmd;}];
         assigns = {};
         colors = {};
         floating = {};
-        fonts = {};
+        fonts = {
+        };
         gaps = {
           inner = 2;
-          outer = 4;
+          outer = 2;
           smartBorders = "on";
           smartGaps = true;
         };
@@ -221,6 +221,7 @@ in {
         startup =
           [
             {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
+            {command = bar.execCmd;}
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart

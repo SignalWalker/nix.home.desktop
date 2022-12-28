@@ -22,7 +22,7 @@ in {
     in {
       enable = true;
       package =
-        if config.system.isNixOS
+        if config.system.isNixOS or true
         then lib.signal.home.linkSystemApp pkgs {app = "swayidle";}
         else pkgs.swayidle;
       systemdTarget = "wayland-session.target";

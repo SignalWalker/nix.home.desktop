@@ -12,6 +12,10 @@ with builtins; let
 in {
   options.signal.desktop.wayland.taskbar = with lib; {
     enable = mkEnableOption "task/status bar";
+    execCmd = mkOption {
+      type = types.str;
+      default = "waybar";
+    };
     waybar.src = mkOption {
       type = types.path;
     };
@@ -36,7 +40,7 @@ in {
         spacing = 2;
         modules-left = ["sway/workspaces" "sway/mode" "backlight" "wireplumber" "custom/media"];
         modules-center = ["sway/window"];
-        modules-right = ["network" "cpu" "memory" "temperature" "battery" "clock" "tray"];
+        modules-right = ["tray" "network" "temperature" "memory" "cpu" "battery" "clock"];
         window = {
           format = "{title}";
           rewrite = {
@@ -69,9 +73,11 @@ in {
             warning = 30;
             critical = 15;
           };
-          format = "{icon} {capacity}%";
-          format-discharging = "{icon} {power}W {capacity}%";
+          format = " {capacity}%";
+          format-discharging = "{icon} {capacity}%";
           format-icons = ["" "" "" "" ""];
+          tooltip-format = "{timeTo}";
+          tooltip-format-discharging = "{power}W {timeTo}";
         };
         keyboard-state = {
           numlock = true;
@@ -165,6 +171,7 @@ in {
         }
         window#waybar {
           background-color: transparent;
+          margin: 1px 0px 1px 0px;
         }
         /* modules */
         box.horizontal > widget > label,
@@ -197,6 +204,12 @@ in {
         }
         #workspaces button.urgent {
           color: @urgent;
+        }
+        #workspaces button.hover {
+          background-color: @bg-focused;
+          border: none;
+          box-shadow: inherit;
+          text-shadow: inherit;
         }
       '';
     };
