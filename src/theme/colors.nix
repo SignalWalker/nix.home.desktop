@@ -23,21 +23,27 @@ with builtins; let
       in {
         freeformType = with lib.types; attrsOf str;
         options = with lib; let
-          mkFn = fn:
+          mkConst = type: val:
             mkOption {
-              type = types.anything;
+              inherit type;
+              readOnly = true;
+              default = val;
+            };
+          mkFn = outType: fn:
+            mkOption {
+              type = types.functionTo outType;
               readOnly = true;
               default = fn;
             };
         in {
           __meta = {
-            pure = mkFn (foldl' (res: key:
+            pure = mkConst (types.attrsOf types.str) (foldl' (res: key:
               if (substring 0 1 key) == "_"
               then res
               else res // {${key} = config.${key};}) {} (attrNames config));
             css = {
-              defines = mkFn (std.concatStringsSep "\n" (map (name: "@define-color ${name} #${colors.${name}};") (attrNames colors)));
-              file = mkFn (pkgs.writeText "${name}.css" meta.css.defines);
+              defines = mkConst types.str (std.concatStringsSep "\n" (map (name: "@define-color ${name} #${colors.${name}};") (attrNames colors)));
+              file = mkConst types.path (pkgs.writeText "${name}.css" meta.css.defines);
             };
           };
         };
@@ -94,6 +100,11 @@ in {
         fg-special = cyan;
         ## geometry
         border = white;
+        ## urgency
+        bg-low-priority = low-priority;
+        bg-normal-priority = bg;
+        bg-urgent = urgent;
+        bg-critical = critical;
       };
     };
   };

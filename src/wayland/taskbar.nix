@@ -147,10 +147,12 @@ in {
         colorset = theme.colors.signal;
         fontSize = 11;
         fonts = (font.bmpsAt fontSize) ++ font.slab ++ font.symbols;
+        bgAlpha = toString 0.66;
       in ''
         /* colors */
         @import url("file://${colorset.__meta.css.file}");
-        @define-color bg-trans alpha(@bg, 0.66);
+        @define-color bg-trans alpha(@bg, ${bgAlpha});
+        @define-color bg-focused-trans alpha(@bg-focused, ${bgAlpha});
 
         /* general */
         /** font **/
@@ -199,14 +201,14 @@ in {
 
         #workspaces button.focused,
         #workspaces button.active {
-          background-color: @bg-focused;
+          background-color: @bg-focused-trans;
           color: @fg-special;
         }
         #workspaces button.urgent {
           color: @urgent;
         }
         #workspaces button.hover {
-          background-color: @bg-focused;
+          background-color: @bg-focused-trans;
           border: none;
           box-shadow: inherit;
           text-shadow: inherit;

@@ -38,28 +38,38 @@ in {
       layer = "top";
       anchor = "bottom-right";
       font = let
-        size = 13;
-        font = head (theme.font.bmpsAt size);
-      in "${font.name} ${toString size}";
+        size = 11;
+        fonts = theme.font.slab ++ theme.font.symbols;
+      in "${std.concatStringsSep ", " (map (font: font.name) fonts)} ${toString size}";
+      iconPath = std.concatStringsSep ":" [
+        "${config.home.profileDirectory}/share/icons/hicolor"
+        "${config.home.profileDirectory}/share/pixmaps"
+      ];
       ## extra
-      extraConfig = ''
-        border-size=0
-        border-radius=8
+      extraConfig = let
+        colors = theme.colors.signal;
+      in ''
+        background-color=#${colors.bg}aa
+        text-color=#${colors.fg}
+        progress-color=source #${colors.fg}
+
+        padding=4
+
+        border-color=#${colors.border}
+        border-size=1
+        border-radius=0
 
         [urgency=low]
-        background-color=#1ea559aa
-        text-color=#FFFFFFFF
-        progress-color=source #6ae492aa
+        background-color=#${colors.bg-low-priority}aa
+        text-color=#${colors.fg}
 
         [urgency=normal]
-        background-color=#1877b7aa
-        text-color=#FFFFFFFF
-        progress-color=source #5ba6eaaa
+        background-color=#${colors.bg-normal-priority}aa
+        text-color=#${colors.fg}
 
         [urgency=critical]
-        background-color=#b62460aa
-        text-color=#FFFFFFFF
-        progress-color=source #f66596aa
+        background-color=#${colors.bg-critical}aa
+        text-color=#${colors.fg}
         default-timeout=0
         ignore-timeout=1
         anchor=center
@@ -69,31 +79,13 @@ in {
         anchor=bottom-left
         layer=overlay
 
-        [category="reminder"]
-        anchor=center
-        default-timeout=0
-        layer=overlay
-
-        [app-name="Cantata"]
-        anchor=top-left
-        layer=overlay
-
         [app-name="check-battery"]
         anchor=top-right
         default-timeout=0
 
-        [app-name="check-battery" urgency=low]
-        background-color=#b5a55faa
-        text-color=#FFFFFFFF
-        progress-color=source #cfbd75aa
-
-        [app-name="hydrate"]
-        text-alignment=center
-
         [app-name="light"]
-        background-color=#b5a55faa
-        text-color=#FFFFFFFF
-        progress-color=source #cfbd75aa
+        background-color=#${colors.yellow}aa
+        text-color=#${colors.fg}
 
         [app-name="Slack"]
         default-timeout=0
