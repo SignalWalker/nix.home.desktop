@@ -27,7 +27,7 @@ in {
         default = {};
       };
       linker = mkOption {
-        type = types.str;
+        type = types.either types.path types.str;
         default = "lld";
       };
     };
@@ -51,7 +51,14 @@ in {
     signal.dev.lang.rust.cargo.config = {
       target."x86_64-unknown-linux-gnu" = {
         linker = "clang";
-        rustflags = ["-Clink-arg=-fuse-ld=${cfg.cargo.linker}" "-Csplit-debuginfo=packed"]; # "-Zshare-generics=y"
+        rustflags = [
+          "-Clink-arg=${
+            if isPath cfg.cargo.linker
+            then "--ld-path=${cfg.cargo.linker}"
+            else "-fuse-ld=${cfg.cargo.linker}"
+          }"
+          "-Csplit-debuginfo=packed"
+        ]; # "-Zshare-generics=y"
       };
       profile."release" = {
         lto = true;

@@ -13,10 +13,8 @@ in {
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {
-    home.packages = with pkgs; [
-      mold
-    ];
+    home.packages = with pkgs; [mold];
     signal.dev.lang.c.linker = "mold";
-    # dev.lang.rust.cargo.linker = "mold";
+    signal.dev.lang.rust.cargo.linker = "mold";
   };
 }
