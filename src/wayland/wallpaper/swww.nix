@@ -8,6 +8,7 @@ with builtins; let
   std = pkgs.lib;
   tomlFormat = pkgs.formats.toml {};
   cfg = config.services.swww;
+  swww-randomize = ./swww/swww-randomize;
 in {
   options.services.swww = with lib; {
     enable = mkEnableOption "swww wallpaper daemon";
@@ -22,6 +23,14 @@ in {
       };
     };
     img = {
+      fps = mkOption {
+        type = types.int;
+        default = 120;
+      };
+      step = mkOption {
+        type = types.int;
+        default = 90;
+      };
       path = mkOption {
         type = types.str;
       };
@@ -43,9 +52,10 @@ in {
           WantedBy = [cfg.systemd.target];
         };
         Service = {
+          Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}"];
           Type = "simple";
-          ExecStart = "${cfg.package}/bin/swww init";
-          ExecStartPost = ["${cfg.package}/bin/swww img ${cfg.img.path}"];
+          ExecStart = "${cfg.package}/bin/swww init --no-daemon";
+          ExecStartPost = ["${swww-randomize} ${cfg.img.path}"];
         };
       };
     };

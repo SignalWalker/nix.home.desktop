@@ -10,6 +10,10 @@ with builtins; let
 in {
   options.signal.desktop.terminal.kitty = with lib; {};
   config = lib.mkIf (cfg.app == "kitty") {
+    programs.ranger.settings = {
+      preview_images = true;
+      preview_images_method = "kitty";
+    };
     signal.desktop.scratch.scratchpads = {
       "Grave" = {
         criteria = {app_id = "scratch_term";};
@@ -164,6 +168,11 @@ in {
         "kitty_mod+plus" = "change_font_size all +1.0";
         "kitty_mod+kp_minus" = "change_font_size all -1.0";
         "kitty_mod+kp_plus" = "change_font_size all +1.0";
+        "kitty_mod+alt+minus" = "set_background_opacity -0.02";
+        "kitty_mod+alt+equal" = "set_background_opacity default";
+        "kitty_mod+alt+plus" = "set_background_opacity +0.02";
+        "kitty_mod+alt+kp_minus" = "set_background_opacity -0.02";
+        "kitty_mod+alt+kp_plus" = "set_background_opacity +0.02";
         # clipboard
         "kitty_mod+p" = "paste_from_clipboard";
         "kitty_mod+y" = "copy_to_clipboard";

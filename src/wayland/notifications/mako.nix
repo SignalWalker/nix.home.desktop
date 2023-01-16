@@ -62,14 +62,17 @@ in {
         [urgency=low]
         background-color=#${colors.bg-low-priority}aa
         text-color=#${colors.fg}
+        progress-color=source #${colors.cyan}
 
         [urgency=normal]
         background-color=#${colors.bg-normal-priority}aa
         text-color=#${colors.fg}
+        progress-color=source #${colors.dark-grey}
 
         [urgency=critical]
         background-color=#${colors.bg-critical}aa
         text-color=#${colors.fg}
+        progress-color=source #${colors.yellow}
         default-timeout=0
         ignore-timeout=1
         anchor=center
@@ -94,6 +97,10 @@ in {
 
         [app-name="Discord"]
         layer=overlay
+
+        [app-name="Quod Libet"]
+        anchor=bottom-left
+        group-by=app-name
       '';
     };
   };

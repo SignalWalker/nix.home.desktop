@@ -1,0 +1,17 @@
+#! /usr/bin/env python3
+
+import sys
+import argparse
+
+STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff' }
+ANIMATED_EXTENSIONS = { 'webp', 'gif' }
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog = "swww-randomize",
+                                     description = "Switch to a random wallpaper from a given directory.")
+    parser.add_argument('directory')
+    parser.add_argument('-a', '--animated', help="enable animated wallpapers")
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())

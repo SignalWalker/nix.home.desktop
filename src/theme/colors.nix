@@ -105,6 +105,10 @@ in {
         bg-normal-priority = bg;
         bg-urgent = urgent;
         bg-critical = critical;
+        fg-low-priority = fg;
+        fg-normal-priority = fg;
+        fg-urgent = fg;
+        fg-critical = fg;
       };
     };
   };

@@ -221,7 +221,6 @@ in {
         startup =
           [
             {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
-            {command = bar.execCmd;}
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart

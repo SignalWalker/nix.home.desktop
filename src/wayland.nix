@@ -85,9 +85,9 @@ in {
       #! /usr/bin/env sh
       ${cfg.startupCommands}
     '';
-    # xdg.configFile."electron-flags.conf".text = ''
-    #   --enable-features=UseOzonePlatform,WaylandWindowDecorations
-    #   --ozone-platform=wayland
-    # '';
+    xdg.configFile."electron-flags.conf".text = ''
+      --enable-features=WaylandWindowDecorations
+      --ozone-platform-hint=auto
+    '';
   };
 }
