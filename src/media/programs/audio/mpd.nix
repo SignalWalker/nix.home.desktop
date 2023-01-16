@@ -30,6 +30,11 @@ in {
           type "pipewire"
           name "pipewire audio"
         }
+
+        playlist_plugin {
+          name "xspf"
+          enabled "true"
+        }
       '';
     };
     services.mpdris2 = {

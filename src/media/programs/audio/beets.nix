@@ -52,7 +52,6 @@ in {
           "\\s+$" = "";
           "^\\s+" = "";
         };
-        musicbrainz.genre = true;
         plugins = [
           "missing"
           "importadded"
@@ -60,18 +59,45 @@ in {
           "discogs"
           "spotify"
           "fromfilename"
-          "mbsync"
           "lastimport"
+          "lastgenre"
           "scrub"
           "fetchart"
+          "acousticbrainz"
+          "mbsync"
+          "thumbnails"
+          "replaygain"
+          "permissions"
+          "mpdupdate"
+          "duplicates"
         ];
-        lyrics.auto = false;
+        musicbrainz = {
+          auto = true;
+          genre = true;
+          remove = true;
+          user = "SignalWalker";
+        };
+        discogs = {
+          index_tracks = true;
+        };
+        lyrics = {
+          auto = false;
+          sources = ["genius"];
+        };
         chroma = {
           auto = true;
           source_weight = 0.0;
         };
-        lastfm.user = "SignalWalker";
+        lastfm = {
+          user = "SignalWalker";
+        };
         bandcamp.art = true;
+        thumbnails.auto = true;
+        replaygain.backend = "ffmpeg";
+        mpd = {
+          host = config.services.mpd.network.listenAddress;
+          port = config.services.mpd.network.port;
+        };
       };
     };
   };
