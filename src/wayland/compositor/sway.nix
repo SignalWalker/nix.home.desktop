@@ -61,6 +61,7 @@ in {
           "*" = {
             adaptive_sync = "on";
             scale_filter = "nearest";
+            background = "${config.signal.desktop.theme.wallpaper.default} center #${config.signal.desktop.theme.colors.signal.black}";
           };
         };
         seat = {};
@@ -91,7 +92,7 @@ in {
         };
         focus = {
           followMouse = "no";
-          forceWrapping = true;
+          wrapping = "workspace";
           mouseWarping = false;
         };
         inherit up down left right;

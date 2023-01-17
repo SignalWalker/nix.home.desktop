@@ -61,18 +61,18 @@ in {
 
         [urgency=low]
         background-color=#${colors.bg-low-priority}aa
-        text-color=#${colors.fg}
-        progress-color=source #${colors.cyan}
+        text-color=#${colors.fg-low-priority}
+        progress-color=source #${colors.fg-low-priority-light}aa
 
         [urgency=normal]
         background-color=#${colors.bg-normal-priority}aa
-        text-color=#${colors.fg}
-        progress-color=source #${colors.dark-grey}
+        text-color=#${colors.fg-normal-priority}
+        progress-color=source #${colors.fg-normal-priority-light}aa
 
         [urgency=critical]
         background-color=#${colors.bg-critical}aa
-        text-color=#${colors.fg}
-        progress-color=source #${colors.yellow}
+        text-color=#${colors.fg-critical}
+        progress-color=source #${colors.fg-critical-light}aa
         default-timeout=0
         ignore-timeout=1
         anchor=center

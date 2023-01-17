@@ -27,6 +27,7 @@ in {
       enable = cfg.taskbar.enable;
       package = pkgs.waybar.overrideAttrs (final: prev: {
         src = toString cfg.taskbar.waybar.src;
+        buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
       });
       systemd = {
         enable = false;

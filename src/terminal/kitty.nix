@@ -106,7 +106,7 @@ in {
         editor = ".";
         close_on_child_death = false;
         allow_remote_control = "socket-only";
-        listen_on = "none";
+        listen_on = "unix:@kitty";
         update_check_interval = 0;
         clipboard_control = "write-clipboard write-primary read-clipboard-ask read-primary-ask";
         clipboard_max_size = 128;

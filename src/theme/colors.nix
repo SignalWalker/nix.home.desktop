@@ -101,14 +101,20 @@ in {
         ## geometry
         border = white;
         ## urgency
+        ### bg
         bg-low-priority = low-priority;
         bg-normal-priority = bg;
         bg-urgent = urgent;
         bg-critical = critical;
+        ### fg
         fg-low-priority = fg;
         fg-normal-priority = fg;
         fg-urgent = fg;
         fg-critical = fg;
+        fg-low-priority-light = fg;
+        fg-normal-priority-light = fg;
+        fg-urgent-light = fg;
+        fg-critical-light = fg;
       };
     };
   };
