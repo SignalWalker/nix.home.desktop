@@ -6,6 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  beetcfg = config.programs.beets.settings;
 in {
   options = with lib; {};
   imports = [];
@@ -14,7 +15,11 @@ in {
   in {
     programs.beets = {
       enable = true;
-      package = pkgs.beetsPackages.beets-unstable;
+      package = pkgs.beetsPackages.beets-unstable.overrideAttrs (final: prev: {
+        src = config.signal.media.flakeInputs.beetsSrc;
+        patches = [];
+        version = "git";
+      });
       settings = {
         color = true;
         directory = "${music}/library";
@@ -24,7 +29,6 @@ in {
         import = {
           copy = false;
           move = true;
-          incremental = true;
           incremental_skip_later = true;
           group_albums = true;
           bell = true;
@@ -35,22 +39,15 @@ in {
           max_rec.missing_tracks = "strong";
           preferred = {
             countries = ["XW" "US"];
-            media = ["Digital Media|File" "CD" "Vinyl"];
+            media = ["Digital Media|File" "CD"];
             original_year = true;
           };
+          ignored = ["length"];
         };
         paths = {
           default = "$albumartist/$album%aunique{}/$disc-$\{track\}.$title";
           singleton = "$artist/$title";
           comp = "multiple/$album%aunique{}/$disc-$\{track\}.$title";
-        };
-        replace = {
-          "[\\/]" = "-";
-          "^\\." = "_";
-          "[\\x00-\\x1f]" = "_";
-          "\\.$" = "_";
-          "\\s+$" = "";
-          "^\\s+" = "";
         };
         plugins = [
           "missing"
@@ -68,12 +65,12 @@ in {
           "thumbnails"
           "replaygain"
           "permissions"
-          "mpdupdate"
           "duplicates"
+          "convert"
         ];
         musicbrainz = {
           auto = true;
-          genre = true;
+          genres = true;
           remove = true;
           user = "SignalWalker";
         };
@@ -81,8 +78,8 @@ in {
           index_tracks = true;
         };
         lyrics = {
-          auto = false;
-          sources = ["genius"];
+          auto = true;
+          sources = ["musixmatch" "genius"];
         };
         chroma = {
           auto = true;
@@ -97,6 +94,21 @@ in {
         mpd = {
           host = config.services.mpd.network.listenAddress;
           port = config.services.mpd.network.port;
+        };
+        convert = {
+          auto = false;
+          delete_originals = false;
+          never_convert_lossy_files = true;
+          max_bitrate = "none";
+          link = false;
+          hardlink = false;
+          format = "opus";
+          formats = {
+            opus = {
+              command = "opusenc --music \"$source\" \"$dest\"";
+              extension = "ogg";
+            };
+          };
         };
       };
     };
