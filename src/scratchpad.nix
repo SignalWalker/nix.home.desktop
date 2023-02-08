@@ -21,6 +21,7 @@ with builtins; let
               type = types.str;
               default = name;
             };
+            useMod = (mkEnableOption "modifier key in keybind") // {default = true;};
             criteria = mkOption {
               type = types.attrsOf (types.coercedTo (types.oneOf [types.bool types.int]) toString types.str);
               default = {};

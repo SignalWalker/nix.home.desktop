@@ -21,7 +21,7 @@ in {
           else "firefox-nightly";
       };
     };
-    home.sessionVariables = {
+    systemd.user.sessionVariables = {
       BROWSER = "firefox";
       MOZ_DBUS_REMOTE = 1;
     };

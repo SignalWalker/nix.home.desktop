@@ -61,7 +61,7 @@ in {
           "*" = {
             adaptive_sync = "on";
             scale_filter = "nearest";
-            background = "${config.signal.desktop.theme.wallpaper.default} center #${config.signal.desktop.theme.colors.signal.black}";
+            background = "${config.signal.desktop.theme.wallpaper.default} center #000000";
           };
         };
         seat = {};
@@ -179,14 +179,18 @@ in {
             foldl'
             (acc: key: let
               cfg = scratchcfg.${key};
+              keybind =
+                if cfg.useMod
+                then "${mod}+${cfg.kb}"
+                else "${cfg.kb}";
             in (acc
               // {
-                "${mod}+${cfg.kb}" = cfg.fn.sway_show;
+                "${keybind}" = cfg.fn.sway_show;
               }
               // (
                 if cfg.fn.exec != null
                 then {
-                  "${mod}+Ctrl+${cfg.kb}" = "exec '${cfg.fn.exec}'";
+                  "Ctrl+${keybind}" = "exec '${cfg.fn.exec}'";
                 }
                 else {}
               )))

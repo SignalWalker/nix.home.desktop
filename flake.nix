@@ -38,6 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # wayland
+    yofi = {
+      url = "github:l4l/yofi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     waybarSrc = {
       url = "github:alexays/waybar";
       flake = false;
@@ -52,6 +56,16 @@
     helixSrc = {
       url = "github:helix-editor/helix";
       inputs.nixpkgs.follows = "nixpkgs";
+      flake = false;
+    };
+    # terminal
+    kitty = {
+      url = "github:kovidgoyal/kitty";
+      flake = false;
+    };
+    # shell
+    fishDone = {
+      url = "github:franciscolourenco/done";
       flake = false;
     };
   };
@@ -78,7 +92,11 @@
           };
         };
         outputs = dependencies: {
-          homeManagerModules = {lib, ...}: {
+          homeManagerModules = {
+            lib,
+            config,
+            ...
+          }: {
             imports = [
               ./home-manager.nix
             ];
@@ -86,6 +104,9 @@
               signal.desktop.polybarScripts = dependencies.polybar-scripts;
               signal.desktop.editor.helix.src = dependencies.helixSrc;
               signal.desktop.wayland.taskbar.waybar.src = dependencies.waybarSrc;
+              programs.fish.pluginSources = with dependencies; {
+                done = fishDone;
+              };
             };
           };
         };

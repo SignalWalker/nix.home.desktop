@@ -7,8 +7,25 @@ inputs @ {
 with builtins; let
   cfg = config.signal.desktop.terminal;
   kcfg = config.signal.desktop.terminal.kitty;
+  kitty = config.programs.kitty;
+  kittenAliases = ''
+    alias ssh="kitty +kitten ssh"
+    alias icat="kitty +kitten icat"
+    alias kdiff="kitty +kitten diff"
+    alias ktransfer="kitty +kitten transfer"
+    alias kdeltas="kitty +kitten transfer --transmit-deltas"
+    alias kthemes="kitty +kitten themes"
+  '';
 in {
-  options.signal.desktop.terminal.kitty = with lib; {};
+  options = with lib; {
+    signal.desktop.terminal.kitty = {};
+    programs.kitty = {
+      themes = mkOption {
+        type = types.attrsOf types.path;
+        default = {};
+      };
+    };
+  };
   config = lib.mkIf (cfg.app == "kitty") {
     programs.ranger.settings = {
       preview_images = true;
@@ -36,8 +53,26 @@ in {
         autostart = true;
         automove = true;
       };
+      "XF86Calculator" = {
+        useMod = false;
+        criteria = {app_id = "scratch_editor";};
+        resize = 83;
+        startup = "kitty --class scratch_editor nvim";
+      };
     };
-    xdg.configFile."kitty/open-actions.conf".source = ./kitty/open-actions.conf;
+    xdg.configFile =
+      {
+        "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
+      }
+      // (foldl' (res: name: let
+        theme = kitty.themes.${name};
+      in
+        acc
+        // {
+          "kitty/themes/${baseNameOf theme}" = {
+            source = theme;
+          };
+        }) {} (attrNames kitty.themes));
     xdg.binFile."kg" = {
       executable = true;
       source = ./kitty/kg;
@@ -46,12 +81,16 @@ in {
       initExtra = ''
         if [[ "$TERM" = "${config.programs.kitty.settings.term}" ]]; then
           compdef _rg kg
-          alias ssh="kitty +kitten ssh"
-          alias icat="kitty +kitten icat"
-          alias kdiff="kitty +kitten diff"
-          alias ksync="kitty +kitten transfer"
-          alias kdeltas="kitty +kitten transfer --transmit-deltas"
+          ${kittenAliases}
         fi
+      '';
+    };
+    programs.fish = {
+      interactiveShellInit = ''
+        if test "$TERM" = "${config.programs.kitty.settings.term}"
+          function kg --wraps rg; kitty +kitten hyperlinked_grep $argv; end
+          ${kittenAliases}
+        end
       '';
     };
     programs.git.extraConfig = {
@@ -83,7 +122,7 @@ in {
         inherit (font) package name;
         size = font.selectSize 10;
       };
-      theme = "Gruvbox Material Dark Hard";
+      theme = "Everforest Dark Soft";
       settings = {
         # scrollback
         scrollback_lines = 10000;
@@ -134,6 +173,7 @@ in {
         # tab bar
         tab_bar_edge = "bottom";
         tab_bar_style = "powerline";
+        tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}";
         ## keyboard
         kitty_mod = "super"; # note: this is actually Mod4, which is Hyper_L when using the keyboard settings defined in this flake (kitty considers Hyper_L to be numlock, for some reason)
         ## mouse

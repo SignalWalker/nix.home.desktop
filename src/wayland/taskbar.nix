@@ -39,13 +39,30 @@ in {
         height = 0;
         width = 0;
         spacing = 2;
-        modules-left = ["sway/workspaces" "sway/mode" "backlight" "wireplumber" "custom/media"];
-        modules-center = ["sway/window"];
-        modules-right = ["tray" "network" "temperature" "memory" "cpu" "battery" "clock"];
-        window = {
+        modules-left = [
+          "sway/workspaces"
+          "sway/mode"
+          "backlight"
+          "wireplumber"
+          "tray"
+          "custom/media"
+        ];
+        modules-center = [
+          "sway/window"
+        ];
+        modules-right = [
+          "network"
+          "temperature"
+          "memory"
+          "cpu"
+          "battery"
+          "clock"
+        ];
+        "sway/window" = {
           format = "{title}";
           rewrite = {
-            "^(.*) — Firefox.*$" = "🌎 $1";
+            "^(.*) — Firefox.*$" = " $1";
+            "^(.*) - Kitty$" = " $1";
           };
         };
         wireplumber = {

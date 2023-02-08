@@ -47,7 +47,12 @@ in {
       MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
       QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
       WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
-      WLR_RENDERER = lib.mkDefault "vulkan";
+    };
+    systemd.user.sessionVariables = {
+      WLR_RENDERER = "vulkan";
+      MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
+      QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
+      WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
     };
     systemd.user.targets."wayland-session" = {
       Unit = {

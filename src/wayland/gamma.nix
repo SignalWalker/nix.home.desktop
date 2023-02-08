@@ -13,7 +13,7 @@ in {
   imports = [];
   config = lib.mkIf wln.enable {
     services.gammastep = {
-      enable = true;
+      enable = false; # causes issues with nvidia drivers -_-
       provider = "geoclue2";
       tray = true;
       settings = {};

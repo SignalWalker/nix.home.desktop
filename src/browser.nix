@@ -14,7 +14,7 @@ in {
   imports = lib.signal.fs.path.listFilePaths ./browser;
   config = {
     programs.qutebrowser = {
-      enable = false;
+      enable = true;
     };
   };
 }

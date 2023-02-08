@@ -11,7 +11,7 @@ in {
   imports = lib.signal.fs.path.listFilePaths ./theme;
   config = {
     gtk = {
-      enable = true;
+      enable = config.system.isNixOS;
       gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
       gtk3 = {
         bookmarks = map (dir: "file:///${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
@@ -37,7 +37,7 @@ in {
       # package = pkgs.quintom-cursor-theme;
       package = pkgs.vanilla-dmz;
       name = "Vanilla-DMZ-AA";
-      gtk.enable = true;
+      gtk.enable = config.system.isNixOS;
       size = 24;
     };
   };
