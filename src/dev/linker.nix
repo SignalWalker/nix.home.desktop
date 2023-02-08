@@ -13,7 +13,7 @@ in {
   };
   imports = [];
   config = lib.mkIf (cfg.enable) {
-    home.packages = with pkgs; [mold];
+    home.packages = lib.mkIf (config.system.isNixOS or true) (with pkgs; [mold]);
     signal.dev.lang.c.linker = "mold";
     signal.dev.lang.rust.cargo.linker = "mold";
   };

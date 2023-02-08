@@ -2,6 +2,6 @@
 
 set -e
 
-nix build --no-link -L --show-trace --impure ~/projects/nix/sys/personal ${argv}
+nix build --no-link -L --show-trace --impure ~/projects/nix/sys/desktop ${argv}
 nix profile remove 0
-nix run --impure ~/projects/nix/sys/personal#activate-default ${argv}
+nix run --impure ~/projects/nix/sys/desktop#activate-default ${argv}
