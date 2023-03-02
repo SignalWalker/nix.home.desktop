@@ -50,17 +50,19 @@ in {
           comp = "multiple/$album%aunique{}/$disc-$\{track\}.$title";
         };
         plugins = [
+          # sources
+          "discogs"
+          # "spotify"
+          "chroma"
+          "fromfilename"
+          "lastgenre"
+          "acousticbrainz"
+          # other
           "missing"
           "importadded"
-          "chroma"
-          "discogs"
-          "spotify"
-          "fromfilename"
           "lastimport"
-          "lastgenre"
           "scrub"
           "fetchart"
-          "acousticbrainz"
           "mbsync"
           "thumbnails"
           "replaygain"
