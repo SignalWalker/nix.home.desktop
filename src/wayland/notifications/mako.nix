@@ -26,7 +26,7 @@ in {
         ExecStart = "mako";
       };
     };
-    programs.mako = {
+    services.mako = {
       enable = ntf.enable;
       # mechanics
       actions = true;
