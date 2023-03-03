@@ -61,7 +61,7 @@ in {
           "*" = {
             adaptive_sync = "on";
             scale_filter = "nearest";
-            background = "${config.signal.desktop.theme.wallpaper.default} center #000000";
+            # background = "${config.signal.desktop.theme.wallpaper.default} center #000000";
           };
         };
         seat = {};
