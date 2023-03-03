@@ -13,7 +13,7 @@ in {
     home.packages = with pkgs; [
       vivaldi
       vivaldi-ffmpeg-codecs
-      vivaldi-widevine
+      widevine-cdm
     ];
   };
 }
