@@ -57,8 +57,7 @@ in {
           Service = "ipfs.service";
           FileDescriptorName = "io.ipfs.api";
           BindIPv6Only = true;
-          ListenStream = "127.0.0.1:5001";
-          ListenStream = "[::1]:5001";
+          ListenStream = ["127.0.0.1:5001" "[::1]:5001"];
         };
         Install = {
           WantedBy = ["sockets.target"];
@@ -72,8 +71,7 @@ in {
           Service = "ipfs.service";
           FileDescriptorName = "io.ipfs.gateway";
           BindIPv6Only = true;
-          ListenStream = "127.0.0.1:8080";
-          ListenStream = "[::1]:8080";
+          ListenStream = ["127.0.0.1:8080" "[::1]:8080"];
         };
         Install = {
           WantedBy = ["sockets.target"];
@@ -110,7 +108,7 @@ in {
           RestrictRealtime = true;
           MemoryDenyWriteExecute = true;
           SystemCallArchitectures = "native";
-          SystemCallFilter = ["@system-service"];
+          # SystemCallFilter = ["@system-service"];
           SystemCallFilter = ["~" "@privileged"];
           ProtectHome = true;
           RemoveIPC = true;
