@@ -37,7 +37,6 @@ in {
     home.packages = with pkgs; [
       # meta
       swaylock
-      swayidle
       wev
       # screenshots
       grim
@@ -63,7 +62,6 @@ in {
       };
     };
     services.kanshi.systemdTarget = "wayland-session.target";
-    services.swayidle.systemdTarget = "wayland-session.target";
     signal.desktop.wayland.__systemdStartupScript = let
       vars = config.signal.desktop.wayland.sessionVariables;
       keys = ["DISPLAY" "WAYLAND_DISPLAY" "SWAYSOCK" "XDG_CURRENT_DESKTOP"] ++ (attrNames vars);

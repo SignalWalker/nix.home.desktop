@@ -8,12 +8,17 @@ with builtins; let
   std = pkgs.lib;
   cfg = config.signal.desktop.wayland;
   idl = cfg.idle;
+  swayidle = config.services.swayidle;
 in {
   options.signal.desktop.wayland.idle = with lib; {
     enable = (mkEnableOption "idle daemon") // {default = true;};
   };
   imports = [];
   config = lib.mkIf (cfg.enable && idl.enable) {
+    systemd.user.services.swayidle = {
+      Service.Environment = lib.mkForce [];
+      Unit.PartOf = lib.mkForce [swayidle.systemdTarget];
+    };
     services.swayidle = let
       lock = "swaylock -f";
       unlock = "killall swaylock";
@@ -23,8 +28,8 @@ in {
       enable = true;
       package =
         if config.system.isNixOS or true
-        then lib.signal.home.linkSystemApp pkgs {app = "swayidle";}
-        else pkgs.swayidle;
+        then pkgs.swayidle
+        else lib.signal.home.linkSystemApp pkgs {app = "swayidle";};
       systemdTarget = "wayland-session.target";
       events = [
         {
