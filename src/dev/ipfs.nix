@@ -81,7 +81,6 @@ in {
         Unit = {
           Description = "IPFS daemon";
           After = ["network.target"];
-          Slice = "background.slice";
         };
         Service = {
           Type = "notify";
@@ -89,6 +88,7 @@ in {
           Restart = "on-failure";
           TimeoutStartSec = "infinity";
           KillSignal = "SIGINT";
+          Slice = "background.slice";
           # security
           ReadWritePaths = [ipfs.dirs.data];
           NoNewPrivileges = true;
@@ -108,8 +108,7 @@ in {
           RestrictRealtime = true;
           MemoryDenyWriteExecute = true;
           SystemCallArchitectures = "native";
-          # SystemCallFilter = ["@system-service"];
-          SystemCallFilter = ["~" "@privileged"];
+          SystemCallFilter = ["~@privileged" "@system-service"];
           ProtectHome = true;
           RemoveIPC = true;
           RestrictSUIDSGID = true;
