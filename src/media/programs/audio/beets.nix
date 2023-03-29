@@ -101,7 +101,7 @@ in {
           auto = false;
           delete_originals = false;
           never_convert_lossy_files = true;
-          max_bitrate = "none";
+          max_bitrate = 999999; # can't set "none" from nix, i think
           link = false;
           hardlink = false;
           format = "opus";
