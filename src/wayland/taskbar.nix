@@ -6,32 +6,44 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.wayland;
+  wayland = config.signal.desktop.wayland;
+  bar = wayland.taskbar;
   theme = config.signal.desktop.theme;
   font = theme.font;
 in {
   options.signal.desktop.wayland.taskbar = with lib; {
     enable = mkEnableOption "task/status bar";
-    execCmd = mkOption {
-      type = types.str;
-      default = "waybar";
-    };
     waybar.src = mkOption {
       type = types.path;
     };
   };
   imports = [];
-  config = lib.mkIf (cfg.enable && cfg.taskbar.enable) {
-    # signal.desktop.wayland.startupCommands = "waybar &";
+  config = lib.mkIf (wayland.enable && bar.enable) {
+    systemd.user.services."taskbar-wayland" = {
+      Unit = {
+        Description = "Taskbar for Wayland compositors.";
+        PartOf = [wayland.systemd.target];
+        After = [wayland.systemd.target];
+      };
+      Service = {
+        ExecStart = "waybar";
+        ExecReload = "kill -SIGUSR2 $MAINPID";
+        Restart = "on-failure";
+        KillMode = "mixed";
+      };
+      Install = {
+        WantedBy = [wayland.systemd.target];
+      };
+    };
     programs.waybar = {
-      enable = cfg.taskbar.enable;
+      enable = bar.enable;
       package = pkgs.waybar.overrideAttrs (final: prev: {
-        src = toString cfg.taskbar.waybar.src;
+        src = toString bar.waybar.src;
         buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
       });
       systemd = {
         enable = false;
-        target = "wayland-session.target";
+        target = wayland.systemd.target;
       };
       settings.mainBar = {
         layer = "bottom";

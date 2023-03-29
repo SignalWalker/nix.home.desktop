@@ -21,6 +21,18 @@ in {
       type = types.lines;
       default = "";
     };
+    systemd = {
+      targetName = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = "wayland-session";
+      };
+      target = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = "${cfg.systemd.targetName}.target";
+      };
+    };
     __systemdStartupScript = mkOption {
       type = types.path;
     };
@@ -53,7 +65,7 @@ in {
       QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
       WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
     };
-    systemd.user.targets."wayland-session" = {
+    systemd.user.targets."${cfg.systemd.targetName}" = {
       Unit = {
         Description = "wayland graphical session";
         BindsTo = ["graphical-session.target"];
@@ -61,7 +73,7 @@ in {
         Wants = ["graphical-session-pre.target" "xdg-desktop-autostart.target"];
       };
     };
-    services.kanshi.systemdTarget = "wayland-session.target";
+    services.kanshi.systemdTarget = cfg.systemd.target;
     signal.desktop.wayland.__systemdStartupScript = let
       vars = config.signal.desktop.wayland.sessionVariables;
       keys = ["DISPLAY" "WAYLAND_DISPLAY" "SWAYSOCK" "XDG_CURRENT_DESKTOP"] ++ (attrNames vars);
@@ -80,7 +92,7 @@ in {
           hash dbus-update-activation-environment 2>/dev/null \
             && dbus-update-activation-environment --systemd ${keysStr}
 
-          systemctl --user start wayland-session.target
+          systemctl --user start ${cfg.systemd.target}
 
           ${config.signal.desktop.wayland.__startupScript}
         '');

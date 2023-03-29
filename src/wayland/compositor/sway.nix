@@ -45,7 +45,7 @@ in {
         withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
       });
       config = {
-        bars = [{command = bar.execCmd;}];
+        # bars = [{command = bar.execCmd;}];
         assigns = {};
         colors = {};
         floating = {};

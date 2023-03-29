@@ -18,7 +18,7 @@ in {
       Unit = {
         Description = "Mako notification daemon";
         Documentation = "man:mako(1)";
-        PartOf = ["wayland-session.target"];
+        PartOf = [wln.systemd.target];
       };
       Service = {
         Type = "dbus";
