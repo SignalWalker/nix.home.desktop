@@ -19,14 +19,14 @@ in {
   };
   imports = [];
   config = lib.mkIf (wayland.enable && bar.enable) {
-    systemd.user.services."taskbar-wayland" = {
+    systemd.user.services."wayland-taskbar" = {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
         PartOf = [wayland.systemd.target];
         After = [wayland.systemd.target];
       };
       Service = {
-        ExecStart = "waybar";
+        ExecStart = "${config.programs.waybar.package}/bin/waybar";
         ExecReload = "kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";
         KillMode = "mixed";

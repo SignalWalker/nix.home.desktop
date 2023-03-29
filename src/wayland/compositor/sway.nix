@@ -151,7 +151,7 @@ in {
             "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
             "${mod}+Alt+n" = "exec makoctl invoke on-button-left";
 
-            "${mod}+Alt+l" = "exec swaylock -f";
+            "${mod}+Alt+l" = "exec swaylock";
           }
           // (foldl'
             (acc: dir: let
