@@ -56,7 +56,6 @@ in {
           "chroma"
           "fromfilename"
           "lastgenre"
-          "acousticbrainz"
           # other
           "missing"
           "importadded"
