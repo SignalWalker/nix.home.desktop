@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   ipfs = config.services.ipfs;
-  json = pkgs.formats.json;
+  json = pkgs.formats.json {};
 in {
   options = with lib; {
     services.ipfs = {
