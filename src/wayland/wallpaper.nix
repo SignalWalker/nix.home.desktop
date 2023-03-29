@@ -20,7 +20,10 @@ in {
     };
     services.wpaperd = {
       enable = !config.services.swww.enable;
-      systemd.enable = true;
+      systemd = {
+        enable = true;
+        target = cfg.systemd.target;
+      };
       package = lib.signal.home.linkSystemApp pkgs {app = "wpaperd";};
       settings = {
         default = {
