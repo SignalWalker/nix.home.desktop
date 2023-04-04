@@ -128,7 +128,7 @@ in {
       in {
         before-sleep = [
           "playerctl pause"
-          lock
+          # lock
         ];
         lock = [lock];
         timeout = [
