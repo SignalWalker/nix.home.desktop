@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
   cfg = config.programs.wofi;
 in {
-  options.programs.wofi = with lib; {
+  options.signal.programs.wofi = with lib; {
     enable = mkEnableOption "wofi menu";
     package = mkOption {
       type = types.package;
