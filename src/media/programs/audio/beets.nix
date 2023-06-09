@@ -19,6 +19,7 @@ in {
         src = config.signal.media.flakeInputs.beetsSrc;
         patches = [];
         version = "git";
+        propagatedBuildInputs = prev.propagatedBuildInputs ++ (with pkgs.python3Packages; [typing-extensions]);
       });
       settings = {
         color = true;
