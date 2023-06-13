@@ -236,7 +236,7 @@ in {
         enable = true;
         settings = {};
       };
-      systemdIntegration = false;
+      systemd.enable = false;
       extraConfig =
         ''
           bindswitch --reload --locked {
