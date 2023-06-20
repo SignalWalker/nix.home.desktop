@@ -2,6 +2,14 @@
 
 set -e
 
+nix flake update --commit-lock-file ~/projects/nix/home/lib && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/home/base && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/home/dev && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/home/desktop && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/home/media && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/sys/base && git push \
+	&& nix flake update --commit-lock-file ~/projects/nix/sys/desktop && git push
+
 nix build --no-link -L --show-trace --impure ~/projects/nix/sys/desktop ${argv} \
 	&& nix profile remove 0 \
 	&& nix run --impure ~/projects/nix/sys/desktop#activate-default ${argv}

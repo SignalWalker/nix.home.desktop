@@ -21,12 +21,11 @@ in {
     programs.helix = {
       enable = hlx.enable;
       package = pkgs.helix;
-      languages = [
-        {
-          name = "rust";
+      languages = {
+        rust = {
           auto-format = true;
-        }
-      ];
+        };
+      };
       settings = {};
       themes = {};
     };

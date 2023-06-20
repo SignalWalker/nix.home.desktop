@@ -11,7 +11,7 @@ with builtins; let
 in {
   options = with lib; {
     services.ipfs = {
-      enable = (mkEnableOption "IPFS service") // {default = true;};
+      enable = (mkEnableOption "IPFS service") // {default = false;};
       package = mkOption {
         type = types.package;
         default = pkgs.kubo;
