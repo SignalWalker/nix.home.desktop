@@ -1,16 +1,85 @@
 #! /usr/bin/env python3
 
-import sys
 import argparse
+import sys
+import subprocess
+import os
+from enum import IntEnum
+import random
 
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff' }
 ANIMATED_EXTENSIONS = { 'webp', 'gif' }
 
+
+# for pretty printing to stderr
+class Color:
+    RED = '\033[31m'
+    YELLOW = '\033[33m'
+    GREEN = '\033[32m'
+    BLUE = '\033[34m'
+    PURPLE = '\033[35m'
+    GREY = '\033[37m'
+    ENDC = '\033[m'
+
+class LogLevel(IntEnum):
+    OFF = 0
+    ERROR = 1
+    WARNING = 2
+    INFO = 3
+    DEBUG = 4
+    TRACE = 5
+
+def eprint(msg: str, level: LogLevel = LogLevel.INFO, **kwargs):
+	color = Color.ENDC
+	if level == LogLevel.ERROR: color = Color.RED
+	elif level == LogLevel.WARNING: color = Color.YELLOW
+	elif level == LogLevel.INFO: color = Color.GREEN
+	elif level == LogLevel.DEBUG: color = Color.BLUE
+	elif level == LogLevel.TRACE: color = Color.PURPLE
+	print(f"{color}[swww-randomize]{Color.ENDC} {msg}", file=sys.stderr, **kwargs)
+
+def recursive_scandir(dir: str, ext):    # dir: str, ext: list
+    subfolders, files = [], []
+
+    for f in os.scandir(dir):
+        if f.is_dir():
+            subfolders.append(f.path)
+        if f.is_file():
+            if os.path.splitext(f.name)[1].lower()[1:] in ext:
+                files.append(f.path)
+
+
+    for dir in list(subfolders):
+        sf, f = recursive_scandir(dir, ext)
+        subfolders.extend(sf)
+        files.extend(f)
+
+    return subfolders, files
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog = "swww-randomize",
                                      description = "Switch to a random wallpaper from a given directory.")
-    parser.add_argument('directory')
-    parser.add_argument('-a', '--animated', help="enable animated wallpapers")
+    parser.add_argument('-a', '--animated', action='store_true', help="enable animated wallpapers")
+    parser.add_argument('directory', help="directory from which to select images")
+    args = parser.parse_args()
+
+    extensions = STATIC_EXTENSIONS
+    if args.animated:
+        extensions = extensions | ANIMATED_EXTENSIONS
+
+    eprint(f"directory: {args.directory}", LogLevel.DEBUG)
+    eprint(f"extensions: {extensions}", LogLevel.DEBUG)
+
+    try:
+        _, images = recursive_scandir(args.directory, extensions)
+        image = random.choice(images)
+    except Exception as error:
+        eprint(f"failed to get image; error: {error}", LogLevel.ERROR)
+        return 1
+
+    eprint(f"image path: {image}")
+    subprocess.Popen(["swww", "img", random.choice(images)]).wait()
+
     return 0
 
 if __name__ == '__main__':

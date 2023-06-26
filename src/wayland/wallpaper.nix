@@ -15,8 +15,10 @@ in {
   imports = lib.signal.fs.path.listFilePaths ./wallpaper;
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
-      enable = false;
-      package = lib.signal.home.linkSystemApp pkgs {app = "swww";};
+      enable = true;
+      # package = lib.signal.home.linkSystemApp pkgs {app = "swww";};
+      systemd.enable = true;
+      img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
     services.wpaperd = {
       enable = !config.services.swww.enable;

@@ -16,7 +16,7 @@ in {
       "Shift+E" = {
         criteria = {
           app_id = "^thunderbird.*";
-          title = "^(?!Write).*";
+          title = "^.* - Mozilla Thunderbird";
         };
         resize = 93;
         startup = "thunderbird";

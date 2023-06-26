@@ -11,14 +11,14 @@ in {
   options = with lib; {
     signal.desktop.notes.docs = {
       enable = (mkEnableOption "Zeal documentation browser") // {default = true;};
-    };
-    package = mkOption {
-      type = types.package;
-      default = pkgs.zeal;
-    };
-    docsets = mkOption {
-      type = types.listOf types.package;
-      default = [];
+      package = mkOption {
+        type = types.package;
+        default = pkgs.zeal;
+      };
+      docsets = mkOption {
+        type = types.listOf types.package;
+        default = [];
+      };
     };
   };
   disabledModules = [];
@@ -28,8 +28,8 @@ in {
     signal.desktop.scratch.scratchpads = {
       "Shift+X" = {
         criteria = {
-          app_id = "org.zealdocs.Zeal";
-          title = ".* - Zeal";
+          app_id = "org.zealdocs.zeal";
+          title = "^.* - Zeal";
         };
         resize = 93;
         startup = "zeal";

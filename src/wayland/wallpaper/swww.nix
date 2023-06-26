@@ -14,12 +14,19 @@ in {
     enable = mkEnableOption "swww wallpaper daemon";
     package = mkOption {
       type = types.package;
+      default = pkgs.swww;
     };
     systemd = {
       enable = mkEnableOption "swww systemd integration";
       target = mkOption {
         type = types.str;
         default = "wayland-session.target";
+      };
+      randomize = {
+        interval = mkOption {
+          type = types.str;
+          default = "30m";
+        };
       };
     };
     img = {
@@ -57,6 +64,21 @@ in {
           ExecStart = "${cfg.package}/bin/swww init --no-daemon";
           ExecStartPost = ["${swww-randomize} ${cfg.img.path}"];
         };
+      };
+      "swww-randomize" = {
+        Unit.PartOf = [cfg.systemd.target];
+        Service.Type = "oneshot";
+        Service.ExecStart = "${swww-randomize} --animated ${cfg.img.path}";
+      };
+    };
+    systemd.user.timers = lib.mkIf cfg.systemd.enable {
+      "swww-randomize" = {
+        Unit.Description = "wallpaper randomizer";
+        Unit.PartOf = [cfg.systemd.target];
+        Unit.After = ["swww.service"];
+        Install.WantedBy = ["swww.service"];
+        Timer.OnUnitActiveSec = cfg.systemd.randomize.interval;
+        Timer.OnActiveSec = "0s";
       };
     };
   };
