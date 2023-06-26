@@ -16,6 +16,11 @@ in {
       type = types.package;
       default = pkgs.swww;
     };
+    randomizeScript = mkOption {
+      type = types.path;
+      readOnly = true;
+      default = swww-randomize;
+    };
     systemd = {
       enable = mkEnableOption "swww systemd integration";
       target = mkOption {
@@ -48,6 +53,10 @@ in {
     home.packages = with pkgs; [
       cfg.package
     ];
+    xdg.binFile."swww-randomize" = {
+      executable = true;
+      source = swww-randomize;
+    };
     systemd.user.services = lib.mkIf cfg.systemd.enable {
       "swww" = {
         Unit = {
@@ -61,14 +70,13 @@ in {
         Service = {
           Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}"];
           Type = "simple";
-          ExecStart = "${cfg.package}/bin/swww init --no-daemon";
-          ExecStartPost = ["${swww-randomize} ${cfg.img.path}"];
+          ExecStart = "${cfg.package}/bin/swww-daemon";
         };
       };
       "swww-randomize" = {
         Unit.PartOf = [cfg.systemd.target];
         Service.Type = "oneshot";
-        Service.ExecStart = "${swww-randomize} --animated ${cfg.img.path}";
+        Service.ExecStart = "${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated ${cfg.img.path}";
       };
     };
     systemd.user.timers = lib.mkIf cfg.systemd.enable {

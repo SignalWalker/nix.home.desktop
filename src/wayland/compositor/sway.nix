@@ -27,17 +27,18 @@ in {
       package = lib.mkIf (!config.system.isNixOS) (pkgs.sway.override {
         sway-unwrapped =
           pkgs.lib.makeOverridable
-          ({
-            isNixOS ? config.system.isNixOS,
-            enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
-          }:
-            (lib.signal.home.linkSystemApp pkgs {
+          (
+            {
+              isNixOS ? config.system.isNixOS,
+              enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
+            }: (lib.signal.home.linkSystemApp pkgs {
               app = "sway";
               extraApps = ["swaybar" "swaymsg" "swaynag"];
+              extraArgs = {
+                version = "system";
+              };
             })
-            // {
-              version = "system";
-            })
+          )
           {};
         extraSessionCommands = config.wayland.windowManager.sway.extraSessionCommands;
         extraOptions = config.wayland.windowManager.sway.extraOptions;
@@ -150,6 +151,8 @@ in {
             "${mod}+Ctrl+n" = "exec makoctl dismiss";
             "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
             "${mod}+Alt+n" = "exec makoctl invoke on-button-left";
+
+            "${mod}+Alt+w" = "exec ${config.signal.desktop.wayland.wallpaper.randomizeCmd}";
 
             "${mod}+Alt+l" = "exec swaylock";
           }

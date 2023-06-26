@@ -11,6 +11,10 @@ with builtins; let
 in {
   options.signal.desktop.wayland.wallpaper = with lib; {
     enable = (mkEnableOption "wallpaper") // {default = true;};
+    randomizeCmd = mkOption {
+      type = types.str;
+      default = "echo";
+    };
   };
   imports = lib.signal.fs.path.listFilePaths ./wallpaper;
   config = lib.mkIf (cfg.enable && wp.enable) {
@@ -20,6 +24,7 @@ in {
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
+    signal.desktop.wayland.wallpaper.randomizeCmd = "swww-randomize --animated ${config.services.swww.img.path}";
     services.wpaperd = {
       enable = !config.services.swww.enable;
       systemd = {
