@@ -61,7 +61,7 @@ def main() -> int:
                                      description = "Switch to a random wallpaper from a given directory.")
     parser.add_argument('-a', '--animated', action='store_true', help="enable animated wallpapers")
     parser.add_argument('-b', '--bin-path', type=str, help="swww binary path", default="swww")
-    parser.add_argument('--resize', type=str, default="crop", help="don't resize images")
+    parser.add_argument('--resize', type=str, default="crop", help="image resizing options")
     parser.add_argument('directory', help="directory from which to select images")
     args = parser.parse_args()
 
@@ -80,9 +80,14 @@ def main() -> int:
         return 1
 
     eprint(f"image path: {image}")
-    swww_cmd = [args.bin_path, "img", "--filter", "Nearest", "--transition-type", "random", image]
-    if args.no_resize:
-        swww_cmd.append("--no-resize")
+    swww_cmd = [
+        args.bin_path,
+        "img",
+        "--filter=nearest",
+        f"--resize={args.resize}",
+        "--transition-type=random",
+        image
+    ]
 
     subprocess.Popen(swww_cmd).wait()
 
