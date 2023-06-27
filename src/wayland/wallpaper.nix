@@ -26,7 +26,7 @@ in {
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
       enable = true;
-      package = lib.mkIf (wp.swww.src != null) (services.swww.package.overrideAttrs (final: prev: {
+      package = lib.mkIf (wp.swww.src != null) (config.services.swww.package.overrideAttrs (final: prev: {
         src = wp.swww.src;
       }));
       systemd.enable = true;

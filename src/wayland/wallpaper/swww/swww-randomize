@@ -61,7 +61,7 @@ def main() -> int:
                                      description = "Switch to a random wallpaper from a given directory.")
     parser.add_argument('-a', '--animated', action='store_true', help="enable animated wallpapers")
     parser.add_argument('-b', '--bin-path', type=str, help="swww binary path", default="swww")
-    parser.add_argument('--no-resize', action='store_true', help="don't resize images")
+    parser.add_argument('--resize', type=str, default="crop", help="don't resize images")
     parser.add_argument('directory', help="directory from which to select images")
     args = parser.parse_args()
 
