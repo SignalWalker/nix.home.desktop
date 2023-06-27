@@ -46,6 +46,11 @@
       url = "github:alexays/waybar";
       flake = false;
     };
+    ## wallpaper
+    swww = {
+      url = "github:signalwalker/swww";
+      flake = false;
+    };
     # keyboard
     # xremap = {
     #   url = github:signalwalker/xremap;
@@ -107,6 +112,7 @@
               programs.fish.pluginSources = with dependencies; {
                 done = fishDone;
               };
+              signal.desktop.wayland.wallpaper.swww.src = dependencies.swww;
             };
           };
         };

@@ -15,16 +15,24 @@ in {
       type = types.str;
       default = "echo";
     };
+    swww = {
+      src = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+      };
+    };
   };
   imports = lib.signal.fs.path.listFilePaths ./wallpaper;
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
       enable = true;
-      # package = lib.signal.home.linkSystemApp pkgs {app = "swww";};
+      package = lib.mkIf (wp.swww.src != null) (services.swww.package.overrideAttrs (final: prev: {
+        src = wp.swww.src;
+      }));
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
-    signal.desktop.wayland.wallpaper.randomizeCmd = "swww-randomize --animated ${config.services.swww.img.path}";
+    signal.desktop.wayland.wallpaper.randomizeCmd = "${config.services.swww.randomizeScript} --animated ${config.services.swww.img.path}";
     services.wpaperd = {
       enable = !config.services.swww.enable;
       systemd = {
