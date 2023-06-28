@@ -512,15 +512,16 @@
     "waybarSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1687866654,
-        "narHash": "sha256-aogiOj4pe2AJYxQFh8Dw6xQ2Tb6v4W9zwbGX4t2mStI=",
+        "lastModified": 1685345101,
+        "narHash": "sha256-bnaYNa1jb7kZ1mtMzeOQqz4tmBG1w5YXlQWoop1Q0Yc=",
         "owner": "alexays",
         "repo": "waybar",
-        "rev": "41164905351436db3a124207261f9dd759c6fa1b",
+        "rev": "47193a3d2f81a8ce7177449f92e927db74d873b0",
         "type": "github"
       },
       "original": {
         "owner": "alexays",
+        "ref": "0.9.18",
         "repo": "waybar",
         "type": "github"
       }
