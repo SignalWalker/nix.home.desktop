@@ -235,11 +235,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1687873042,
-        "narHash": "sha256-7L376DQc66K8s2p9UxreHUwFpbx/hpRMQDxHzeRmQ4g=",
+        "lastModified": 1688052323,
+        "narHash": "sha256-+CK2vB9ZN6dbbNL+2oKT8Opo+TLKEZ2u66RFZMG7LoU=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "d8f9b901ddb1d91bf3ade66cf091e93b5cab6e49",
+        "rev": "e0bb032f0e6dcc9b84e571c345928fba4054855e",
         "type": "github"
       },
       "original": {
@@ -345,11 +345,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1687926830,
-        "narHash": "sha256-Ke0ulVKejY7mLvGP24FpCL3D9BsXDqyr6Nat4l606G0=",
+        "lastModified": 1688004874,
+        "narHash": "sha256-XsbITmKyqk1Vlco45ygplMbp8JYWv7/NFKhiCpHit5w=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "6b3b62c93371c3130f8821725aa0c3cb61d0b052",
+        "rev": "34ed922738e45b3424c80bf9ea615d87473c45a3",
         "type": "github"
       },
       "original": {
@@ -396,11 +396,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1687886075,
-        "narHash": "sha256-PeayJDDDy+uw1Ats4moZnRdL1OFuZm1Tj+KiHlD67+o=",
+        "lastModified": 1687977148,
+        "narHash": "sha256-gUcXiU2GgjYIc65GOIemdBJZ+lkQxuyIh7OkR9j0gCo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a565059a348422af5af9026b5174dc5c0dcefdae",
+        "rev": "60a783e00517fce85c42c8c53fe0ed05ded5b2a4",
         "type": "github"
       },
       "original": {
@@ -512,16 +512,15 @@
     "waybarSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1685345101,
-        "narHash": "sha256-bnaYNa1jb7kZ1mtMzeOQqz4tmBG1w5YXlQWoop1Q0Yc=",
+        "lastModified": 1687866654,
+        "narHash": "sha256-aogiOj4pe2AJYxQFh8Dw6xQ2Tb6v4W9zwbGX4t2mStI=",
         "owner": "alexays",
         "repo": "waybar",
-        "rev": "47193a3d2f81a8ce7177449f92e927db74d873b0",
+        "rev": "41164905351436db3a124207261f9dd759c6fa1b",
         "type": "github"
       },
       "original": {
         "owner": "alexays",
-        "ref": "0.9.18",
         "repo": "waybar",
         "type": "github"
       }
