@@ -14,7 +14,7 @@ in {
     music = config.xdg.userDirs.music;
   in {
     programs.beets = {
-      enable = true;
+      enable = false; # disabled because it's not building rn (2022-07-05)
       package = pkgs.beetsPackages.beets-unstable.overrideAttrs (final: prev: {
         src = config.signal.media.flakeInputs.beetsSrc;
         patches = [];

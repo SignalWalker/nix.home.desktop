@@ -35,9 +35,14 @@ in {
     };
     signal.desktop.scratch.scratchpads = {
       "Shift+W" = {
-        criteria = {app_id = "io.github.quodlibet.QuodLibet";};
+        criteria = {
+          app_id = "io.github.quodlibet.QuodLibet";
+          title = "^.* - Quod Libet";
+        };
         resize = 75;
         startup = "quodlibet";
+        autostart = true;
+        automove = true;
       };
     };
   };
