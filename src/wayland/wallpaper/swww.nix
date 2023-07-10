@@ -37,11 +37,11 @@ in {
     img = {
       fps = mkOption {
         type = types.int;
-        default = 120;
+        default = 30;
       };
       step = mkOption {
         type = types.int;
-        default = 90;
+        default = 85;
       };
       path = mkOption {
         type = types.str;
@@ -68,15 +68,15 @@ in {
           WantedBy = [cfg.systemd.target];
         };
         Service = {
-          Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}"];
           Type = "simple";
           ExecStart = "${cfg.package}/bin/swww-daemon";
         };
       };
       "swww-randomize" = {
         Unit.PartOf = [cfg.systemd.target];
+        Service.Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}" "SWWW_TRANSITION_DURATION=1"];
         Service.Type = "oneshot";
-        Service.ExecStart = "${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated ${cfg.img.path}";
+        Service.ExecStart = "${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
       };
     };
     systemd.user.timers = lib.mkIf cfg.systemd.enable {

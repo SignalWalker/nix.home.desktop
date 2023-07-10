@@ -15,6 +15,27 @@ in {
   };
   imports = [];
   config = lib.mkIf (config.signal.desktop.wayland.enable && cfg.enable) {
+    home.packages = let
+      vars = config.signal.desktop.wayland.sessionVariables;
+      exports = std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars));
+    in [
+      (pkgs.writeShellScriptBin "sway-wrapper" ''
+        set -o errexit
+        # BEGIN -- export `signal.desktop.wayland.sessionVariables`
+        ${exports}
+        # END   -- export `signal.desktop.wayland.sessionVariables`
+        if [ ! "$_SWAY_WRAPPER_ALREADY_EXECUTED" ]; then
+          export XDG_CURRENT_DESKTOP=sway
+          export _SWAY_WRAPPER_ALREADY_EXECUTED=1
+        fi
+        if [ "$DBUS_SESSION_BUS_ADDRESS" ]; then
+          export DBUS_SESSION_BUS_ADDRESS
+          exec sway "$@"
+        else
+          exec dbus-run-session sway "$@"
+        fi
+      '')
+    ];
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
       menu = config.signal.desktop.wayland.menu.cmd;
@@ -24,27 +45,28 @@ in {
       right = "l";
     in {
       enable = true;
-      package = lib.mkIf (!config.system.isNixOS) (pkgs.sway.override {
-        sway-unwrapped =
-          pkgs.lib.makeOverridable
-          (
-            {
-              isNixOS ? config.system.isNixOS,
-              enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
-            }: (lib.signal.home.linkSystemApp pkgs {
-              app = "sway";
-              extraApps = ["swaybar" "swaymsg" "swaynag"];
-              extraArgs = {
-                version = "system";
-              };
-            })
-          )
-          {};
-        extraSessionCommands = config.wayland.windowManager.sway.extraSessionCommands;
-        extraOptions = config.wayland.windowManager.sway.extraOptions;
-        withBaseWrapper = config.wayland.windowManager.sway.wrapperFeatures.base;
-        withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
-      });
+      package = lib.mkIf (!config.system.isNixOS) null;
+      # package = lib.mkIf (!config.system.isNixOS) (pkgs.sway.override {
+      #   sway-unwrapped =
+      #     pkgs.lib.makeOverridable
+      #     (
+      #       {
+      #         isNixOS ? config.system.isNixOS,
+      #         enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
+      #       }: (lib.signal.home.linkSystemApp pkgs {
+      #         app = "sway";
+      #         extraApps = ["swaybar" "swaymsg" "swaynag"];
+      #         extraArgs = {
+      #           version = "system";
+      #         };
+      #       })
+      #     )
+      #     {};
+      #   extraSessionCommands = config.wayland.windowManager.sway.extraSessionCommands;
+      #   extraOptions = config.wayland.windowManager.sway.extraOptions;
+      #   withBaseWrapper = config.wayland.windowManager.sway.wrapperFeatures.base;
+      #   withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
+      # });
       config = {
         bars = [];
         assigns = {};

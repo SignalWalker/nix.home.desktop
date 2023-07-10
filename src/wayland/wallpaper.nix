@@ -26,13 +26,13 @@ in {
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
       enable = true;
-      package = lib.mkIf (wp.swww.src != null) (config.services.swww.package.overrideAttrs (final: prev: {
+      package = lib.mkIf (wp.swww.src != null) (pkgs.swww.overrideAttrs (final: prev: {
         src = wp.swww.src;
       }));
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
-    signal.desktop.wayland.wallpaper.randomizeCmd = "${config.services.swww.randomizeScript} --animated ${config.services.swww.img.path}";
+    signal.desktop.wayland.wallpaper.randomizeCmd = "systemctl --user start swww-randomize.service";
     services.wpaperd = {
       enable = !config.services.swww.enable;
       systemd = {

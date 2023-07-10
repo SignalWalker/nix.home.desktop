@@ -23,7 +23,7 @@ in {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
         PartOf = [wayland.systemd.target];
-        After = [wayland.systemd.target];
+        Before = ["tray.target"];
       };
       Service = {
         ExecStart = "${config.programs.waybar.package}/bin/waybar";
@@ -33,12 +33,13 @@ in {
       };
       Install = {
         WantedBy = [wayland.systemd.target];
+        RequiredBy = ["tray.target"];
       };
     };
     programs.waybar = {
       enable = bar.enable;
       package = pkgs.waybar.overrideAttrs (final: prev: {
-        src = toString bar.waybar.src;
+        # src = toString bar.waybar.src;
         buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
       });
       systemd = {
@@ -177,7 +178,7 @@ in {
         colorset = theme.colors.signal;
         fontSize = 11;
         fonts = (font.bmpsAt fontSize) ++ font.slab ++ font.symbols;
-        bgAlpha = toString 0.66;
+        bgAlpha = toString 0.88;
       in ''
         /* colors */
         @import url("file://${colorset.__meta.css.file}");

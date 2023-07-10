@@ -14,9 +14,14 @@ in {
     home.packages = with pkgs; [zotero];
     signal.desktop.scratch.scratchpads = {
       "Shift+Z" = {
-        criteria = {class = "Zotero";};
+        criteria = {
+          class = "Zotero";
+          instance = "Navigator";
+        };
         resize = 93;
         startup = "zotero";
+        autostart = true;
+        automove = true;
       };
     };
   };

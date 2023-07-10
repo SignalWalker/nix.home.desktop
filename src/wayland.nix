@@ -55,37 +55,38 @@ in {
       slurp
     ];
     signal.desktop.wayland.sessionVariables = {
-      MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
-      QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
-      WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
-    };
-    systemd.user.sessionVariables = {
       WLR_RENDERER = "vulkan";
       MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
       QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
       WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
     };
+    # systemd.user.sessionVariables = {
+    #   MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
+    #   QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
+    #   WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
+    # };
     systemd.user.targets."${cfg.systemd.targetName}" = {
       Unit = {
         Description = "wayland graphical session";
         BindsTo = ["graphical-session.target"];
-        After = ["graphical-session-pre.target"];
         Wants = ["graphical-session-pre.target" "xdg-desktop-autostart.target"];
+        After = ["graphical-session-pre.target"];
+        Before = ["xdg-desktop-autostart.target"];
       };
     };
     services.kanshi.systemdTarget = cfg.systemd.target;
     signal.desktop.wayland.__systemdStartupScript = let
-      vars = config.signal.desktop.wayland.sessionVariables;
+      vars = {}; # config.signal.desktop.wayland.sessionVariables;
       keys = ["DISPLAY" "WAYLAND_DISPLAY" "SWAYSOCK" "XDG_CURRENT_DESKTOP"] ++ (attrNames vars);
       keysStr = toString keys;
     in
-      pkgs.writeScript "hm-wayland-systemd-startup-script" (''
-          #! /usr/bin/env sh
+      # ''
+      # + (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)))
+      # + ''
+      pkgs.writeScript "hm-wayland-systemd-startup-script" ''
+        #! /usr/bin/env sh
 
-        ''
-        + (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)))
-        + ''
-
+        if [[ "$(systemctl --user is-active ${cfg.systemd.target})" != "active" ]]; then
           systemctl --user import-environment ${keysStr}
 
           # `hash` checks for the existence of the dbus command
@@ -93,9 +94,10 @@ in {
             && dbus-update-activation-environment --systemd ${keysStr}
 
           systemctl --user start ${cfg.systemd.target}
+        fi
 
-          ${config.signal.desktop.wayland.__startupScript}
-        '');
+        ${config.signal.desktop.wayland.__startupScript}
+      '';
     signal.desktop.wayland.__startupScript = pkgs.writeScript "hm-wayland-startup-script" ''
       #! /usr/bin/env sh
       ${cfg.startupCommands}

@@ -6,6 +6,8 @@ import subprocess
 import os
 from enum import IntEnum
 import random
+from PIL import Image
+import re
 
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff' }
 ANIMATED_EXTENSIONS = { 'webp', 'gif' }
@@ -56,12 +58,61 @@ def recursive_scandir(dir: str, ext):    # dir: str, ext: list
 
     return subfolders, files
 
+def swww(*args, bin_path = "swww", stdout = subprocess.PIPE, stderr = subprocess.PIPE) -> tuple[str, str] | None:
+    cmd = [bin_path]
+    cmd.extend(args)
+    eprint(f"cmd: {' '.join(cmd)}");
+    try:
+        res = subprocess.run(cmd, stdout=stdout, stderr=stderr, encoding="utf-8")
+        return (res.stdout.strip() if stdout == subprocess.PIPE else "", res.stderr.strip() if stderr == subprocess.PIPE else "")
+    except subprocess.CalledProcessError:
+        return None
+
+query_reg = re.compile(r"^(?P<id>[^:]+):\s+(?P<width>\d+)x(?P<height>\d+)")
+def swww_query(bin_path = "swww") -> dict[str, tuple[int, int]] | None:
+    query = swww("query", bin_path = bin_path)
+    if query is None: return None
+    screens = {}
+    out, _ = query
+    for line in out.splitlines():
+        fmatch = query_reg.match(line)
+        if fmatch is None:
+            eprint(f"couldn't find matches in `{line}`", LogLevel.ERROR)
+            sys.exit(1)
+        screens[fmatch['id']] = (int(fmatch['width']), int(fmatch['height']))
+
+    return screens
+
+def display_img(images: list[str], resize: str, output: str, width: int, height: int, max_variance: float, bin_path: str = "swww") -> tuple[str, str] | None:
+    image = random.choice(images)
+
+    eprint(f"applying bg to output {output}: {image}")
+
+    if resize != "no":
+        with Image.open(image) as img:
+            img_w, img_h = img.size
+            img_ratio = img_w / img_h
+            scr_ratio = width / height
+            variance = abs(scr_ratio - img_ratio)
+            eprint(f"image dimensions: {img_w}x{img_h} ({img_ratio})")
+            eprint(f"screen dimensions: {width}x{height} ({scr_ratio})")
+            eprint(f"variance: {variance}")
+            if variance > max_variance:
+                eprint("resizing with `crop`")
+                resize = "crop"
+            else:
+                eprint("resizing with `fit`")
+                resize = "fit"
+
+    return swww("img", "--transition-type=random", "--filter=Nearest", f"--outputs={output}", f"--resize={resize}", image, bin_path = bin_path, stdout=None, stderr=None)
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog = "swww-randomize",
                                      description = "Switch to a random wallpaper from a given directory.")
     parser.add_argument('-a', '--animated', action='store_true', help="enable animated wallpapers")
     parser.add_argument('-b', '--bin-path', type=str, help="swww binary path", default="swww")
     parser.add_argument('--resize', type=str, default="crop", help="image resizing options")
+    parser.add_argument('--max-variance', type=float, default=2, help="variance of image dimensions from screen aspect ratio above which to switch to crop resizing")
     parser.add_argument('directory', help="directory from which to select images")
     args = parser.parse_args()
 
@@ -74,22 +125,17 @@ def main() -> int:
 
     try:
         _, images = recursive_scandir(args.directory, extensions)
-        image = random.choice(images)
     except Exception as error:
         eprint(f"failed to get image; error: {error}", LogLevel.ERROR)
         return 1
 
-    eprint(f"image path: {image}")
-    swww_cmd = [
-        args.bin_path,
-        "img",
-        "--filter=nearest",
-        f"--resize={args.resize}",
-        "--transition-type=random",
-        image
-    ]
+    screens = swww_query(bin_path = args.bin_path)
+    if screens is None: return 1
 
-    subprocess.Popen(swww_cmd).wait()
+    for id, [width, height] in screens.items():
+        res = display_img(images, args.resize, id, width, height, args.max_variance, bin_path = args.bin_path)
+        if res is None:
+            return 1
 
     return 0
 

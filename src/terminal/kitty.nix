@@ -155,7 +155,7 @@ in {
         # os
         linux_display_server = "auto";
         # background
-        background_opacity = "0.8";
+        background_opacity = "0.96";
         dynamic_background_opacity = true;
         background_tint = "0.2";
         # text
@@ -208,11 +208,11 @@ in {
         "kitty_mod+plus" = "change_font_size all +1.0";
         "kitty_mod+kp_minus" = "change_font_size all -1.0";
         "kitty_mod+kp_plus" = "change_font_size all +1.0";
-        "kitty_mod+alt+minus" = "set_background_opacity -0.02";
+        "kitty_mod+alt+minus" = "set_background_opacity -0.01";
         "kitty_mod+alt+equal" = "set_background_opacity default";
-        "kitty_mod+alt+plus" = "set_background_opacity +0.02";
-        "kitty_mod+alt+kp_minus" = "set_background_opacity -0.02";
-        "kitty_mod+alt+kp_plus" = "set_background_opacity +0.02";
+        "kitty_mod+alt+plus" = "set_background_opacity +0.01";
+        "kitty_mod+alt+kp_minus" = "set_background_opacity -0.01";
+        "kitty_mod+alt+kp_plus" = "set_background_opacity +0.01";
         # clipboard
         "kitty_mod+p" = "paste_from_clipboard";
         "kitty_mod+y" = "copy_to_clipboard";
