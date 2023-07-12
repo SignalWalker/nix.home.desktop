@@ -16,7 +16,7 @@ in {
       "Shift+R" = {
         criteria = {
           app_id = "io.github.martinrotter.rssguard";
-          title = "\\[[0-9]*\\] RSS Guard [0-9]\\.[0-9]\\.[0-9]";
+          title = "^(\\[[0-9]*\\] )?RSS Guard [0-9]\\.[0-9]\\.[0-9]";
         };
         resize = 93;
         startup = "rssguard";

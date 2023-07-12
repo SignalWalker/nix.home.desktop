@@ -10,10 +10,10 @@ in {
   options = with lib; {};
   imports = [];
   config = {
-    home.packages = with pkgs; [
-      vivaldi
-      vivaldi-ffmpeg-codecs
-      widevine-cdm
-    ];
+    # home.packages = with pkgs; [
+    #   vivaldi
+    #   vivaldi-ffmpeg-codecs
+    #   widevine-cdm
+    # ];
   };
 }

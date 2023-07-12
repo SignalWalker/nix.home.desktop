@@ -37,7 +37,7 @@ in {
       "Shift+W" = {
         criteria = {
           app_id = "io.github.quodlibet.QuodLibet";
-          title = "^.* - Quod Libet";
+          title = "^(.* - )?Quod Libet";
         };
         resize = 75;
         startup = "quodlibet";
