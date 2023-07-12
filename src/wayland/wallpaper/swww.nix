@@ -76,7 +76,12 @@ in {
         Unit.PartOf = [cfg.systemd.target];
         Service.Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}" "SWWW_TRANSITION_DURATION=1"];
         Service.Type = "oneshot";
-        Service.ExecStart = "${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
+        Service.ExecStart = let
+          py = pkgs.python311.withPackages (ps:
+            with ps; [
+              pillow
+            ]);
+        in "${py}/bin/python3 ${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
       };
     };
     systemd.user.timers = lib.mkIf cfg.systemd.enable {

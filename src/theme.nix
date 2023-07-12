@@ -11,34 +11,56 @@ in {
   imports = lib.signal.fs.path.listFilePaths ./theme;
   config = {
     gtk = {
-      enable = config.system.isNixOS;
+      enable = true;
       gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
       gtk3 = {
         bookmarks = map (dir: "file:///${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
       };
       iconTheme = {
-        package = pkgs.gnome.adwaita-icon-theme;
-        name = "Adwaita";
+        package = pkgs.breeze-icons;
+        name = "Breeze";
       };
       theme = {
-        package = pkgs.gnome.gnome-themes-extra;
-        name = "Adwaita";
+        package = pkgs.breeze-gtk;
+        name = "Breeze";
       };
     };
+    # home.packages = with pkgs; [
+    #   libsForQt5.qtstyleplugin-kvantum
+    #   themechanger
+    # ];
     qt = {
-      platformTheme = "gnome";
+      enable = true;
+      # platformTheme = "gtk";
       style = {
-        package = pkgs.adwaita-qt;
-        name = "adwaita";
+        package = pkgs.breeze-qt5;
+        name = "breeze";
       };
     };
+    xdg.configFile."kdeglobals".text = ''
+    '';
+    # xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+    #   theme=KvArcDark
+    # '';
     home.pointerCursor = {
       # package = pkgs.nordzy-cursor-theme;
       # package = pkgs.quintom-cursor-theme;
       package = pkgs.vanilla-dmz;
       name = "Vanilla-DMZ-AA";
-      gtk.enable = config.system.isNixOS;
+      gtk.enable = true;
+      x11.enable = true;
       size = 24;
+    };
+    systemd.user.services."xsettings" = {
+      Unit = {
+        PartOf = ["graphical-session.target"];
+        Before = ["graphical-session.target"];
+      };
+      Install.WantedBy = ["graphical-session-pre.target"];
+      Service = {
+        Type = "simple";
+        ExecStart = "${pkgs.xsettingsd}/bin/xsettingsd";
+      };
     };
   };
 }

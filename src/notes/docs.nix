@@ -34,7 +34,7 @@ in {
         resize = 93;
         startup = "zeal";
         automove = true;
-        autostart = true;
+        autostart = false;
       };
     };
   };

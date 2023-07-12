@@ -8,13 +8,16 @@ with builtins; let
   std = pkgs.lib;
 in {
   options = with lib; {};
+  disabledModules = [];
   imports = [];
   config = {
-    services.check-battery.enable = true;
-    services.kdeconnect = {
+    services.syncthing = {
       enable = true;
-      indicator = true;
+      extraOptions = [];
     };
-    services.blueman-applet.enable = true;
+    services.syncthing.tray = {
+      enable = true;
+    };
   };
+  meta = {};
 }

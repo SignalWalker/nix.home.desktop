@@ -120,6 +120,13 @@ in {
       inherit (font) package;
       name = font.name;
     };
+    home.packages = let
+      fonts = config.signal.desktop.theme.font.fonts;
+    in
+      foldl' (acc: font:
+        if (fonts.${font}.package != null)
+        then (acc ++ [fonts.${font}.package])
+        else acc) [] (attrNames fonts);
     signal.desktop.theme.font = {
       fonts = {
         spleen = {
@@ -170,7 +177,7 @@ in {
           };
         };
         siji = {
-          package = pkgs.siji;
+          # package = pkgs.siji;
           families = rec {
             Siji = {
               pixelsizes = [10];
@@ -186,7 +193,7 @@ in {
           };
         };
         gohu = {
-          package = pkgs.gohufont;
+          # package = pkgs.gohufont;
           families = {
             GohuFont = {
               pixelsizes = [11 14];

@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.desktop.kvm;
 in {
   options.signal.desktop.kvm = with lib; {
-    enable = (mkEnableOption "kvm") // {default = true;};
+    enable = (mkEnableOption "kvm") // {default = false;};
   };
   imports = lib.signal.fs.path.listFilePaths ./kvm;
   config = lib.mkIf cfg.enable {

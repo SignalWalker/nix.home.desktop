@@ -46,27 +46,6 @@ in {
     in {
       enable = true;
       package = lib.mkIf (!config.system.isNixOS) null;
-      # package = lib.mkIf (!config.system.isNixOS) (pkgs.sway.override {
-      #   sway-unwrapped =
-      #     pkgs.lib.makeOverridable
-      #     (
-      #       {
-      #         isNixOS ? config.system.isNixOS,
-      #         enableXWayland ? config.signal.desktop.wayland.xwayland.enable,
-      #       }: (lib.signal.home.linkSystemApp pkgs {
-      #         app = "sway";
-      #         extraApps = ["swaybar" "swaymsg" "swaynag"];
-      #         extraArgs = {
-      #           version = "system";
-      #         };
-      #       })
-      #     )
-      #     {};
-      #   extraSessionCommands = config.wayland.windowManager.sway.extraSessionCommands;
-      #   extraOptions = config.wayland.windowManager.sway.extraOptions;
-      #   withBaseWrapper = config.wayland.windowManager.sway.wrapperFeatures.base;
-      #   withGtkWrapper = config.wayland.windowManager.sway.wrapperFeatures.gtk;
-      # });
       config = {
         bars = [];
         assigns = {};

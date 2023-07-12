@@ -50,12 +50,14 @@ in {
       # meta
       swaylock
       wev
+      wl-clipboard
+      xdg-utils
       # screenshots
       grim
       slurp
     ];
     signal.desktop.wayland.sessionVariables = {
-      WLR_RENDERER = "vulkan";
+      # WLR_RENDERER = "vulkan";
       MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
       QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
       WINIT_UNIX_BACKEND = lib.mkDefault "wayland";

@@ -111,14 +111,7 @@ in {
       };
     in {
       enable = config.system.isNixOS;
-      package =
-        if config.system.isNixOS
-        then pkgs.latest.firefox-nightly-bin
-        else
-          lib.signal.home.linkSystemApp pkgs {
-            app = "firefox";
-            syspath = "/usr/bin/firefox-nightly";
-          };
+      package = pkgs.latest.firefox-nightly-bin;
       profiles =
         (std.mapAttrs (profile: settings: std.recursiveUpdate (removeAttrs common ["bookmarks"]) settings) {
           main = {

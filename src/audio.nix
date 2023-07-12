@@ -10,19 +10,26 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {
-    signal.desktop.scratch.scratchpads = {
-      "Shift+V" = {
-        criteria = {app_id = "pavucontrol";};
-        resize = 50;
-        startup = "pavucontrol";
-        autostart = true;
-        automove = true;
+  config = lib.mkMerge [
+    {
+      signal.desktop.scratch.scratchpads = {
+        "Shift+V" = {
+          criteria = {app_id = "pavucontrol";};
+          resize = 50;
+          startup = "pavucontrol";
+          autostart = true;
+          automove = true;
+        };
       };
-    };
-    services.playerctld = {
-      enable = true;
-    };
-  };
+      services.playerctld = {
+        enable = true;
+      };
+    }
+    (lib.mkIf config.system.isNixOS {
+      home.packages = with pkgs; [
+        pavucontrol
+      ];
+    })
+  ];
   meta = {};
 }

@@ -114,7 +114,8 @@ in {
           PartOf = [wayland.systemd.target];
         };
         Service = {
-          ExecStart = "swayidle -w";
+          Environment = ["PATH=/run/current-system/sw/bin:/etc/profiles/per-user/%u/bin"];
+          ExecStart = "${swayidle.package}/bin/swayidle -w";
         };
         Install = {
           WantedBy = [wayland.systemd.target];

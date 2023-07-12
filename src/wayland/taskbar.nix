@@ -24,8 +24,10 @@ in {
         Description = "Taskbar for Wayland compositors.";
         PartOf = [wayland.systemd.target];
         Before = ["tray.target"];
+        BindsTo = ["tray.target"];
       };
       Service = {
+        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin"];
         ExecStart = "${config.programs.waybar.package}/bin/waybar";
         ExecReload = "kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";
@@ -122,7 +124,9 @@ in {
         "custom/media" = {
           format = "♪ {}";
           interval = 1;
-          exec = ./waybar/get-media.py;
+          exec = let
+            py = pkgs.python311.withPackages (ps: with ps; []);
+          in "${py}/bin/python3 ${./waybar/get-media.py}";
           exec-if = "pgrep playerctld";
           return-type = "json";
         };
