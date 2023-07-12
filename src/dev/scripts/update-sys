@@ -11,6 +11,6 @@ echo "Updating:\n\thomelib..." && nix flake update --commit-lock-file ~/projects
 	&& echo "\tsyshome..." && nix flake update --commit-lock-file ~/projects/nix/sys/home && git push \
 	&& echo "\tsysdesk..." && nix flake update --commit-lock-file ~/projects/nix/sys/desktop && git push
 
-nix build --no-link -L --show-trace --impure ~/projects/nix/sys/desktop ${argv} \
-	&& nix profile remove 0 \
-	&& nix run --impure ~/projects/nix/sys/desktop#activate-default ${argv}
+# nix build --no-link -L --show-trace --impure ~/projects/nix/sys/desktop ${argv} \
+# 	&& nix profile remove 0 \
+# 	&& nix run --impure ~/projects/nix/sys/desktop#activate-default ${argv}
