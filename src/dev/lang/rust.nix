@@ -39,10 +39,10 @@ in {
       CARGO_HOME = cfg.cargo.home;
       RUSTC_LD = cfg.cargo.linker;
     };
-    home.packages = with pkgs; [
-      # rustup
-      # config.signal.dev.lang.c.llvmPackages.clang
-      # latest.rustChannels.nightly.rustup
+    home.packages = [
+      pkgs.rustup
+      config.signal.dev.lang.c.llvmPackages.clang
+      # pkgs.latest.rustChannels.nightly.rustup
     ];
     home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
