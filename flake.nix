@@ -6,17 +6,6 @@
       url = github:kamadorueda/alejandra;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    homelib = {
-      url = github:signalwalker/nix.home.lib;
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.alejandra.follows = "alejandra";
-    };
-    homebase = {
-      url = github:signalwalker/nix.home.base;
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.alejandra.follows = "alejandra";
-      inputs.homelib.follows = "homelib";
-    };
     # browser
     mozilla = {
       url = github:mozilla/nixpkgs-mozilla;
@@ -24,7 +13,7 @@
     };
     # services
     ash-scripts = {
-      url = github:signalwalker/scripts-rs;
+      url = "github:signalwalker/scripts-rs";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.mozilla.follows = "mozilla";
     };
@@ -80,48 +69,27 @@
     ...
   }:
     with builtins; let
-      homelib = inputs.homelib;
       std = nixpkgs.lib;
-      hlib = homelib.lib;
-      home = hlib.home;
-      signal = hlib.signal;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
-      signalModules.default = {
-        name = "home.desktop.default";
-        dependencies = signal.flake.set.toDependencies {
-          flakes = inputs;
-          filter = ["alejandra"];
-          outputs = {
-            mozilla.overlays = ["firefox"];
+      homeManagerModules.default = {
+        config,
+        lib,
+        ...
+      }: {
+        imports = [
+          inputs.ash-scripts.homeManagerModules.default
+          ./home-manager.nix
+        ];
+        config = {
+          signal.desktop.polybarScripts = inputs.polybar-scripts;
+          signal.desktop.editor.helix.src = inputs.helixSrc;
+          signal.desktop.wayland.taskbar.waybar.src = inputs.waybarSrc;
+          programs.fish.pluginSources = {
+            done = inputs.fishDone;
           };
-        };
-        outputs = dependencies: {
-          homeManagerModules = {
-            lib,
-            config,
-            ...
-          }: {
-            imports = [
-              ./home-manager.nix
-            ];
-            config = {
-              signal.desktop.polybarScripts = dependencies.polybar-scripts;
-              signal.desktop.editor.helix.src = dependencies.helixSrc;
-              signal.desktop.wayland.taskbar.waybar.src = dependencies.waybarSrc;
-              programs.fish.pluginSources = with dependencies; {
-                done = fishDone;
-              };
-              signal.desktop.wayland.wallpaper.swww.src = dependencies.swww;
-            };
-          };
+          signal.desktop.wayland.wallpaper.swww.src = inputs.swww;
         };
       };
-      homeConfigurations = home.configuration.fromFlake {
-        flake = self;
-        flakeName = "home.desktop";
-      };
-      packages = home.package.fromHomeConfigurations self.homeConfigurations;
-      apps = home.app.fromHomeConfigurations self.homeConfigurations;
     };
 }
