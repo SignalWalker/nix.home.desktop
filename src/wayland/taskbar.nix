@@ -10,6 +10,7 @@ with builtins; let
   bar = wayland.taskbar;
   theme = config.signal.desktop.theme;
   font = theme.font;
+  fontSize = 11;
 in {
   options.signal.desktop.wayland.taskbar = with lib; {
     enable = mkEnableOption "task/status bar";
@@ -27,7 +28,7 @@ in {
         BindsTo = ["tray.target"];
       };
       Service = {
-        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin"];
+        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
         ExecStart = "${config.programs.waybar.package}/bin/waybar";
         ExecReload = "kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";
@@ -60,7 +61,9 @@ in {
           "backlight"
           "wireplumber"
           "tray"
-          "custom/media"
+          "mpris"
+          # "custom/media"
+          "cava"
         ];
         modules-center = [
           "sway/window"
@@ -75,10 +78,13 @@ in {
         ];
         "sway/window" = {
           format = "{title}";
+          # icon = true;
+          # icon-size = fontSize;
           rewrite = {
             "^(.*) — Firefox.*$" = " $1";
             "^(.*) - Kitty$" = " $1";
           };
+          max-length = 32;
         };
         wireplumber = {
           format = " {volume}%";
@@ -96,6 +102,10 @@ in {
         };
         clock = {
           format = " {:%H:%M}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "month";
+          };
         };
         backlight = {
           format = "{icon} {percent}%";
@@ -129,6 +139,17 @@ in {
           in "${py}/bin/python3 ${./waybar/get-media.py}";
           exec-if = "pgrep playerctld";
           return-type = "json";
+        };
+        mpris = {
+          format = "{player_icon}{dynamic}";
+          format-paused = "{status_icon}{dynamic}";
+          player-icons = {
+            "default" = "♪";
+            "firefox" = "";
+          };
+          status-icons = {
+            "paused" = "⏸";
+          };
         };
         tray = {
           show-passive-items = true;
@@ -177,10 +198,16 @@ in {
           tooltip-format = "MPD (connected)";
           tooltip-format-disconnected = "MPD (disconnected)";
         };
+        cava = {
+          cava_config = "${config.xdg.configHome}/cava/config";
+          format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+          bars = 6;
+          input_delay = 4;
+          bar_delimiter = 0;
+        };
       };
       style = let
         colorset = theme.colors.signal;
-        fontSize = 11;
         fonts = (font.bmpsAt fontSize) ++ font.slab ++ font.symbols;
         bgAlpha = toString 0.88;
       in ''

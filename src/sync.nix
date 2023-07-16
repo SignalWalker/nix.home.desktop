@@ -17,6 +17,7 @@ in {
     };
     services.syncthing.tray = {
       enable = true;
+      command = "syncthingtray --wait";
     };
   };
   meta = {};
