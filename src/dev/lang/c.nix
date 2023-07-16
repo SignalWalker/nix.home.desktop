@@ -12,7 +12,7 @@ in {
     enable = (mkEnableOption "C/C++ language family") // {default = true;};
     llvmPackages = mkOption {
       type = types.attrsOf types.anything;
-      default = pkgs.llvmPackages_14;
+      default = pkgs.llvmPackages_latest;
     };
     linker = mkOption {
       type = types.str;
@@ -23,13 +23,13 @@ in {
   config = lib.mkIf (cfg.enable) {
     home.packages =
       [
-        # cfg.llvmPackages.clang
-        # cfg.llvmPackages.clang-manpages
+        cfg.llvmPackages.clang
+        cfg.llvmPackages.clang-manpages
       ]
       ++ (with pkgs; [
-        # cmake
-        # cmake-format
-        # cmake-language-server
+        cmake
+        cmake-format
+        cmake-language-server
       ]);
     systemd.user.sessionVariables = {
       CC = "clang";

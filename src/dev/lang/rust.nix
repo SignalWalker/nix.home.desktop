@@ -41,8 +41,6 @@ in {
     };
     home.packages = [
       pkgs.rustup
-      config.signal.dev.lang.c.llvmPackages.clang
-      # pkgs.latest.rustChannels.nightly.rustup
     ];
     home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
