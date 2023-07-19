@@ -39,10 +39,6 @@ in {
     __startupScript = mkOption {
       type = types.path;
     };
-    screenshotScript = mkOption {
-      type = types.path;
-      default = ./wayland/scripts/screenshot;
-    };
   };
   imports = lib.signal.fs.path.listFilePaths ./wayland;
   config = lib.mkIf cfg.enable {
@@ -52,9 +48,6 @@ in {
       wev
       wl-clipboard
       xdg-utils
-      # screenshots
-      grim
-      slurp
     ];
     signal.desktop.wayland.sessionVariables = {
       # WLR_RENDERER = "vulkan";

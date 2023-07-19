@@ -145,6 +145,7 @@ in {
 
             "Print" = "exec ${config.signal.desktop.wayland.screenshotScript} active";
             "Ctrl+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} area";
+            "${mod}+Ctrl+F12" = "exec ${config.signal.desktop.wayland.screenshotScript} area";
             "${mod}+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} output";
             "${mod}+Alt+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} screen";
 
@@ -216,9 +217,9 @@ in {
             "${mod}+${up}" = "resize shrink height 10px";
             "${mod}+${down}" = "resize grow height 10px";
 
-            "${mod}+c" = "resize set width 50 ppt height 50 ppt, move position center";
-            "${mod}+Ctrl+c" = "resize set width 75 ppt height 75 ppt, move position center";
-            "${mod}+Shift+c" = "resize set width 83 ppt height 83 ppt, move position center";
+            "${mod}+c" = "resize set width 50 ppt height 50 ppt, move position center; mode default";
+            "${mod}+Ctrl+c" = "resize set width 75 ppt height 75 ppt, move position center; mode default";
+            "${mod}+Shift+c" = "resize set width 83 ppt height 83 ppt, move position center; mode default";
 
             "Escape" = "mode default";
             "Return" = "mode default";
