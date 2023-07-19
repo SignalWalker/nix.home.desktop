@@ -55,11 +55,6 @@ in {
       QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
       WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
     };
-    # systemd.user.sessionVariables = {
-    #   MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
-    #   QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
-    #   WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
-    # };
     systemd.user.targets."${cfg.systemd.targetName}" = {
       Unit = {
         Description = "wayland graphical session";
