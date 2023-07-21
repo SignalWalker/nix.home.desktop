@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -10,8 +11,13 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {
-    services.network-manager-applet.enable = true;
-  };
+  config = lib.mkMerge [
+    (lib.mkIf osConfig.networking.networkmanager.enable {
+      services.network-manager-applet.enable = true;
+    })
+    # (lib.mkIf osConfig.networking.wireless.iwd.enable {
+    #   home.packages = [pkgs.iwgtk];
+    # })
+  ];
   meta = {};
 }
