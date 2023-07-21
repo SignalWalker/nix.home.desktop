@@ -11,7 +11,7 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = [pkgs.wayvnc];
+    home.packages = [pkgs.wayvnc pkgs.remmina];
   };
   meta = {};
 }

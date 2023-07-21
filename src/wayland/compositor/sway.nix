@@ -157,6 +157,8 @@ in {
             "${mod}+Alt+w" = "exec ${config.signal.desktop.wayland.wallpaper.randomizeCmd}";
 
             "${mod}+Alt+l" = "exec swaylock";
+
+            "${mod}+XF86HomePage" = "mode passthrough";
           }
           // (foldl'
             (acc: dir: let
@@ -223,6 +225,9 @@ in {
 
             "Escape" = "mode default";
             "Return" = "mode default";
+          };
+          "passthrough" = {
+            "${mod}+XF86HomePage" = "mode default";
           };
         };
         terminal = "kitty";
