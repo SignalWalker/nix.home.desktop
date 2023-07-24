@@ -8,6 +8,7 @@ with builtins; let
   std = pkgs.lib;
   wayland = config.signal.desktop.wayland;
   bar = wayland.taskbar;
+  eww = bar.eww;
   theme = config.signal.desktop.theme;
   font = theme.font;
   fontSize = 11;
@@ -16,6 +17,13 @@ in {
     enable = mkEnableOption "task/status bar";
     waybar.src = mkOption {
       type = types.path;
+    };
+    eww = {
+      enable = (mkEnableOption "EWW taskbar") // {default = true;};
+      package = mkOption {
+        type = types.package;
+        default = pkgs.eww-wayland;
+      };
     };
   };
   imports = [];
@@ -27,20 +35,31 @@ in {
         Before = ["tray.target"];
         BindsTo = ["tray.target"];
       };
-      Service = {
-        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
-        ExecStart = "${config.programs.waybar.package}/bin/waybar";
-        ExecReload = "kill -SIGUSR2 $MAINPID";
-        Restart = "on-failure";
-        KillMode = "mixed";
-      };
+      Service =
+        if eww.enable
+        then {
+          Type = "simple";
+          ExecStart = "${eww.package}/bin/EWW --no-daemonize";
+        }
+        else {
+          Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
+          ExecStart = "${config.programs.waybar.package}/bin/waybar";
+          ExecReload = "kill -SIGUSR2 $MAINPID";
+          Restart = "on-failure";
+          KillMode = "mixed";
+        };
       Install = {
         WantedBy = [wayland.systemd.target];
         RequiredBy = ["tray.target"];
       };
     };
+    programs.eww = {
+      enable = eww.enable;
+      package = eww.package;
+      configDir = ./eww;
+    };
     programs.waybar = {
-      enable = bar.enable;
+      enable = !eww.enable;
       package = pkgs.waybar.overrideAttrs (final: prev: {
         # src = toString bar.waybar.src;
         buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);

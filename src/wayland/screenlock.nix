@@ -16,16 +16,23 @@ in {
   };
   imports = [];
   config = lib.mkIf (wln.enable && lck.enable) {
-    programs.swaylock.settings = let
-      font = head fontCfg.slab;
-    in {
-      ignore-empty-password = true;
-      indicator-caps-lock = true;
-      font = font.name;
-      font-size = font.selectSize 11;
-      image = "${config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR"}/pond_bg.png";
-      scaling = "fit";
-      color = "000000";
+    programs.swaylock = {
+      package = pkgs.swaylock-effects;
+      settings = let
+        font = head fontCfg.slab;
+      in {
+        ignore-empty-password = true;
+        indicator-caps-lock = true;
+        font = font.name;
+        font-size = font.selectSize 11;
+        # image = "${config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR"}/pond_bg.png";
+        scaling = "fit";
+        color = "000000";
+        clock = true;
+        indicator = true;
+        screenshots = true;
+        datestr = "%a, %Y-%M-%d";
+      };
     };
   };
 }

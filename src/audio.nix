@@ -51,6 +51,8 @@ in {
         pavucontrol
         # for pactl
         pulseaudio
+        qpwgraph
+        easyeffects
       ];
     })
   ];

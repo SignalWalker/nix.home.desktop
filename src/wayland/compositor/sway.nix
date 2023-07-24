@@ -156,7 +156,7 @@ in {
 
             "${mod}+Alt+w" = "exec ${config.signal.desktop.wayland.wallpaper.randomizeCmd}";
 
-            "${mod}+Alt+l" = "exec swaylock";
+            "${mod}+Alt+l" = "exec swaylock --effect-scale 0.5 --effect-blur 5x3";
 
             "${mod}+XF86HomePage" = "mode passthrough";
           }

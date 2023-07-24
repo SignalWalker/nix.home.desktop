@@ -37,7 +37,7 @@
     };
     ## wallpaper
     swww = {
-      url = "github:signalwalker/swww";
+      url = "github:horus645/swww";
       flake = false;
     };
     # keyboard

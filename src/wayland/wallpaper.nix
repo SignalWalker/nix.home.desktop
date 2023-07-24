@@ -26,9 +26,9 @@ in {
   config = lib.mkIf (cfg.enable && wp.enable) {
     services.swww = {
       enable = true;
-      package = lib.mkIf (wp.swww.src != null) (pkgs.swww.overrideAttrs (final: prev: {
-        src = wp.swww.src;
-      }));
+      # package = lib.mkIf (wp.swww.src != null) (pkgs.swww.overrideAttrs (final: prev: {
+      #   src = wp.swww.src;
+      # }));
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };

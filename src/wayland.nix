@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -44,17 +45,21 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       # meta
-      swaylock
       wev
       wl-clipboard
       xdg-utils
     ];
-    signal.desktop.wayland.sessionVariables = {
-      # WLR_RENDERER = "vulkan";
-      MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
-      QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
-      WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
-    };
+    signal.desktop.wayland.sessionVariables = lib.mkMerge [
+      {
+        MOZ_ENABLE_WAYLAND = lib.mkDefault 1;
+        QT_QPA_PLATFORM = lib.mkDefault "wayland;xcb";
+        WINIT_UNIX_BACKEND = lib.mkDefault "wayland";
+      }
+      (lib.mkIf osConfig.hardware.nvidia.modesetting.enable {
+        WLR_RENDERER = lib.mkDefault "vulkan";
+        WLR_NO_HARDWARE_CURSORS = lib.mkDefault "1";
+      })
+    ];
     systemd.user.targets."${cfg.systemd.targetName}" = {
       Unit = {
         Description = "wayland graphical session";
