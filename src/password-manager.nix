@@ -23,7 +23,7 @@ in {
         automove = true;
       };
       "Shift+P" = {
-        criteria = {app_id = "Bitwarden";};
+        criteria = {class = "Bitwarden";};
         resize = 75;
         startup = "bitwarden";
         autostart = true;

@@ -48,8 +48,8 @@
     # };
     # editor
     helixSrc = {
+      # this is for the helix.desktop file
       url = "github:helix-editor/helix";
-      inputs.nixpkgs.follows = "nixpkgs";
       flake = false;
     };
     # terminal

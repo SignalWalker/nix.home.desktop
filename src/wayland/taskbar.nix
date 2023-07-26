@@ -82,7 +82,7 @@ in {
           "tray"
           "mpris"
           # "custom/media"
-          "cava"
+          # "cava"
         ];
         modules-center = [
           "sway/window"
