@@ -25,8 +25,7 @@ in {
     signal.desktop.scratch.scratchpads = {
       "Shift+D" = {
         criteria = {
-          class = "discord";
-          window_type = "normal";
+          app_id = "discord";
         };
         resize = 93;
         startup = "discord";
