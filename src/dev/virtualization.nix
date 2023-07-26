@@ -11,7 +11,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.dev.virtualization = {
-      enable = (mkEnableOption "virtualization") // {default = osConfig.virtualisation.libvirt.enable or false;};
+      enable = (mkEnableOption "virtualization") // {default = osConfig.virtualisation.libvirtd.enable;};
     };
   };
   disabledModules = [];
