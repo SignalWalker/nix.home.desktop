@@ -63,7 +63,8 @@ in {
           "*" = {
             adaptive_sync = "on";
             scale_filter = "nearest";
-            # background = "${config.signal.desktop.theme.wallpaper.default} center #000000";
+            scale = "1.0";
+            background = "/home/ash/pictures/wallpapers/train_and_lake.png fill #000000";
           };
         };
         seat = {};

@@ -123,13 +123,14 @@ in {
       };
 
       signal.desktop.wayland.idle.settings = let
-        lock = "swaylock -f";
+        lock = "swaylock -f --effect-scale 0.5 --effect-blur 5x3";
         outputOn = "swaymsg \"output * dpms on\"";
         outputOff = "swaymsg \"output * dpms off\"";
+        sleep = "systemctl sleep";
       in {
         before-sleep = [
           "playerctl pause"
-          # lock
+          lock
         ];
         lock = [lock];
         timeout = [
@@ -142,6 +143,10 @@ in {
             timeout = 900;
             command = outputOff;
             resume = outputOn;
+          }
+          {
+            timeout = 1800;
+            command = sleep;
           }
         ];
       };

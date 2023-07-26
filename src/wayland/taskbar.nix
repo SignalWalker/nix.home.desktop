@@ -19,7 +19,7 @@ in {
       type = types.path;
     };
     eww = {
-      enable = (mkEnableOption "EWW taskbar") // {default = true;};
+      enable = (mkEnableOption "EWW taskbar") // {default = false;};
       package = mkOption {
         type = types.package;
         default = pkgs.eww-wayland;
@@ -39,7 +39,7 @@ in {
         if eww.enable
         then {
           Type = "simple";
-          ExecStart = "${eww.package}/bin/EWW --no-daemonize";
+          ExecStart = "${eww.package}/bin/EWW --no-daemonize --force-wayland";
         }
         else {
           Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
