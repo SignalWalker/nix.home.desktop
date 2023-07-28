@@ -9,7 +9,6 @@
     # browser
     mozilla = {
       url = github:mozilla/nixpkgs-mozilla;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     # services
     ash-scripts = {
