@@ -27,6 +27,7 @@ in {
         ];
       })
       xdelta
+      xivlauncher
     ];
     programs.mangohud = {
       enable = true;
