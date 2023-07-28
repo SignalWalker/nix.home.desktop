@@ -23,6 +23,8 @@ in {
         [input]
         method = pulse
         source = auto
+
+        ${readFile config.signal.desktop.theme.inputs.cava}
       '';
       signal.desktop.scratch.scratchpads = {
         "Shift+V" = {

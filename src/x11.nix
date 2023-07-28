@@ -17,9 +17,9 @@ in {
       enable = cfg.enable;
     };
 
-    home.pointerCursor.x11 = {
-      enable = cfg.enable;
-      defaultCursor = "left_ptr";
-    };
+    # home.pointerCursor.x11 = {
+    #   enable = cfg.enable;
+    #   defaultCursor = "left_ptr";
+    # };
   };
 }

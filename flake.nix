@@ -62,6 +62,15 @@
       url = "github:franciscolourenco/done";
       flake = false;
     };
+    # theme
+    catppuccin-cava = {
+      url = "github:catppuccin/cava";
+      flake = false;
+    };
+    catppuccin-i3 = {
+      url = "github:catppuccin/i3";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -89,6 +98,10 @@
             done = inputs.fishDone;
           };
           signal.desktop.wayland.wallpaper.swww.src = inputs.swww;
+          signal.desktop.theme.inputs = {
+            cava = "${inputs.catppuccin-cava}/frappe.cava";
+            i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
+          };
         };
       };
     };

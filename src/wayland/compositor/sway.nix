@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -46,10 +47,57 @@ in {
     in {
       enable = true;
       package = lib.mkIf (!config.system.isNixOS) null;
+      extraConfigEarly = ''
+        include ${config.signal.desktop.theme.inputs.i3}
+      '';
       config = {
         bars = [];
         assigns = {};
-        colors = {};
+        # # target                 title     bg    text   indicator  border
+        # client.focused           $pink     $base $text  $rosewater $pink
+        # client.focused_inactive  $mauve    $base $text  $rosewater $mauve
+        # client.unfocused         $mauve    $base $text  $rosewater $mauve
+        # client.urgent            $peach    $base $peach $overlay0  $peach
+        # client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+        # client.background        $base
+        colors = {
+          background = "$base";
+          focused = {
+            border = "$pink";
+            background = "$base";
+            text = "$text";
+            indicator = "$rosewater";
+            childBorder = "$pink";
+          };
+          focusedInactive = {
+            border = "$mauve";
+            background = "$mantle";
+            text = "$text";
+            indicator = "$rosewater";
+            childBorder = "$mauve";
+          };
+          unfocused = {
+            border = "$mauve";
+            background = "$crust";
+            text = "$text";
+            indicator = "$rosewater";
+            childBorder = "$mauve";
+          };
+          urgent = {
+            border = "$peach";
+            background = "$base";
+            text = "$peach";
+            indicator = "$overlay0";
+            childBorder = "$peach";
+          };
+          placeholder = {
+            border = "$overlay0";
+            background = "$base";
+            text = "$text";
+            indicator = "$overlay0";
+            childBorder = "$overlay0";
+          };
+        };
         floating = {};
         fonts = {
         };
@@ -87,10 +135,13 @@ in {
             pointer_accel = "1.0";
           };
           "type:keyboard" = {
+            # lib.mkIf (!(osConfig ? services.xserver.extraLayouts.hypersuper)) {
+            # set in osCOnfig.services.xserver
+
             xkb_layout = "hypersuper(us)";
-            xkb_capslock = "disabled";
-            xkb_numlock = "enabled";
             xkb_options = "caps:hyper";
+            # xkb_capslock = "disabled";
+            # xkb_numlock = "enabled";
           };
         };
         focus = {
