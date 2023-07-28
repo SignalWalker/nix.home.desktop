@@ -19,7 +19,6 @@ in {
     ];
   in {
     home.packages = with pkgs; [
-      mgba
     ];
     # programs.modloader64-gui = {
     #   enable = true;

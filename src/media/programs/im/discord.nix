@@ -12,7 +12,10 @@ in {
     enable = (mkEnableOption "Discord") // {default = true;};
     package = mkOption {
       type = types.package;
-      default = pkgs.discord;
+      default = pkgs.discord.override {
+        withOpenASAR = true;
+        withVencord = true;
+      };
     };
   };
   disabledModules = [];

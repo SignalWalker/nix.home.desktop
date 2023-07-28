@@ -10,9 +10,27 @@ in {
   options = with lib; {};
   imports = lib.signal.fs.path.listFilePaths ./games;
   config = {
+    home.packages = with pkgs; [
+      dolphin-emu-beta
+      duckstation
+      pcsx2
+      ppsspp
+      mgba
+      snes9x-gtk
+      melonDS
+      (retroarch.override {
+        cores = with libretro; [
+          beetle-saturn
+          flycast
+          fbneo
+          parallel-n64
+        ];
+      })
+      xdelta
+    ];
     programs.mangohud = {
       enable = true;
-      enableSessionWide = true;
+      enableSessionWide = false;
       settings = {
       };
       settingsPerApplication = {
