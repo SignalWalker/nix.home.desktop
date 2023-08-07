@@ -17,6 +17,7 @@ in {
       statix
       alejandra
       rnix-lsp
+      agenix
     ];
     programs.jq.enable = true;
   };

@@ -13,6 +13,7 @@ in {
   config = {
     home.packages = [
       pkgs.just
+      pkgs.pkg-config
     ];
   };
   meta = {};

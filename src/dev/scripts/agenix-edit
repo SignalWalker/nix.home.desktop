@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+set -e
+
+autoload colors; colors
+printerr() { printf "${fg[yellow]}[agenix-edit]${fg[blue]}[$(date +%T)]${reset_color} %s\n" "$@" 1>&2; }
+
+sec_path="$(readlink -m $1)"
+sec_dir="$(dirname ${sec_path})"
+
+if [[ ! -d "$sec_dir" ]]; then
+	printerr "couldn't find $sec_dir"
+	exit 1
+fi
+
+pushd "$sec_dir"
+agenix "${argv[2,-1]}" "${sec_path}"
+popd
