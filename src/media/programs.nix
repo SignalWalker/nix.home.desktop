@@ -9,5 +9,9 @@ with builtins; let
 in {
   options = with lib; {};
   imports = lib.signal.fs.path.listFilePaths ./programs;
-  config = {};
+  config = {
+    home.packages = with pkgs; [
+      qbittorrent
+    ];
+  };
 }

@@ -28,6 +28,8 @@ in {
       renoise
       ardour
       reaper
+
+      nicotine-plus
     ];
   };
   meta = {};

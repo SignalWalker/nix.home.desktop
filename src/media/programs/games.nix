@@ -28,6 +28,9 @@ in {
       })
       xdelta
       xivlauncher
+      lutris
+      cockatrice
+      xorg.xauth # for docker-mtgo
     ];
     programs.mangohud = {
       enable = true;
