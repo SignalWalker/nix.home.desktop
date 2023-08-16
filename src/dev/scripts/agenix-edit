@@ -5,14 +5,24 @@ set -e
 autoload colors; colors
 printerr() { printf "${fg[yellow]}[agenix-edit]${fg[blue]}[$(date +%T)]${reset_color} %s\n" "$@" 1>&2; }
 
-sec_path="$(readlink -m $1)"
+if [[ -z "${argv[-1]}" ]]; then
+	printerr "must supply at least one argument"
+	exit 1
+fi
+
+sec_path="$(readlink -m ${argv[-1]})"
 sec_dir="$(dirname ${sec_path})"
+sec_name="$(basename -- "${sec_path}")"
 
 if [[ ! -d "$sec_dir" ]]; then
 	printerr "couldn't find $sec_dir"
 	exit 1
 fi
 
+printerr "$sec_dir/$sec_name"
+
 pushd "$sec_dir"
-agenix "${argv[2,-1]}" "${sec_path}"
+agenix "${argv[1,-2]}" "$sec_name"
 popd
+
+lsd -lha "$sec_path"
