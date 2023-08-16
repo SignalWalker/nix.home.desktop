@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -6,17 +7,18 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  syncthing = config.services.syncthing;
 in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
   config = {
     services.syncthing = {
-      enable = true;
+      enable = !osConfig.services.syncthing.enable;
       extraOptions = [];
     };
     services.syncthing.tray = {
-      enable = true;
+      enable = osConfig.services.syncthing.enable || syncthing.enable;
       command = "syncthingtray --wait";
     };
   };
