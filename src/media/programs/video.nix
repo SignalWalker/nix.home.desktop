@@ -13,7 +13,8 @@ in {
   config = {
     home.packages = with pkgs; [
       jellyfin-media-player
-      jellyfin-mpv-shim
+      # fails to build as of 2023-08-07
+      # jellyfin-mpv-shim
       (pkgs.wrapOBS {
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs

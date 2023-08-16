@@ -31,6 +31,7 @@ in {
       lutris
       cockatrice
       xorg.xauth # for docker-mtgo
+      moonlight-qt
     ];
     programs.mangohud = {
       enable = true;

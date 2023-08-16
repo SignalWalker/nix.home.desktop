@@ -29,14 +29,17 @@ in {
         per_disc_numbering = true;
         import = {
           copy = false;
-          move = true;
+          move = false;
+          write = true;
+          hardlink = true;
           incremental_skip_later = true;
           group_albums = true;
           bell = true;
           detail = true;
+          from_scratch = true;
         };
         match = {
-          strong_rec_thresh = 0.06;
+          strong_rec_thresh = 0.10;
           max_rec.missing_tracks = "strong";
           preferred = {
             countries = ["XW" "US"];
@@ -52,11 +55,11 @@ in {
         };
         plugins = [
           # sources
-          "discogs"
+          # "discogs"
           # "spotify"
           "chroma"
           "fromfilename"
-          "lastgenre"
+          # "lastgenre"
           # other
           "missing"
           "importadded"
@@ -75,6 +78,7 @@ in {
           genres = true;
           remove = true;
           user = "SignalWalker";
+          extra_tags = ["year"];
         };
         discogs = {
           index_tracks = true;
