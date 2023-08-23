@@ -18,7 +18,7 @@ in {
       "Shift+N" = {
         criteria = {app_id = "scratch_notes";};
         resize = 83;
-        startup = "kitty --class scratch_notes nvim $XDG_NOTES_DIR";
+        startup = "kitty --class scratch_notes nvim +ObsidianYesterday +vsp +ObsidianToday";
         automove = true;
         autostart = true;
       };
