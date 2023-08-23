@@ -203,7 +203,7 @@ in {
 
             "${mod}+n" = "exec makoctl restore";
             "${mod}+Ctrl+n" = "exec makoctl dismiss";
-            "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
+            # "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
             "${mod}+Alt+n" = "exec makoctl invoke on-button-left";
 
             "${mod}+Alt+w" = "exec ${config.signal.desktop.wayland.wallpaper.randomizeCmd}";
