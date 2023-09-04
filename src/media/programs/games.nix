@@ -27,7 +27,7 @@ in {
         ];
       })
       xdelta
-      xivlauncher
+      # xivlauncher
       lutris
       cockatrice
       xorg.xauth # for docker-mtgo
