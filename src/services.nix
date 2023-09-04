@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -11,10 +12,10 @@ in {
   imports = [];
   config = {
     services.check-battery.enable = true;
-    services.kdeconnect = {
-      enable = true;
-      indicator = true;
-    };
+    # services.kdeconnect = {
+    #   enable = osConfig.programs.kdeconnect.enable or false;
+    #   indicator = config.services.kdeconnect.enable;
+    # };
     services.blueman-applet.enable = true;
     services.systembus-notify.enable = true;
     services.udiskie = {

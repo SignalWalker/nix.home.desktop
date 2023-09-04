@@ -51,8 +51,7 @@ in {
     (lib.mkIf config.system.isNixOS {
       home.packages = with pkgs; [
         pavucontrol
-        # for pactl
-        pulseaudio
+        pulseaudio # for pactl
         qpwgraph
         easyeffects
       ];
