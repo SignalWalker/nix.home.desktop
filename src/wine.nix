@@ -12,10 +12,10 @@ in {
   imports = [];
   config = {
     home.packages = [pkgs.bottles];
-    xdg.binFile."wine" = {
+    xdg.binFile."wine-bottles" = {
       executable = true;
       text = ''
-        #! /usr/bin/env sh
+        #! ${pkgs.zsh}/bin/zsh
         bottles-cli run -b Standard -e "$@"
       '';
     };
