@@ -28,13 +28,13 @@ in {
       # };
     };
     home.packages = with pkgs; [
-      gitoxide
+      # gitoxide
       gh
       glab
     ];
-    home.shellAliases = {
-      gx = "gix"; # really don't like the default gitoxide command
-    };
+    # home.shellAliases = {
+    #   gx = "gix"; # really don't like the default gitoxide command
+    # };
     programs.git = {
       enable = true;
       userName = "Ash Walker";
