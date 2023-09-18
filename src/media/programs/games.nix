@@ -32,6 +32,8 @@ in {
       cockatrice
       xorg.xauth # for docker-mtgo
       moonlight-qt
+      prismlauncher
+      wineWowPackages.waylandFull
     ];
     programs.mangohud = {
       enable = true;
