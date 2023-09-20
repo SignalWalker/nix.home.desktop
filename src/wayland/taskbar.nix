@@ -27,7 +27,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (wayland.enable && bar.enable) {
+  config = lib.mkIf (false && wayland.enable && bar.enable) {
     systemd.user.services."wayland-taskbar" = {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
@@ -60,10 +60,11 @@ in {
     };
     programs.waybar = {
       enable = !eww.enable;
-      package = pkgs.waybar.overrideAttrs (final: prev: {
-        # src = toString bar.waybar.src;
-        buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
-      });
+      package = pkgs.waybar;
+      # .overrideAttrs (final: prev: {
+      #   # src = toString bar.waybar.src;
+      #   buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
+      # });
       systemd = {
         enable = false;
         target = wayland.systemd.target;
