@@ -15,12 +15,13 @@ in {
   in {
     programs.beets = {
       enable = true; # disabled because it's not building rn (2022-07-05)
-      package = pkgs.beetsPackages.beets-unstable.overrideAttrs (final: prev: {
-        src = config.signal.media.flakeInputs.beetsSrc;
-        patches = [];
-        version = "git";
-        propagatedBuildInputs = prev.propagatedBuildInputs ++ (with pkgs.python3Packages; [typing-extensions]);
-      });
+      package = pkgs.beetsPackages.beets-unstable;
+      # .overrideAttrs (final: prev: {
+      #   src = config.signal.media.flakeInputs.beetsSrc;
+      #   patches = [];
+      #   version = "git";
+      #   propagatedBuildInputs = prev.propagatedBuildInputs ++ (with pkgs.python3Packages; [typing-extensions]);
+      # });
       settings = {
         color = true;
         directory = "${music}/library";
@@ -30,7 +31,7 @@ in {
         import = {
           copy = false;
           move = false;
-          write = true;
+          write = false;
           hardlink = true;
           incremental_skip_later = true;
           group_albums = true;
