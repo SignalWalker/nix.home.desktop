@@ -29,12 +29,13 @@ in {
         ignore_hidden = true;
         per_disc_numbering = true;
         import = {
-          copy = false;
+          copy = true;
           move = false;
-          write = false;
-          hardlink = true;
+          write = true;
+          hardlink = false;
+          reflink = false;
           incremental_skip_later = true;
-          group_albums = true;
+          group_albums = false;
           bell = true;
           detail = true;
           from_scratch = true;
