@@ -19,11 +19,11 @@ in {
       "Shift+A" = {
         criteria = {class = "Authy Desktop";};
         startup = "authy";
-        autostart = true;
-        automove = true;
+        autostart = false;
+        automove = false;
       };
       "Shift+P" = {
-        criteria = {class = "Bitwarden";};
+        criteria = {app_id = "Bitwarden";};
         resize = 75;
         startup = "bitwarden";
         autostart = true;

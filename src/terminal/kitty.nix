@@ -49,7 +49,7 @@ in {
       "F1" = {
         criteria = {app_id = "scratch_logs";};
         resize = 75;
-        startup = "kitty --class scratch_logs -- journalctl --follow --no-tail --system --boot";
+        startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
         autostart = true;
         automove = true;
       };
