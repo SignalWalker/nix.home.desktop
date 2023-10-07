@@ -4,5 +4,5 @@ launch --title "journalctl :: user" journalctl --follow --no-tail --user --boot
 
 new_tab
 layout vertical
-launch --title "Compositor :: stdout" tail --lines=+0 --follow ${XDG_STATE_HOME}/log/sway/out.log
-launch --title "Compositor :: stderr" tail --lines=+0 --follow ${XDG_STATE_HOME}/log/sway/err.log
+launch --title "Compositor :: stdout" sh -c 'tail --lines=+0 --follow ${XDG_STATE_HOME}/log/sway/out.log'
+launch --title "Compositor :: stderr" sh -c 'tail --lines=+0 --follow ${XDG_STATE_HOME}/log/sway/err.log'

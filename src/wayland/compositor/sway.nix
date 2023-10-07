@@ -111,8 +111,12 @@ in {
           "*" = {
             adaptive_sync = "on";
             scale_filter = "nearest";
-            scale = "1.0";
+            scale = "1";
             background = "/home/ash/pictures/wallpapers/train_and_lake.png fill #000000";
+          };
+          # the tiny goodwill monitor
+          "DO NOT USE - RTK 32V3H-H6A 0x00000001" = {
+            mode = "1920x1080";
           };
         };
         seat = {};
