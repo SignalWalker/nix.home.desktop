@@ -15,10 +15,7 @@ in {
       "Shift+F" = {
         criteria = {app_id = "^firefox*";};
         resize = 93;
-        startup =
-          if config.system.isNixOS
-          then "firefox"
-          else "firefox-nightly";
+        startup = "firefox-beta";
       };
     };
     systemd.user.sessionVariables = {
