@@ -39,17 +39,17 @@ in {
         autostart = true;
         automove = true;
       };
-      "Shift+T" = {
-        criteria = {app_id = "scratch_top";};
-        resize = 83;
-        startup = "kitty --class scratch_top btop";
-        autostart = true;
-        automove = true;
-      };
       "F1" = {
         criteria = {app_id = "scratch_logs";};
         resize = 75;
         startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
+        autostart = true;
+        automove = true;
+      };
+      "F2" = {
+        criteria = {app_id = "scratch_top";};
+        resize = 83;
+        startup = "kitty --class scratch_top btop";
         autostart = true;
         automove = true;
       };
