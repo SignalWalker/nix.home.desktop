@@ -24,8 +24,7 @@ in {
       };
       "Shift+O" = {
         criteria = {
-          class = "obsidian";
-          instance = "obsidian";
+          app_id = "obsidian";
         };
         resize = 83;
         startup = "obsidian";
