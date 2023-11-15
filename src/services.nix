@@ -19,7 +19,7 @@ in {
     services.blueman-applet.enable = true;
     services.systembus-notify.enable = true;
     services.udiskie = {
-      enable = true;
+      enable = false; # TODO :: reenable after python311Packages.keyutils is fixed
       automount = true;
       notify = true;
       tray = "auto";
