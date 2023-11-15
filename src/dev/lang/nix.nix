@@ -18,6 +18,7 @@ in {
       alejandra
       rnix-lsp
       agenix
+      snowfallorg.thaw
     ];
     programs.jq.enable = true;
   };
