@@ -92,7 +92,7 @@
         config = {
           signal.desktop.polybarScripts = inputs.polybar-scripts;
           signal.desktop.editor.helix.src = inputs.helixSrc;
-          signal.desktop.wayland.taskbar.waybar.src = inputs.waybarSrc;
+          programs.waybar.src = inputs.waybarSrc;
           programs.fish.pluginSources = {
             done = inputs.fishDone;
           };

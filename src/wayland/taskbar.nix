@@ -8,22 +8,20 @@ with builtins; let
   std = pkgs.lib;
   wayland = config.signal.desktop.wayland;
   bar = wayland.taskbar;
-  eww = bar.eww;
   theme = config.signal.desktop.theme;
   font = theme.font;
   fontSize = 11;
+
+  waybar = config.programs.waybar;
+  eww = config.programs.eww;
+  # ironbar = config.programs.ironbar;
 in {
-  options.signal.desktop.wayland.taskbar = with lib; {
-    enable = mkEnableOption "task/status bar";
-    waybar.src = mkOption {
+  options = with lib; {
+    programs.waybar.src = mkOption {
       type = types.path;
     };
-    eww = {
-      enable = (mkEnableOption "EWW taskbar") // {default = false;};
-      package = mkOption {
-        type = types.package;
-        default = pkgs.eww-wayland;
-      };
+    signal.desktop.wayland.taskbar = {
+      enable = mkEnableOption "task/status bar";
     };
   };
   imports = [];
@@ -39,7 +37,8 @@ in {
         if eww.enable
         then {
           Type = "simple";
-          ExecStart = "${eww.package}/bin/EWW --no-daemonize --force-wayland";
+          Environment = ["PATH=/run/current-system/sw/bin:${pkgs.playerctl}/bin"];
+          ExecStart = "${eww.package}/bin/eww daemon --no-daemonize --force-wayland";
         }
         else {
           Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
@@ -53,20 +52,43 @@ in {
         RequiredBy = ["tray.target"];
       };
     };
+    # programs.ironbar = {
+    #   enable = false;
+    #   config = {
+    #     position = "top";
+    #     start = [
+    #       {
+    #         type = "workspaces";
+    #       }
+    #       {type = "tray";}
+    #       {
+    #         type = "music";
+    #         player_type = "mpris";
+    #       }
+    #     ];
+    #     center = [
+    #       {type = "focused";}
+    #     ];
+    #     end = [
+    #       {type = "clipboard";}
+    #       {
+    #         type = "upower";
+    #         format = "{percentage}%";
+    #       }
+    #       {type = "clock";}
+    #     ];
+    #   };
+    #   style = "";
+    #   systemd = false;
+    # };
     programs.eww = {
-      enable = eww.enable;
-      package = eww.package;
+      enable = false;
+      package = pkgs.eww-wayland;
       configDir = ./eww;
     };
     programs.waybar = {
       enable = !eww.enable;
-      package =
-        pkgs
-        .waybar
-        .overrideAttrs (final: prev: {
-          src = toString bar.waybar.src;
-          buildInputs = prev.buildInputs ++ (with pkgs; [playerctl]);
-        });
+      package = pkgs.waybar;
       systemd = {
         enable = false;
         target = wayland.systemd.target;

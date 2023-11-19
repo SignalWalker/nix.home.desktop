@@ -112,7 +112,7 @@ in {
             adaptive_sync = "on";
             scale_filter = "nearest";
             scale = "1";
-            background = "/home/ash/pictures/wallpapers/train_and_lake.png fill #000000";
+            # background = "/home/ash/pictures/wallpapers/train_and_lake.png fill #000000";
           };
           # the tiny goodwill monitor
           "DO NOT USE - RTK 32V3H-H6A 0x00000001" = {
@@ -144,6 +144,7 @@ in {
 
             xkb_layout = "hypersuper(us)";
             xkb_options = "caps:hyper";
+            xkb_model = "pc104";
             # xkb_capslock = "disabled";
             # xkb_numlock = "enabled";
           };
@@ -185,16 +186,21 @@ in {
             "${mod}+XF86MonBrightnessDown" = "opacity minus 0.02";
             "${mod}+Ctrl+XF86MonBrightnessUp" = "opacity set 1";
 
-            "XF86AudioPrev" = "exec playerctl -s previous";
-            "XF86AudioPlay" = "exec playerctl -s play-pause";
-            "XF86AudioNext" = "exec playerctl -s next";
+            # workaround for weird keyboard issue with framework laptop
+            "${mod}+F7" = "exec light -U 1";
+            "${mod}+F8" = "exec light -A 1";
 
-            "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +2%";
-            "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -2%";
-            "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-            "Alt+XF86AudioRaiseVolume" = "exec pactl set-source-volume @DEFAULT_SOURCE@ +2%";
-            "Alt+XF86AudioLowerVolume" = "exec pactl set-source-volume @DEFAULT_SOURCE@ -2%";
-            "XF86AudioMicMute" = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+            "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl -s previous";
+            "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -s play-pause";
+            "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl -s next";
+
+            "XF86AudioRaiseVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02+";
+            "XF86AudioLowerVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02-";
+            "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "Alt+XF86AudioRaiseVolume" = "exec wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02+";
+            "Alt+XF86AudioLowerVolume" = "exec wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02-";
+            "XF86AudioMicMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+            "Alt+XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
 
             "${mod}+Ctrl+b" = "border toggle";
             "${mod}+Ctrl+p" = "floating enable, sticky toggle";

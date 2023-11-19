@@ -10,6 +10,7 @@ with builtins; let
 in {
   options = with lib; {};
   imports = [];
+  # imports = lib.signal.fs.path.listFilePaths ./services;
   config = {
     services.check-battery.enable = true;
     # services.kdeconnect = {
