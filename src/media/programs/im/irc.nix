@@ -14,21 +14,21 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkIf cfg.enable {
-    programs.hexchat = {
-      enable = true;
-    };
+    # programs.hexchat = {
+    #   enable = true;
+    # };
+    home.packages = [pkgs.weechat];
     signal.desktop.scratch.scratchpads = {
       "Shift+I" = {
-        criteria = {
-          class = "Hexchat";
-          window_type = "normal";
-        };
+        criteria = {app_id = "weechat";};
         resize = 83;
-        startup = "hexchat";
+        startup = "kitty --class weechat weechat";
         autostart = true;
         automove = true;
       };
     };
+
+    xdg.dataFile."weechat/python/autoload/notify_send.py".source = "${pkgs.weechatScripts.weechat-notify-send}/share/notify_send.py";
   };
   meta = {};
 }
