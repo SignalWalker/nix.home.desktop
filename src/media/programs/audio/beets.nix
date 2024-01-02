@@ -109,11 +109,11 @@ in {
           never_convert_lossy_files = true;
           max_bitrate = 999999; # can't set "none" from nix, i think
           link = false;
-          hardlink = false;
+          hardlink = true;
           format = "opus";
           formats = {
             opus = {
-              command = "opusenc --music \"$source\" \"$dest\"";
+              command = "${pkgs.opusTools}/bin/opusenc --music \"$source\" \"$dest\"";
               extension = "ogg";
             };
           };
