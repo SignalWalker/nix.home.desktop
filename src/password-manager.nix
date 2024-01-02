@@ -15,6 +15,7 @@ in {
       bitwarden
       authy
     ];
+
     signal.desktop.scratch.scratchpads = {
       "Shift+A" = {
         criteria = {class = "Authy Desktop";};
