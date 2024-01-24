@@ -249,11 +249,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1706025376,
-        "narHash": "sha256-tOPmWJrcqLXPttnWA4+974GN8D7onxprZS4luQC09cg=",
+        "lastModified": 1706079621,
+        "narHash": "sha256-grxw04yyeod5OMujsQ+xXCLP/DYMrFzLW5NqIteTGhY=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "7caae13465dd14ae105c69280bbe40774956eda1",
+        "rev": "83f09ecbff5160e4350c8099be1ad4c64513f665",
         "type": "github"
       },
       "original": {
@@ -265,11 +265,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1706015548,
-        "narHash": "sha256-3aRMaN3dk9JE6N4hj4RSDP/dmXnfAM5tsr+CHDa/Trw=",
+        "lastModified": 1706102764,
+        "narHash": "sha256-kznPiIXnP7nM32PjNt7Tadhv8+vi2C5xZMTz8C7lDe4=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "0dfe89a817d518d28dcbe8ee785f5525311dd9ec",
+        "rev": "90e1ba77812dde95920cd595e56c51f420b0f13e",
         "type": "github"
       },
       "original": {
@@ -485,11 +485,11 @@
     "waybarSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1705913395,
-        "narHash": "sha256-ozW4yGPdGY2WrVU0mxqkc0uFQUg8m6+S/JkALwDxRTw=",
+        "lastModified": 1706046324,
+        "narHash": "sha256-tJEonNmCCadn2YVhLxaB7igjeyQ+EAH/3aL5UB/bSfI=",
         "owner": "alexays",
         "repo": "waybar",
-        "rev": "0d9c4929988cc8443483400631157826069a388d",
+        "rev": "0948a407d0789fbd49a688d861ec17f638e1ea98",
         "type": "github"
       },
       "original": {
