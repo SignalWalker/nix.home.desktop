@@ -5,65 +5,18 @@
   ...
 }:
 with builtins; let
-  cfg = config.signal.desktop.xdg;
-  xdgEntry = lib.types.submoduleWith {
-    modules = [
-      ({
-        config,
-        lib,
-        ...
-      }: {
-        options = with lib; {
-          definition = mkOption {
-            type = types.nullOr (types.attrsOf types.anything);
-            default = null;
-          };
-          defaultFor = mkOption {
-            type = types.listOf types.str;
-            default = [];
-          };
-        };
-        config = {};
-      })
-    ];
-  };
+  std = pkgs.lib;
 in {
-  options.signal.desktop.xdg = with lib; {
-    enable = (mkEnableOption "XDG config") // {default = true;};
-    applications = mkOption {
-      type = types.attrsOf xdgEntry;
-      default = {};
+  options = with lib; {};
+  disabledModules = [];
+  imports = [];
+  config = {
+    xdg = {
+      mime.enable = true;
+      portal = {
+        enable = false;
+      };
     };
   };
-  imports = [];
-  config = lib.mkIf cfg.enable {
-    xdg.mime.enable = true;
-    xdg.mimeApps.enable = false;
-    xdg.mimeApps.defaultApplications =
-      foldl'
-      (acc: name: let
-        app = cfg.applications.${name};
-      in
-        foldl'
-        (res: mime:
-          res // {${mime} = (res.${mime} or []) ++ ["${name}.desktop"];})
-        acc
-        app.defaultFor)
-      {}
-      (attrNames cfg.applications);
-    xdg.desktopEntries =
-      foldl'
-      (acc: name: let
-        app = cfg.applications.${name};
-      in
-        if app.definition != null
-        then
-          acc
-          // {
-            ${name} = app.definition;
-          }
-        else acc)
-      {}
-      (attrNames cfg.applications);
-  };
+  meta = {};
 }

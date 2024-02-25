@@ -70,6 +70,10 @@
       url = "github:catppuccin/i3";
       flake = false;
     };
+    tokyonight = {
+      url = "github:folke/tokyonight.nvim";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -100,6 +104,14 @@
           signal.desktop.theme.inputs = {
             cava = "${inputs.catppuccin-cava}/frappe.cava";
             i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
+          };
+          programs.kitty.themes = let
+            tk = "${inputs.tokyonight}/extras/kitty";
+          in {
+            tokyonight_day = "${tk}/tokyonight_day.conf";
+            tokyonight_moon = "${tk}/tokyonight_moon.conf";
+            tokyonight_night = "${tk}/tokyonight_night.conf";
+            tokyonight_storm = "${tk}/tokyonight_storm.conf";
           };
         };
       };

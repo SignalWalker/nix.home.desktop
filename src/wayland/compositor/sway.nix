@@ -7,36 +7,38 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.wayland.compositor.sway;
+  wayland = config.signal.desktop.wayland;
+  cfg = wayland.compositor.sway;
   scratchcfg = config.signal.desktop.scratch.scratchpads;
-  bar = config.signal.desktop.wayland.taskbar;
+  bar = wayland.taskbar;
+  exports = let
+    vars = config.signal.desktop.wayland.sessionVariables;
+  in (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)));
 in {
   options.signal.desktop.wayland.compositor.sway = with lib; {
     enable = mkEnableOption "sway wayland compositor";
   };
   imports = [];
   config = lib.mkIf (config.signal.desktop.wayland.enable && cfg.enable) {
-    home.packages = let
-      vars = config.signal.desktop.wayland.sessionVariables;
-      exports = std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars));
-    in [
-      (pkgs.writeShellScriptBin "sway-wrapper" ''
-        set -o errexit
-        # BEGIN -- export `signal.desktop.wayland.sessionVariables`
-        ${exports}
-        # END   -- export `signal.desktop.wayland.sessionVariables`
-        if [ ! "$_SWAY_WRAPPER_ALREADY_EXECUTED" ]; then
-          export XDG_CURRENT_DESKTOP=sway
-          export _SWAY_WRAPPER_ALREADY_EXECUTED=1
-        fi
-        if [ "$DBUS_SESSION_BUS_ADDRESS" ]; then
-          export DBUS_SESSION_BUS_ADDRESS
-          exec sway "$@"
-        else
-          exec dbus-run-session sway "$@"
-        fi
-      '')
-    ];
+    # home.packages = let
+    # in [
+    #   (pkgs.writeShellScriptBin "sway-wrapper" ''
+    #     set -o errexit
+    #     # BEGIN -- export `signal.desktop.wayland.sessionVariables`
+    #     ${exports}
+    #     # END   -- export `signal.desktop.wayland.sessionVariables`
+    #     if [ ! "$_SWAY_WRAPPER_ALREADY_EXECUTED" ]; then
+    #       export XDG_CURRENT_DESKTOP=sway
+    #       export _SWAY_WRAPPER_ALREADY_EXECUTED=1
+    #     fi
+    #     if [ "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    #       export DBUS_SESSION_BUS_ADDRESS
+    #       exec sway "$@"
+    #     else
+    #       exec dbus-run-session sway "$@"
+    #     fi
+    #   '')
+    # ];
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
       menu = config.signal.desktop.wayland.menu.cmd;
@@ -46,7 +48,6 @@ in {
       right = "l";
     in {
       enable = true;
-      package = lib.mkIf (!config.system.isNixOS) null;
       extraConfigEarly = ''
         include ${config.signal.desktop.theme.inputs.i3}
       '';
@@ -297,7 +298,7 @@ in {
         defaultWorkspace = "workspace number 1";
         startup =
           [
-            {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
+            # {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart
@@ -308,7 +309,9 @@ in {
         enable = true;
         settings = {};
       };
-      systemd.enable = false;
+      systemd = {
+        enable = true;
+      };
       extraConfig =
         ''
           bindswitch --reload --locked {
@@ -321,7 +324,16 @@ in {
         base = true;
         gtk = true;
       };
+      extraSessionCommands = ''
+        ${exports}
+      '';
       xwayland = config.signal.desktop.wayland.xwayland.enable;
+    };
+    systemd.user.targets."sway-session" = {
+      Unit = {
+        Wants = [wayland.systemd.target];
+        Before = [wayland.systemd.target];
+      };
     };
   };
 }

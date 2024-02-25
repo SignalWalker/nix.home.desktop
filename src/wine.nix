@@ -11,7 +11,7 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = [pkgs.bottles];
+    # home.packages = [pkgs.bottles]; # disabled due to gamescope build error
     xdg.binFile."wine-bottles" = {
       executable = true;
       text = ''

@@ -64,12 +64,12 @@ in {
       {
         "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
       }
-      // (foldl' (res: name: let
+      // (foldl' (acc: name: let
         theme = kitty.themes.${name};
       in
         acc
         // {
-          "kitty/themes/${baseNameOf theme}" = {
+          "kitty/themes/${name}.conf" = {
             source = theme;
           };
         }) {} (attrNames kitty.themes));
@@ -122,7 +122,7 @@ in {
         inherit (font) package name;
         size = font.selectSize 10;
       };
-      theme = "Everforest Dark Soft";
+      theme = "Tokyo Night Storm";
       settings = {
         # scrollback
         scrollback_lines = 10000;

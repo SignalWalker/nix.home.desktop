@@ -25,7 +25,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (wayland.enable && bar.enable) {
+  config = lib.mkIf (false && wayland.enable && bar.enable) {
     systemd.user.services."wayland-taskbar" = {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
@@ -87,7 +87,7 @@ in {
       configDir = ./eww;
     };
     programs.waybar = {
-      enable = !eww.enable;
+      enable = false;
       package = pkgs.waybar;
       systemd = {
         enable = false;
