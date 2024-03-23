@@ -14,6 +14,7 @@ in {
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
+      # NOTE :: this is read-only; fish automatically loads the direnv module regardless of this option
       # enableFishIntegration = config.programs.fish.enable;
       enableZshIntegration = config.programs.zsh.enable;
       nix-direnv.enable = true;

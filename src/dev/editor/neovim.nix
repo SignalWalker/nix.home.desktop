@@ -14,10 +14,7 @@ in {
   config = lib.mkIf ed.enable {
     programs.ashvim = {
       enable = true;
-      package =
-        if (config.system.isNixOS or true)
-        then pkgs.neovim
-        else (lib.signal.home.linkSystemApp pkgs {app = "nvim";});
+      configPath = "${config.xdg.userDirs.extraConfig.XDG_PROJECTS_DIR}/cfg/neovim";
     };
   };
 }

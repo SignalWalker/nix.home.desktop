@@ -16,7 +16,6 @@ in {
     home.packages = with pkgs; [
       statix
       alejandra
-      rnix-lsp
       agenix
       snowfallorg.thaw
     ];

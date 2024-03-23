@@ -18,7 +18,8 @@ in {
       "Shift+N" = {
         criteria = {app_id = "scratch_notes";};
         resize = 83;
-        startup = "kitty --class scratch_notes nvim +ObsidianYesterday +vsp +ObsidianToday";
+        startup = "kitty --class scratch_notes nvim \"+ObsidianToday -1\" +vsp +ObsidianToday";
+        systemdCat = true;
         automove = true;
         autostart = true;
       };
@@ -28,6 +29,7 @@ in {
         };
         resize = 83;
         startup = "obsidian";
+        systemdCat = true;
         automove = true;
         autostart = true;
       };

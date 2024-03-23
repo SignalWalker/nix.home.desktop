@@ -42,7 +42,7 @@ in {
     home.packages = [
       pkgs.rustup
       # cargo extensions
-      pkgs.cargo-update
+      # pkgs.cargo-update # TODO :: restore cargo-update
     ];
     home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
