@@ -68,7 +68,7 @@ in {
         type = types.listOf familyType;
         default = [
           fonts.font-awesome.families.default
-          fonts.symbola.families.default
+          # fonts.symbola.families.default
           fonts.openmoji.families."OpenMoji Black"
           fonts.openmoji.families."OpenMoji Color"
         ];
@@ -118,6 +118,10 @@ in {
     in {
       inherit (font) package;
       name = font.name;
+      size = font.selectSize 10;
+    };
+    fonts.fontconfig = {
+      enable = true;
     };
     signal.desktop.theme.font = {
       fonts = {
@@ -320,12 +324,12 @@ in {
             "Iosevka Aile" =
               varBase
               // {
-                package = pkgs.iosevka-bin.override {variant = "aile";};
+                package = pkgs.iosevka-bin.override {variant = "Aile";};
               }; # sans serif
             "Iosevka Etoile" =
               varBase
               // {
-                package = pkgs.iosevka-bin.override {variant = "etoile";};
+                package = pkgs.iosevka-bin.override {variant = "Etoile";};
               }; # slab serif
           };
         };

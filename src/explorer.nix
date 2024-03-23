@@ -36,6 +36,7 @@ in {
           criteria = {app_id = "org.kde.dolphin";};
           resize = 83;
           startup = "dolphin";
+          systemdCat = true;
         };
       };
     })
@@ -49,6 +50,7 @@ in {
         criteria = {app_id = "nemo";};
         resize = 83;
         startup = "nemo";
+        systemdCat = true;
         # autostart = true;
         # automove = true;
       };

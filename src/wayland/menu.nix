@@ -14,9 +14,13 @@ with builtins; let
 in {
   options.signal.desktop.wayland.menu = with lib; {
     enable = (mkEnableOption "launcher menu config") // {default = true;};
-    cmd = mkOption {
+    drun = mkOption {
       type = types.str;
-      default = "${wofi.package}/bin/wofi --show=drun,run";
+      default = "${wofi.package}/bin/wofi --show=drun";
+    };
+    run = mkOption {
+      type = types.str;
+      default = "${wofi.package}/bin/wofi --show=run";
     };
   };
   imports = lib.signal.fs.path.listFilePaths ./menu;

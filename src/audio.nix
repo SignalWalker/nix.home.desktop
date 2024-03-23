@@ -31,6 +31,7 @@ in {
           criteria = {app_id = "pavucontrol";};
           resize = 50;
           startup = "pavucontrol";
+          systemdCat = true;
           autostart = true;
           automove = true;
         };

@@ -15,6 +15,7 @@ with builtins; let
     alias ktransfer="kitty +kitten transfer"
     alias kdeltas="kitty +kitten transfer --transmit-deltas"
     alias kthemes="kitty +kitten themes"
+    alias kdiffgit="git difftool --no-symlinks --dir-diff"
   '';
 in {
   options = with lib; {
@@ -36,6 +37,7 @@ in {
         criteria = {app_id = "scratch_term";};
         resize = 83;
         startup = "kitty --class scratch_term";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };
@@ -43,6 +45,7 @@ in {
         criteria = {app_id = "scratch_logs";};
         resize = 75;
         startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };
@@ -50,12 +53,22 @@ in {
         criteria = {app_id = "scratch_top";};
         resize = 83;
         startup = "kitty --class scratch_top btop";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };
       "XF86Calculator" = {
         useMod = false;
         criteria = {app_id = "scratch_editor";};
+        systemdCat = true;
+        resize = 83;
+        startup = "kitty --class scratch_editor nvim";
+      };
+      # HACK :: framework keyboard doesn't have a calculator button :c
+      "XF86AudioMedia" = {
+        useMod = false;
+        criteria = {app_id = "scratch_editor";};
+        systemdCat = true;
         resize = 83;
         startup = "kitty --class scratch_editor nvim";
       };
@@ -103,10 +116,10 @@ in {
         trustExitCode = true;
       };
       "difftool \"kitty\"" = {
-        cmd = "kitty +kitten diff $LOCAL $REMOTE";
+        cmd = "kitten diff $LOCAL $REMOTE";
       };
       "difftool \"kitty.gui\"" = {
-        cmd = "kitty kitty +kitten diff $LOCAL $REMOTE";
+        cmd = "kitten diff $LOCAL $REMOTE";
       };
     };
     programs.kitty = {
@@ -121,6 +134,11 @@ in {
       in {
         inherit (font) package name;
         size = font.selectSize 10;
+      };
+      shellIntegration = {
+        enableBashIntegration = true;
+        enableZshIntegration = config.programs.zsh.enable;
+        enableFishIntegration = config.programs.fish.enable;
       };
       theme = "Tokyo Night Storm";
       settings = {
@@ -202,6 +220,8 @@ in {
       in {
         # meta
         "kitty_mod+t>s" = "kitty_shell";
+        "kitty_mod+f1" = "show_kitty_env_vars";
+
         # view
         "kitty_mod+minus" = "change_font_size all -1.0";
         "kitty_mod+equal" = "change_font_size all 0";
@@ -213,27 +233,33 @@ in {
         "kitty_mod+alt+plus" = "set_background_opacity +0.01";
         "kitty_mod+alt+kp_minus" = "set_background_opacity -0.01";
         "kitty_mod+alt+kp_plus" = "set_background_opacity +0.01";
+
         # clipboard
         "kitty_mod+p" = "paste_from_clipboard";
         "kitty_mod+y" = "copy_to_clipboard";
         "ctrl+c" = "copy_and_clear_or_interrupt";
+
         # windows
         "kitty_mod+v" = "${vlaunch} --cwd=current";
         "kitty_mod+s" = "${hlaunch} --cwd=current";
         "kitty_mod+ctrl+v" = vlaunch;
         "kitty_mod+ctrl+s" = hlaunch;
         "kitty_mod+w" = "close_window";
+
         "kitty_mod+h" = "neighboring_window left";
         "kitty_mod+j" = "neighboring_window down";
         "kitty_mod+k" = "neighboring_window up";
         "kitty_mod+l" = "neighboring_window right";
+
         "kitty_mod+shift+h" = "move_window_backward";
         "kitty_mod+shift+l" = "move_window_forward";
+
         "kitty_mod+r" = "start_resizing_window";
         "kitty_mod+alt+shift+h" = "resize_window narrower";
         "kitty_mod+alt+shift+j" = "resize_window shorter";
         "kitty_mod+alt+shift+k" = "resize_window taller";
         "kitty_mod+alt+shift+l" = "resize_window wider";
+
         # tabs
         "kitty_mod+alt+h" = "previous_tab";
         "kitty_mod+alt+l" = "next_tab";
@@ -241,6 +267,7 @@ in {
         "kitty_mod+alt+w" = "close_tab";
         "kitty_mod+alt+ctrl+h" = "move_tab_backward";
         "kitty_mod+alt+ctrl+l" = "move_tab_forward";
+
         # history
         "kitty_mod+/" = "show_scrollback";
         "kitty_mod+alt+/" = "show_last_command_output";
@@ -253,9 +280,11 @@ in {
         "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
         "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
         "kitty_mod+delete" = "clear_terminal scroll active";
+
         # signals
         "kitty_mod+ctrl+w" = "signal_child SIGTERM";
         "kitty_mod+ctrl+shift+w" = "signal_child SIGKILL";
+
         # files
         "kitty_mod+f>y" = "kitten hints --program=@";
         "kitty_mod+f>o" = "kitten hints --type=hyperlink";

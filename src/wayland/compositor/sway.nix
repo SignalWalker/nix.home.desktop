@@ -41,7 +41,7 @@ in {
     # ];
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
-      menu = config.signal.desktop.wayland.menu.cmd;
+      menu = config.signal.desktop.wayland.menu;
       up = "k";
       down = "j";
       left = "h";
@@ -115,10 +115,6 @@ in {
             scale = "1";
             # background = "/home/ash/pictures/wallpapers/train_and_lake.png fill #000000";
           };
-          # the tiny goodwill monitor
-          "DO NOT USE - RTK 32V3H-H6A 0x00000001" = {
-            mode = "1920x1080";
-          };
         };
         seat = {};
         window = {
@@ -164,7 +160,10 @@ in {
           {
             "${mod}+Return" = "exec kitty";
             "${mod}+Shift+q" = "kill";
-            "${mod}+d" = "exec \"${menu}\"";
+
+            "${mod}+d" = "exec '${menu.drun}'";
+            "${mod}+Alt+d" = "exec '${menu.run}'";
+
             "${mod}+Ctrl+r" = "reload";
             "${mod}+Ctrl+Alt+Shift+q" = "exec swaymsg exit";
 
@@ -294,7 +293,7 @@ in {
           };
         };
         terminal = "kitty";
-        inherit menu;
+        menu = menu.drun;
         defaultWorkspace = "workspace number 1";
         startup =
           [

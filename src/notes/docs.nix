@@ -33,6 +33,7 @@ in {
         };
         resize = 93;
         startup = "zeal";
+        systemdCat = true;
         automove = true;
         autostart = false;
       };

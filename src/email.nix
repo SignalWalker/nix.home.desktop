@@ -20,6 +20,7 @@ in {
         };
         resize = 93;
         startup = "thunderbird";
+        systemdCat = true;
         automove = true;
         autostart = true;
       };

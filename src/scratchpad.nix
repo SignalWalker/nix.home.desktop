@@ -48,6 +48,7 @@ with builtins; let
               type = types.nullOr types.str;
               default = null;
             };
+            systemdCat = mkEnableOption "pipe output with systemd-cat";
             name = mkOption {
               type = types.str;
               default = config.criteria.app_id or config.criteria.class or config.criteria.startup or "<unknown>";
@@ -87,6 +88,8 @@ with builtins; let
                 mkFn (
                   if config.startup == null
                   then null
+                  else if config.systemdCat
+                  then "systemd-cat --identifier=${config.name} ${config.startup}"
                   else "${config.startup}"
                 );
             };

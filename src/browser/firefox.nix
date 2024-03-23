@@ -10,16 +10,20 @@ in {
   options.signal.desktop.browser.firefox = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {
+  config = let
+    firefoxCmd = "firefox-beta";
+  in {
     signal.desktop.scratch.scratchpads = {
       "Shift+F" = {
         criteria = {app_id = "^firefox*";};
         resize = 93;
-        startup = "firefox-beta";
+        startup = firefoxCmd;
+        name = "firefox";
+        systemdCat = true;
       };
     };
     systemd.user.sessionVariables = {
-      BROWSER = "firefox";
+      BROWSER = firefoxCmd;
       MOZ_DBUS_REMOTE = 1;
     };
     programs.firefox = let
