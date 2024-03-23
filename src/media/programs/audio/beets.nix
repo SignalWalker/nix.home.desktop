@@ -74,6 +74,7 @@ in {
           "permissions"
           "duplicates"
           "convert"
+          "types"
         ];
         musicbrainz = {
           auto = true;
@@ -95,6 +96,9 @@ in {
         };
         lastfm = {
           user = "SignalWalker";
+        };
+        types = {
+          rating = "int";
         };
         bandcamp.art = true;
         thumbnails.auto = true;

@@ -13,17 +13,18 @@ in {
     home.packages = with pkgs; [
       dolphin-emu-beta
       duckstation
-      pcsx2
+      # pcsx2 # disabled for build error
       ppsspp
       mgba
-      snes9x-gtk
+      # snes9x-gtk
       melonDS
       (retroarch.override {
         cores = with libretro; [
           beetle-saturn
           flycast
-          fbneo
-          parallel-n64
+          # fbneo
+          # parallel-n64 # build error
+          mupen64plus
         ];
       })
       xdelta
@@ -33,7 +34,6 @@ in {
       xorg.xauth # for docker-mtgo
       moonlight-qt
       prismlauncher
-      wineWowPackages.waylandFull
     ];
     programs.mangohud = {
       enable = true;

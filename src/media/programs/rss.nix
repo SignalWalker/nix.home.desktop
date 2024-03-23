@@ -20,6 +20,7 @@ in {
         };
         resize = 93;
         startup = "rssguard";
+        systemdCat = true;
         automove = true;
         autostart = true;
       };

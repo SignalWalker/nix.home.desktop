@@ -33,6 +33,7 @@ in {
         };
         resize = 93;
         startup = "discord";
+        systemdCat = true;
         automove = true;
         autostart = true;
       };

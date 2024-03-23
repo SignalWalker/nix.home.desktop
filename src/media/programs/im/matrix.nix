@@ -29,6 +29,7 @@ in {
         };
         resize = 93;
         startup = "element-desktop";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };

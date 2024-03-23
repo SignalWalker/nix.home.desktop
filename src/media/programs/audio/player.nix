@@ -41,6 +41,7 @@ in {
         };
         resize = 75;
         startup = "quodlibet";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };

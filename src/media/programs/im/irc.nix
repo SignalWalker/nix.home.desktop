@@ -23,6 +23,7 @@ in {
         criteria = {app_id = "weechat";};
         resize = 83;
         startup = "kitty --class weechat weechat";
+        systemdCat = true;
         autostart = true;
         automove = true;
       };
