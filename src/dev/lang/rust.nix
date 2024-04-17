@@ -42,7 +42,10 @@ in {
     home.packages = [
       pkgs.rustup
       # cargo extensions
-      # pkgs.cargo-update # TODO :: restore cargo-update
+      pkgs.cargo-update
+      pkgs.cargo-limit
+      pkgs.cargo-expand
+      pkgs.cargo-watch
     ];
     home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
@@ -62,6 +65,11 @@ in {
       };
       profile."release" = {
         lto = true;
+      };
+      registries = {
+        signal = {
+          index = "sparse+https://git.ashwalker.net/api/packages/ash/cargo/";
+        };
       };
     };
   };

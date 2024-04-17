@@ -26,7 +26,13 @@ in {
     home.packages = with pkgs; [
       sccache
     ];
-    signal.dev.lang.rust.cargo.config.build.rustc-wrapper = "sccache";
+    signal.dev.lang.rust.cargo.config = {
+      build = {
+        rustc-wrapper = "sccache";
+        # https://github.com/mozilla/sccache/blob/main/docs/Rust.md
+        incremental = false; # can't cache incrmentally-built artifacts
+      };
+    };
     systemd.user.sessionVariables = lib.mkMerge [
       {
         SCCACHE_DIR = cfg.cache.path;
