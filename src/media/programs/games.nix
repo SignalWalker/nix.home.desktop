@@ -34,6 +34,7 @@ in {
       xorg.xauth # for docker-mtgo
       moonlight-qt
       prismlauncher
+      heroic
     ];
     programs.mangohud = {
       enable = true;
