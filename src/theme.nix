@@ -25,19 +25,19 @@ in {
         package = pkgs.breeze-icons;
         name = "Breeze";
       };
-      theme = let
-        size = "Compact";
-        variant = "Frappe";
-        accent = "Teal";
-      in {
-        package = pkgs.catppuccin-gtk.override {
-          accents = [(lib.toLower accent)];
-          size = lib.toLower size;
-          tweaks = [];
-          variant = lib.toLower variant;
-        };
-        name = "Catppuccin-${variant}-${size}-${accent}-dark";
-      };
+      # theme = let
+      #   size = "Compact";
+      #   variant = "Frappe";
+      #   accent = "Teal";
+      # in {
+      #   package = pkgs.catppuccin-gtk.override {
+      #     accents = [(lib.toLower accent)];
+      #     size = lib.toLower size;
+      #     tweaks = [];
+      #     variant = lib.toLower variant;
+      #   };
+      #   name = "Catppuccin-${variant}-${size}-${accent}-dark";
+      # };
     };
     # home.packages = with pkgs; [
     #   libsForQt5.qtstyleplugin-kvantum
