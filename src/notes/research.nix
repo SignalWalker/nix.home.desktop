@@ -21,7 +21,7 @@ in {
         resize = 93;
         startup = "zotero";
         systemdCat = true;
-        autostart = true;
+        autostart = false;
         automove = true;
       };
     };

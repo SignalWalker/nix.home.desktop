@@ -28,7 +28,7 @@ in {
         resize = 75;
         startup = "bitwarden";
         systemdCat = true;
-        autostart = true;
+        autostart = false;
         automove = true;
       };
     };

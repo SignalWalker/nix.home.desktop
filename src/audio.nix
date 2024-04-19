@@ -31,7 +31,7 @@ in {
           resize = 50;
           startup = "pavucontrol";
           systemdCat = true;
-          autostart = true;
+          autostart = false;
           automove = true;
         };
       };

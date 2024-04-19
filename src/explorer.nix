@@ -8,14 +8,18 @@ with builtins; let
   std = pkgs.lib;
   dolphin = config.signal.desktop.explorer.dolphin;
   nemo = config.signal.desktop.explorer.nemo;
+  thunar = config.signal.desktop.explorer.thunar;
 in {
   options = with lib; {
     signal.desktop.explorer = {
       dolphin = {
-        enable = mkEnableOption "dolphin file explorer";
+        enable = (mkEnableOption "dolphin file explorer") // {default = true;};
       };
       nemo = {
         enable = (mkEnableOption "nemo file explorer") // {default = !dolphin.enable;};
+      };
+      thunar = {
+        enable = (mkEnableOption "thunar file explorer") // {default = (!dolphin.enable) && (!nemo.enable);};
       };
     };
   };
@@ -24,13 +28,18 @@ in {
   config = lib.mkMerge [
     (lib.mkIf dolphin.enable {
       home.packages =
-        (with pkgs.libsForQt5; [
-          dolphin
+        [
+          pkgs.qt6.qtwayland
+          pkgs.kdePackages.dolphin
+        ]
+        ++ (with pkgs.kdePackages; [
           dolphin-plugins
           kdegraphics-thumbnailers
           ark
         ])
-        ++ (with pkgs; [p7zip]);
+        ++ (with pkgs; [
+          p7zip
+        ]);
       signal.desktop.scratch.scratchpads = {
         "Shift+Slash" = {
           criteria = {app_id = "org.kde.dolphin";};
@@ -46,13 +55,15 @@ in {
         # cinnamon.nemo-emblems
         # cinnamon.nemo-fileroller
       ];
-      signal.desktop.scratch.scratchpads."Shift+Slash" = {
-        criteria = {app_id = "nemo";};
-        resize = 83;
-        startup = "nemo";
-        systemdCat = true;
-        # autostart = true;
-        # automove = true;
+      signal.desktop.scratch.scratchpads = {
+        "Shift+Slash" = {
+          criteria = {app_id = "nemo";};
+          resize = 83;
+          startup = "nemo";
+          systemdCat = true;
+          # autostart = true;
+          # automove = true;
+        };
       };
     })
   ];

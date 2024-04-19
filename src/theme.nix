@@ -17,64 +17,39 @@ in {
   config = {
     gtk = {
       enable = true;
-      gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+      gtk2 = {
+        configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+      };
       gtk3 = {
-        bookmarks = map (dir: "file:///${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
+        bookmarks = map (dir: "file://${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
+      };
+      gtk4 = {};
+      theme = {
+        package = pkgs.kdePackages.breeze;
+        name = "breeze";
       };
       iconTheme = {
-        package = pkgs.breeze-icons;
-        name = "Breeze";
+        package = pkgs.kdePackages.breeze-icons;
+        name = "breeze";
       };
-      # theme = let
-      #   size = "Compact";
-      #   variant = "Frappe";
-      #   accent = "Teal";
-      # in {
-      #   package = pkgs.catppuccin-gtk.override {
-      #     accents = [(lib.toLower accent)];
-      #     size = lib.toLower size;
-      #     tweaks = [];
-      #     variant = lib.toLower variant;
-      #   };
-      #   name = "Catppuccin-${variant}-${size}-${accent}-dark";
-      # };
     };
-    # home.packages = with pkgs; [
-    #   libsForQt5.qtstyleplugin-kvantum
-    #   themechanger
-    # ];
     qt = {
       enable = true;
-      platformTheme = "gtk";
-      # style = {
-      #   package = pkgs.breeze-qt5;
-      #   name = "breeze";
-      # };
+      platformTheme = {
+        name = "gtk3";
+      };
+      style = {
+        name = "breeze";
+        # package = pkgs.kdePackages.breeze;
+      };
     };
-    xdg.configFile."kdeglobals".text = ''
-    '';
-    # xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-    #   theme=KvArcDark
-    # '';
     home.pointerCursor = {
-      # package = pkgs.nordzy-cursor-theme;
-      # package = pkgs.quintom-cursor-theme;
-      package = pkgs.catppuccin-cursors.frappeDark;
-      name = "Catppuccin-Frappe-Dark-Cursors";
+      package = pkgs.rose-pine-cursor;
+      # NOTE :: this is the name of the folder within `{pkg}/share/icons/`
+      name = "BreezeX-RosePineDawn-Linux";
       gtk.enable = true;
       x11.enable = true;
       size = 24;
-    };
-    systemd.user.services."xsettings" = {
-      Unit = {
-        PartOf = ["graphical-session.target"];
-        Before = ["graphical-session.target"];
-      };
-      Install.WantedBy = ["graphical-session-pre.target"];
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.xsettingsd}/bin/xsettingsd";
-      };
     };
   };
 }
