@@ -22,7 +22,7 @@ in {
         startup = "rssguard";
         systemdCat = true;
         automove = true;
-        autostart = true;
+        autostart = false;
       };
     };
   };
