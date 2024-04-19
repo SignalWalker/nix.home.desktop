@@ -21,7 +21,7 @@ in {
         startup = "kitty --class scratch_notes nvim \"+ObsidianToday -1\" +vsp +ObsidianToday";
         systemdCat = true;
         automove = true;
-        autostart = true;
+        autostart = false;
       };
       "Shift+O" = {
         criteria = {
@@ -31,7 +31,7 @@ in {
         startup = "obsidian";
         systemdCat = true;
         automove = true;
-        autostart = true;
+        autostart = false;
       };
     };
   };
