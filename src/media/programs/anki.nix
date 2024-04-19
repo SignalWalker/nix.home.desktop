@@ -21,7 +21,7 @@ in {
         startup = "anki";
         systemdCat = true;
         autostart = true;
-        automove = true;
+        automove = false;
       };
     };
   };
