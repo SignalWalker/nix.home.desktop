@@ -458,11 +458,11 @@
     "swww": {
       "flake": false,
       "locked": {
-        "lastModified": 1713466435,
-        "narHash": "sha256-XeKYKbN6RMytSLpVSX/s+LQqT7vcy25JxholKzebxKk=",
+        "lastModified": 1713632309,
+        "narHash": "sha256-JtEw2YVYmkL2dTYhwmEN6ejNk+cGb2ebgyKWfIc8sug=",
         "owner": "horus645",
         "repo": "swww",
-        "rev": "2b4a436fbbd91c6a1399c93651c023f32dcea318",
+        "rev": "dae79fef168bd95741c246dcf8dc92cac183a38c",
         "type": "github"
       },
       "original": {
