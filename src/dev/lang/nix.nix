@@ -18,6 +18,7 @@ in {
       alejandra
       agenix
       snowfallorg.thaw
+      deploy-rs
     ];
     programs.jq.enable = true;
   };
