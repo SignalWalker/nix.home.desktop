@@ -15,6 +15,9 @@ in {
   };
   imports = lib.signal.fs.path.listFilePaths ./theme;
   config = {
+    home.packages = with pkgs; [
+      glib.bin
+    ];
     gtk = {
       enable = true;
       gtk2 = {
@@ -25,22 +28,24 @@ in {
       };
       gtk4 = {};
       theme = {
-        package = pkgs.kdePackages.breeze;
-        name = "breeze";
+        package = pkgs.breeze-gtk;
+        name = "Breeze";
       };
       iconTheme = {
         package = pkgs.kdePackages.breeze-icons;
+        # NOTE :: experimentally, this has to be lowercase???
         name = "breeze";
       };
     };
     qt = {
       enable = true;
       platformTheme = {
-        name = "gtk3";
+        name = "breeze";
+        package = pkgs.kdePackages.breeze;
       };
       style = {
         name = "breeze";
-        # package = pkgs.kdePackages.breeze;
+        package = pkgs.kdePackages.breeze;
       };
     };
     home.pointerCursor = {

@@ -13,7 +13,7 @@ in {
   imports = [];
   config = lib.mkMerge [
     (lib.mkIf osConfig.networking.networkmanager.enable {
-      services.network-manager-applet.enable = true;
+      services.network-manager-applet.enable = false;
     })
     # (lib.mkIf osConfig.networking.wireless.iwd.enable {
     #   home.packages = [pkgs.iwgtk];

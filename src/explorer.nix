@@ -13,7 +13,7 @@ in {
   options = with lib; {
     signal.desktop.explorer = {
       dolphin = {
-        enable = (mkEnableOption "dolphin file explorer") // {default = true;};
+        enable = (mkEnableOption "dolphin file explorer") // {default = false;};
       };
       nemo = {
         enable = (mkEnableOption "nemo file explorer") // {default = !dolphin.enable;};

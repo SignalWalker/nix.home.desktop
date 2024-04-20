@@ -48,6 +48,8 @@ in {
       right = "l";
     in {
       enable = true;
+      # chokes on hypersuper
+      checkConfig = false;
       extraConfigEarly = ''
         include ${config.signal.desktop.theme.inputs.i3}
       '';
