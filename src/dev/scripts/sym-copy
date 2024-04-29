@@ -1,5 +1,7 @@
 #! /usr/bin/env fish
 
+# turn a symlink into a recursive copy of the target
+
 set argc (count $argv)
 if test $argc -ne 1; echo "argc != 1; argc == $argc"; return 1; end
 
@@ -10,7 +12,7 @@ if not test -L $link
     return 1
 end
 
-set targ (readlink $link)
+set targ (realpath $link)
 
 if not test -e $targ
     echo "cannot access link target: $targ"
@@ -19,11 +21,11 @@ end
 
 echo "removing $link"
 rm -- $link
-   or return $status
+    or return 1
 
-echo "moving $targ to $link"
-mv -T -- $targ $link
-    or return $status
+echo "copying $targ to $link"
+cp -rPTf -- $targ $link
+    or return 1
 
-echo "done; ll $link $targ"
-ll $link $targ
+echo "done; ll $link"
+ll $link

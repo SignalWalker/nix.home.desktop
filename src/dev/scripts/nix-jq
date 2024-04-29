@@ -1,3 +1,0 @@
-#! /usr/bin/env zsh
-
-nix eval --json ${argv} | jq

@@ -1,5 +1,7 @@
 #! /usr/bin/env fish
 
+# move a file and leave a symlink to the new location in its original position
+
 function links_to
     if test (count $argv) -ne 2; echo "links_to args: $argv"; exit 1; end
     test "(readlink $argv[1])" = "$argv[2]"

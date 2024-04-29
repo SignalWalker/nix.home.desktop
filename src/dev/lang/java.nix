@@ -12,7 +12,9 @@ in {
   imports = [];
   config = {
     home.packages = [
-      pkgs.jdk
+      (pkgs.openjdk.override {
+        enableJavaFX = true;
+      })
     ];
   };
   meta = {};
