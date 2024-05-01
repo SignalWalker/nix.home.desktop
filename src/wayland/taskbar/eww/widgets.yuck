@@ -1,0 +1,71 @@
+(defpoll volume :initial '{ "value": 0, "muted": true }' :interval "1s"
+	"scripts/get-volume.py")
+
+;; (defpoll brightness :initial 0 :interval "1s"
+;;   "light -G")
+
+(deflisten workspaces :initial "[]"
+  "scripts/get-workspaces.py")
+
+(deflisten mpris_metadata :initial '[]'
+  "scripts/now-playing.py")
+
+(defwidget clock []
+  (label :class 'widget' :halign 'end' :text {formattime(EWW_TIME, "%H:%M %b %d, %Y")}))
+
+(defwidget system_stats []
+  (box :orientation 'v' :space-evenly false :class 'widget'
+    (label :text '')
+    (label :text {round(EWW_CPU['avg'], 1)})))
+
+(defwidget optional_label [text]
+  (label :visible {(text ?: '') != ''} :text text))
+
+(defwidget now_listening [metadata]
+  (box :orientation "v" :space-evenly false
+    ))
+
+(defwidget icon_percent [icon percent]
+  (box :orientation 'v' :class 'widget' :space-evenly false
+    (label :class 'icon' :halign 'center' :text icon)
+    (label :class 'percent' :halign 'center' :text {round(percent, 0)})))
+
+(defwidget volume_status []
+  (icon_percent
+    :icon {volume['icon'] ?: '?'}
+    :percent {(volume['value']) * 100}))
+
+(defwidget battery_status []
+  (icon_percent
+    :icon {(EWW_BATTERY['BAT1']['status'] == 'Charging') ? '󰢟' : '󰂎' }
+    :percent {EWW_BATTERY['total_avg']}))
+
+(defwidget progress_display [icon value]
+  (box :class 'widget' :orientation 'v' :space-evenly false
+    (label :halign 'center' :text icon)
+    (progress :halign 'center' :orientation 'v' :value value)))
+
+(defwidget music [player]
+  (box :orientation "h" :space-evenly false :spacing 0 :halign 'end'
+    :class 'music'
+    :visible {(player['metadata'] ?: '') != ''}
+    (box :orientation "v" :space-evenly false :valign 'end'
+      (optional_label :text {player['metadata']?.['xesam:artist']})
+      (optional_label :text {player['metadata']?.['xesam:album']})
+      (optional_label :text {player['metadata']?.['xesam:title']})
+      (label :visible {(player['length'] ?: '') != ''} :text "${player['elapsed'] ?: '?:??'} / ${player['length'] ?: '?:??'}")
+      (box :orientation "h" :spacing 4 :space-evenly false
+        (label :valign 'center' :text {player['status_icon'] ?: "?"})
+        (progress :valign 'center' :hexpand true :orientation "h"
+          :value {((player?.['position'] ?: 0) / (player?.['metadata']?.['mpris:length'] ?: 1)) * 100})))
+    (image
+      :path {player?.['metadata']?.['mpris:artUrl'] ?: "/home/ash/pictures/avatars/pond/pond.ico"}
+      :image-width 128
+      :image-height 128
+      )))
+
+(defwidget workspace_buttons []
+  (box :class 'widget workspaces' :orientation "v" :space-evenly false
+    (for workspace in workspaces
+      (label :halign 'center' :text {workspace['name']} :class {workspace['focused'] == 'true' ? 'active' : ''})
+      )))
