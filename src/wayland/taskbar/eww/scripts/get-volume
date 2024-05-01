@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/Volume: \(.*\)/\1/')
-
-if [[ -z "$vol" ]]; then
-	echo -n "0.0"
-else
-	echo -n "$vol"
-fi

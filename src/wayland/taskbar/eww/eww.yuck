@@ -1,0 +1,29 @@
+(include "./widgets.yuck")
+
+(defwindow main
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "100%"
+    :height "100%"
+    :anchor "center right")
+  :stacking "bg"
+  :exclusive false
+  :focusable false
+  (box :space-evenly true :orientation "vertical"
+    :class 'window'
+    (box :orientation "v" :space-evenly false :valign 'start' :halign 'end' :spacing 4
+      (clock :halign 'end')
+      (box :orientation "h" :space-evenly false :halign 'end' :spacing 4
+        (systray :class 'widget' :valign 'start' :halign 'center' :orientation "vertical" :space-evenly false)
+        (box :orientation "v" :valign 'start' :space-evenly false :spacing 4
+          (volume_status)
+          (battery_status)
+          ;; (progress_display :halign 'end' :icon '☉' :value brightness)
+          ;; (system_stats :halign 'end')
+          (workspace_buttons :halign 'end'))))
+    (box :space-evenly false :valign 'end' :halign 'end' :hexpand true :spacing 4
+      (for player in mpris_metadata
+        (music :player player)))
+    ))

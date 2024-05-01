@@ -17,12 +17,14 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {
-    systemd.user.services.${taskbar.systemd.serviceName} = {
+  config = lib.mkIf taskbar.enable {
+    systemd.user.services.${taskbar.systemd.serviceName} = lib.mkIf waybar.enable {
       Service = {
-        Type = "simple";
-        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.playerctl}/bin"];
-        ExecStart = "${eww.package}/bin/eww daemon --no-daemonize --force-wayland";
+        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
+        ExecStart = "${config.programs.waybar.package}/bin/waybar";
+        ExecReload = "kill -SIGUSR2 $MAINPID";
+        Restart = "on-failure";
+        KillMode = "mixed";
       };
     };
 

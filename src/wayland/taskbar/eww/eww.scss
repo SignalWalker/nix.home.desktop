@@ -1,54 +1,86 @@
+$empty-bg: navajowhite;
+$interface-bg: white;
+$interface-shadow: 4px 4px rgba(0, 0, 0, 0.5) inset;
+$interface-label-shadow: 4px 4px rgba(0, 0, 0, 0.5);
+$interface-border-bg: white;
+$label-bg: white;
+$channel-bg: white;
+$channel-bg-img: url("/assets/backgrounds/boat.gif");
+$channel-shadow: 4px 4px rgba(0, 0, 0, 0.5);
+$msg-bg: white;
+$msg-shadow: $channel-shadow;
+
+$border-width: 5px;
+
 * {
-  all: unset; //Unsets everything so you can style everything from scratch
+  all: unset;
+
+  font-family: "Iosevka Aoile";
+
+  color: black;
+
+  border-color: $interface-border-bg;
 }
 
-//Global Styles
-.bar {
-  background-color: #3a3a3a;
-  color: #b0b4bc;
-  padding: 10px;
+.background {
+  padding: 0px;
 }
 
-// Styles on classes (see eww.yuck for more information)
-
-.sidestuff slider {
-  all: unset;
-  color: #ffd5cd;
+.window {
+   // carefully selected to work with neovim
+  padding: 48px 8px 24px 8px;
 }
 
-.metric scale trough highlight {
-  all: unset;
-  background-color: #D35D6E;
-  color: #000000;
-  border-radius: 10px;
+.widget {
+  min-width: 0px;
+  min-height: 0px;
+
+  padding: 0.5em;
+
+  background-color: $interface-bg;
+
+  border-width: $border-width;
+  border-style: double;
+  border-color: black;
 }
-.metric scale trough {
-  all: unset;
-  background-color: #4e4e4e;
-  border-radius: 50px;
-  min-height: 3px;
-  min-width: 50px;
-  margin-left: 10px;
-  margin-right: 20px;
+
+.music > image {
+  border-width: $border-width;
+  border-style: double;
+  border-color: black;
+  background-color: white;
 }
-.metric scale trough highlight {
-  all: unset;
-  background-color: #D35D6E;
-  color: #000000;
-  border-radius: 10px;
+
+.music > box {
+  border-width: $border-width;
+  border-style: double none double double;
+  border-color: black;
+  background-color: white;
+  padding: 0.5em;
 }
-.metric scale trough {
-  all: unset;
-  background-color: #4e4e4e;
-  border-radius: 50px;
-  min-height: 3px;
-  min-width: 50px;
-  margin-left: 10px;
-  margin-right: 20px;
+
+.widget > .icon {
+  font-size: 1.25em;
 }
-.label-ram {
-  font-size: large;
+
+.widget > .percent {
+  font-size: 0.75em;
 }
-.workspaces button:hover {
-  color: #D35D6E;
+
+.workspaces > label {
+  padding: 0px 2px;
+}
+
+.workspaces > .active {
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
+  border-color: black;
+}
+
+progressbar > trough {
+  border: 1px solid black;
+}
+
+progressbar > trough > progress {
+  background-color: black;
 }

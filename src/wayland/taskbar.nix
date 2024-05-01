@@ -12,7 +12,7 @@ with builtins; let
 in {
   options = with lib; {
     services.taskbar = {
-      enable = mkEnableOption "task/status bar";
+      enable = (mkEnableOption "task/status bar") // {default = true;};
       systemd = {
         serviceName = mkOption {
           type = types.str;
@@ -37,13 +37,7 @@ in {
         Before = ["tray.target"];
         BindsTo = ["tray.target"];
       };
-      Service = {
-        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
-        ExecStart = "${config.programs.waybar.package}/bin/waybar";
-        ExecReload = "kill -SIGUSR2 $MAINPID";
-        Restart = "on-failure";
-        KillMode = "mixed";
-      };
+      # service config provided by enabled bar
       Install = {
         WantedBy = [wayland.systemd.target];
         RequiredBy = ["tray.target"];
