@@ -1,8 +1,8 @@
 (defpoll volume :initial '{ "value": 0, "muted": true }' :interval "1s"
 	"scripts/get-volume.py")
 
-;; (defpoll brightness :initial 0 :interval "1s"
-;;   "light -G")
+(defpoll brightness :initial 0 :interval "1s"
+  "light -G")
 
 (deflisten workspaces :initial "[]"
   "scripts/get-workspaces.py")

@@ -11,10 +11,9 @@
       url = github:mozilla/nixpkgs-mozilla;
     };
     # services
-    ash-scripts = {
-      url = "github:signalwalker/scripts-rs";
+    watch-battery = {
+      url = "git+https://git.ashwalker.net/ash/watch-battery";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.mozilla.follows = "mozilla";
     };
     # x11
     polybar-scripts = {
@@ -90,7 +89,7 @@
         ...
       }: {
         imports = [
-          inputs.ash-scripts.homeManagerModules.default
+          inputs.watch-battery.homeManagerModules.default
           ./home-manager.nix
         ];
         config = {

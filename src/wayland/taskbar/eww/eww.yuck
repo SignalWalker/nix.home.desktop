@@ -18,9 +18,9 @@
       (box :orientation "h" :space-evenly false :halign 'end' :spacing 4
         (systray :class 'widget' :valign 'start' :halign 'center' :orientation "vertical" :space-evenly false :spacing 4)
         (box :orientation "v" :valign 'start' :space-evenly false :spacing 4
-          (volume_status)
           (battery_status)
-          ;; (progress_display :halign 'end' :icon '☉' :value brightness)
+          (volume_status)
+          (icon_percent :halign 'end' :icon '☉' :percent brightness)
           ;; (system_stats :halign 'end')
           (workspace_buttons :halign 'end'))))
     (box :space-evenly false :valign 'end' :halign 'end' :hexpand true :spacing 4

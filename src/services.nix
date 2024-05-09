@@ -12,7 +12,7 @@ in {
   imports = [];
   # imports = lib.signal.fs.path.listFilePaths ./services;
   config = {
-    services.check-battery.enable = true;
+    services.watch-battery.enable = true;
     # services.kdeconnect = {
     #   enable = osConfig.programs.kdeconnect.enable or false;
     #   indicator = config.services.kdeconnect.enable;

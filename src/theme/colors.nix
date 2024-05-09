@@ -103,9 +103,13 @@ in {
         ## urgency
         ### bg
         bg-low-priority = low-priority;
+        bg-low-priority-alt = white;
         bg-normal-priority = bg;
+        bg-normal-priority-alt = white;
         bg-urgent = urgent;
+        bg-urgent-alt = white;
         bg-critical = critical;
+        bg-critical-alt = white;
         ### fg
         fg-low-priority = fg;
         fg-normal-priority = fg;

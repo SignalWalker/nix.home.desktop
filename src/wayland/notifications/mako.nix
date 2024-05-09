@@ -9,6 +9,7 @@ with builtins; let
   wln = config.signal.desktop.wayland;
   ntf = wln.notifications;
   theme = config.signal.desktop.theme;
+  mako = config.services.mako;
 in {
   options = with lib; {};
   disabledModules = [];
@@ -26,7 +27,9 @@ in {
         ExecStart = "mako";
       };
     };
-    services.mako = {
+    services.mako = let
+      colors = theme.colors.signal;
+    in {
       enable = ntf.enable;
       # mechanics
       actions = true;
@@ -41,38 +44,34 @@ in {
         size = 11;
         fonts = theme.font.slab ++ theme.font.symbols;
       in "${std.concatStringsSep ", " (map (font: font.name) fonts)} ${toString size}";
-      iconPath = std.concatStringsSep ":" [
-        "${config.home.profileDirectory}/share/icons/hicolor"
-        "${config.home.profileDirectory}/share/pixmaps"
-      ];
+      # iconPath = std.concatStringsSep ":" [
+      #   "${config.home.profileDirectory}/share/icons/hicolor"
+      #   "${config.home.profileDirectory}/share/pixmaps"
+      # ];
+      backgroundColor = "#${colors.bg}aa";
+      textColor = "#${colors.fg}";
+      progressColor = "source #${colors.fg}";
+      margin = "8";
+      padding = "4";
+      borderColor = "#${colors.border}";
+      borderSize = 1;
+      borderRadius = 0;
       ## extra
-      extraConfig = let
-        colors = theme.colors.signal;
-      in ''
-        background-color=#${colors.bg}aa
-        text-color=#${colors.fg}
-        progress-color=source #${colors.fg}
-
-        padding=4
-
-        border-color=#${colors.border}
-        border-size=1
-        border-radius=0
-
+      extraConfig = ''
         [urgency=low]
         background-color=#${colors.bg-low-priority}aa
         text-color=#${colors.fg-low-priority}
-        progress-color=source #${colors.fg-low-priority-light}aa
+        progress-color=source #${colors.bg-low-priority-alt}aa
 
         [urgency=normal]
         background-color=#${colors.bg-normal-priority}aa
         text-color=#${colors.fg-normal-priority}
-        progress-color=source #${colors.fg-normal-priority-light}aa
+        progress-color=source #${colors.bg-normal-priority-alt}aa
 
         [urgency=critical]
         background-color=#${colors.bg-critical}aa
         text-color=#${colors.fg-critical}
-        progress-color=source #${colors.fg-critical-light}aa
+        progress-color=source #${colors.bg-critical-alt}aa
         default-timeout=0
         ignore-timeout=1
         anchor=center
@@ -82,7 +81,7 @@ in {
         anchor=bottom-left
         layer=overlay
 
-        [app-name="check-battery"]
+        [app-name="watch-battery"]
         anchor=top-right
         default-timeout=0
 
