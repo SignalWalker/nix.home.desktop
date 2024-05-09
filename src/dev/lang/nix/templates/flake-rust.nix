@@ -38,12 +38,14 @@
           crossSystem = system;
           overlays = [inputs.rust-overlay.overlays.default];
         });
-      name = "package";
+      toolchainToml = fromTOML (readFile ./rust-toolchain.toml);
+      name = (fromTOML (readFile ./Cargo.toml)).package.name;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       packages =
         std.mapAttrs (system: pkgs: let
-          crane = (inputs.crane.mkLib pkgs).overrideToolchain (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml);
+          toolchain = pkgs.rust-bin.fromRustupToolchain toolchainToml.toolchain;
+          crane = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
           src = crane.cleanCargoSource (crane.path ./.);
           commonArgs = {
             inherit src;
@@ -57,18 +59,29 @@
           "${name}-artifacts" = crane.buildDepsOnly commonArgs;
           ${name} = crane.buildPackage (commonArgs
             // {
+              passthru.toolchain = toolchain;
               cargoArtifacts = self.packages.${system}."${name}-artifacts";
             });
         })
         nixpkgsFor;
       devShells =
-        std.mapAttrs (system: selfPkgs: let
-          pkgs = nixpkgsFor.${system};
+        std.mapAttrs (system: pkgs: let
+          selfPkgs = self.packages.${system};
         in {
           ${name} = pkgs.mkShell {
             inputsFrom = [selfPkgs.${name}];
+            packages = [
+              (selfPkgs.${name}.toolchain.override {
+                extensions = [
+                  "rust-analyzer"
+                  "rustfmt"
+                  "clippy"
+                ];
+              })
+            ];
           };
+          default = self.devShells.${system}.${name};
         })
-        self.packages;
+        nixpkgsFor;
     };
 }

@@ -10,6 +10,14 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {};
+  config = {
+    warnings = ["warning"];
+    assertions = [
+      {
+        assertion = false;
+        message = "assertion";
+      }
+    ];
+  };
   meta = {};
 }
