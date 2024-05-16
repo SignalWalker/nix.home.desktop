@@ -29,6 +29,7 @@ in {
         ];
       })
       heroic
+      space-station-14-launcher
     ];
     programs.mangohud = {
       enable = true;
