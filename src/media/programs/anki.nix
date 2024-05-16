@@ -12,7 +12,7 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [
-      anki
+      anki-bin
     ];
     signal.desktop.scratch.scratchpads = {
       "Shift+A" = {

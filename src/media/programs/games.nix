@@ -11,7 +11,6 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [
-      anki
       dolphin-emu-beta
       duckstation
       # pcsx2 # disabled for build error
