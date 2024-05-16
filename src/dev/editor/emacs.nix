@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   ed = config.signal.dev.editor;
-  emacs = config.programs.neovim;
+  emacs = config.programs.emacs;
 in {
   options = with lib; {};
   imports = [];
