@@ -36,7 +36,8 @@ async def main():
             case 'focus':
                 if e.old.name in workspaces:
                     workspaces[e.old.name]['focused'] = False
-                workspaces[e.current.name]['focused'] = True
+                if e.current is not None:
+                    workspaces[e.current.name]['focused'] = True
                 print_state()
             case 'empty':
                 if e.current.name in workspaces:

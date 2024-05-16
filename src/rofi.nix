@@ -9,11 +9,17 @@ with builtins; let
   rofi = config.signal.desktop.shared.rofi;
 in {
   options.signal.desktop.shared.rofi = with lib; {
-    enable = mkEnableOption "X11/Wayland rofi config";
+    enable = (mkEnableOption "X11/Wayland rofi config") // {default = true;};
   };
   disabledModules = [];
   imports = [];
   config = lib.mkIf rofi.enable {
+    signal.desktop.wayland.menu = let
+      rofiBin = "${config.programs.rofi.package}/bin/rofi";
+    in {
+      drun = "${rofiBin}";
+      run = "${rofiBin}";
+    };
     programs.rofi = let
       fontSize = 13;
       font = head (config.signal.desktop.theme.font.bmpsAt fontSize);
