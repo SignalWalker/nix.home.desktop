@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.desktop.wayland;
   wp = cfg.wallpaper;
 in {
-  options.signal.desktop.wayland.wallpaper = with lib; {
+  options.desktop.wayland.wallpaper = with lib; {
     enable = (mkEnableOption "wallpaper") // {default = true;};
     randomizeCmd = mkOption {
       type = types.str;
@@ -32,7 +32,7 @@ in {
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
-    signal.desktop.wayland.wallpaper.randomizeCmd = "systemctl --user start swww-randomize.service";
+    desktop.wayland.wallpaper.randomizeCmd = "systemctl --user start swww-randomize.service";
     services.wpaperd = {
       enable = !config.services.swww.enable;
       systemd = {

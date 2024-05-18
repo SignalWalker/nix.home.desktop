@@ -40,7 +40,7 @@ in {
         ++ (with pkgs; [
           p7zip
         ]);
-      signal.desktop.scratch.scratchpads = {
+      desktop.scratchpads = {
         "Shift+Slash" = {
           criteria = {app_id = "org.kde.dolphin";};
           resize = 83;
@@ -55,7 +55,7 @@ in {
         # cinnamon.nemo-emblems
         # cinnamon.nemo-fileroller
       ];
-      signal.desktop.scratch.scratchpads = {
+      desktop.scratchpads = {
         "Shift+Slash" = {
           criteria = {app_id = "nemo";};
           resize = 83;

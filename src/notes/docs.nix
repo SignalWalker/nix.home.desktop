@@ -25,7 +25,7 @@ in {
   imports = [];
   config = lib.mkIf docs.enable {
     home.packages = [docs.package];
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+X" = {
         criteria = {
           app_id = "org.zealdocs.zeal";

@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  rofi = desktop.launcher.rofi;
+  rofi = config.desktop.launcher.rofi;
 in {
   options = with lib; {
     desktop.launcher.rofi = {
@@ -29,7 +29,7 @@ in {
       enable = rofi.enable;
       configPath = "${config.xdg.configHome}/rofi/config.rasi";
       font = "${font.name} ${toString fontSize}";
-      terminal = config.signal.desktop.terminal.command;
+      terminal = config.desktop.terminal.command;
       theme = "gruvbox-dark-hard";
       extraConfig = {
         sort = true;

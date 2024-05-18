@@ -23,8 +23,39 @@ with builtins; let
             };
             useMod = (mkEnableOption "modifier key in keybind") // {default = true;};
             criteria = mkOption {
-              type = types.attrsOf (types.coercedTo (types.oneOf [types.bool types.int]) toString types.str);
+              type = types.attrsOf (types.oneOf [types.bool types.int types.str]);
               default = {};
+            };
+            exec = mkOption {
+              type = types.nullOr types.str;
+              readOnly = true;
+              default =
+                if config.startup == null
+                then null
+                else if config.systemdCat
+                then "systemd-cat --identifier=${config.name} ${config.startup}"
+                else config.startup;
+            };
+            sway = {
+              criteria = mkOption {
+                type = types.attrsOf types.str;
+                readOnly = true;
+                default = mapAttrs (key: val:
+                  if val == false
+                  then "false"
+                  else toString val)
+                config.criteria;
+              };
+              show = mkOption {
+                type = types.str;
+                readOnly = true;
+                default = let
+                  criteria = std.concatStringsSep " " (map (key: "${key}=\"${config.sway.criteria.${key}}\"") (attrNames config.sway.criteria));
+                in
+                  "[${criteria}] scratchpad show"
+                  + (std.optionalString (config.resize != null) ", resize set ${config.resize}")
+                  + (std.optionalString config.center ", move position center");
+              };
             };
             resize = mkOption {
               type = let
@@ -54,72 +85,24 @@ with builtins; let
               default = config.criteria.app_id or config.criteria.instance or config.criteria.class or config.startup or "<unknown>";
             };
             automove = mkOption {
-              type = types.either types.bool types.str;
+              type = types.bool;
               default = false;
             };
             autostart = mkEnableOption "starting this program at desktop start";
-            # functions
-            fn = let
-              mkFn = fn:
-                mkOption {
-                  type = types.anything;
-                  default = fn;
-                };
-            in {
-              mk_sway_criteria_list = mkFn (crit: map (nxt: "${nxt}=\"${crit.${nxt}}\"") (attrNames crit));
-              mk_sway_criteria = mkFn (crit: "[${std.concatStringsSep " " (config.fn.mk_sway_criteria_list crit)}]");
-              sway_criteria_raw = mkFn (config.fn.mk_sway_criteria config.criteria);
-              sway_criteria = mkFn (config.fn.mk_sway_criteria ({floating = "true";} // config.criteria));
-              sway_show = mkFn ("${config.fn.sway_criteria} scratchpad show"
-                + (
-                  if config.resize != null
-                  then ", resize set ${config.resize}"
-                  else ""
-                )
-                + (
-                  if config.center
-                  then ", move position center"
-                  else ""
-                ));
-              sway_assign = mkFn "for_window ${config.fn.sway_criteria_raw} move scratchpad";
-              exec = let
-                notif = msg: "notify-send --category=system Scratchpad \"${msg}\"";
-              in
-                mkFn (
-                  if config.startup == null
-                  then null
-                  else if config.systemdCat
-                  then "systemd-cat --identifier=${config.name} ${config.startup}"
-                  else "${config.startup}"
-                );
-            };
           };
-          config = {
-            # assertions = [
-            #   {
-            #     assertion = config.autostart -> (config.startup != null);
-            #     message = "cannot autostart desktop program without startup command";
-            #   }
-            # ];
-          };
+          config = {};
         })
       ];
     };
 in {
   options = with lib; {
-    signal.desktop.scratch = {
-      scratchpads = mkOption {
-        type = types.attrsOf scratchpad;
-        default = {};
-      };
+    desktop.scratchpads = mkOption {
+      type = types.attrsOf scratchpad;
+      default = {};
     };
   };
   disabledModules = [];
   imports = [];
-  config = {
-    # lib.signal.desktop.types = with lib; {
-    #   inherit scratchpad;
-    # };
-  };
+  config = {};
   meta = {};
 }

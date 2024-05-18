@@ -12,13 +12,14 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [zotero];
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+Z" = {
         criteria = {
           class = "Zotero";
           instance = "Navigator";
         };
         resize = 93;
+        name = "zotero";
         startup = "zotero";
         systemdCat = true;
         autostart = true;
@@ -28,3 +29,4 @@ in {
   };
   meta = {};
 }
+

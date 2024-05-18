@@ -11,7 +11,7 @@ with builtins; let
   theme = config.desktop.theme;
   fontCfg = theme.font;
 in {
-  options.signal.desktop.wayland.screenlock = with lib; {
+  options.desktop.wayland.screenlock = with lib; {
     enable = (mkEnableOption "screenlock") // {default = true;};
   };
   imports = [];

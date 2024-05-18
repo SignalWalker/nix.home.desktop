@@ -6,9 +6,9 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.terminal;
+  cfg = config.desktop.terminal;
 in {
-  options.signal.desktop.terminal = with lib; {
+  options.desktop.terminal = with lib; {
     app = mkOption {
       type = types.enum ["kitty"];
       default = "kitty";

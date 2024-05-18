@@ -33,7 +33,7 @@ in {
         allow_markup = true;
         matching = "fuzzy";
         insensitive = true;
-        term = config.signal.desktop.terminal.command;
+        term = config.desktop.terminal.command;
       };
     };
   };

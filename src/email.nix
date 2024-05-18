@@ -12,13 +12,14 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+E" = {
         criteria = {
           app_id = "^thunderbird.*";
           title = "^.* - Mozilla Thunderbird";
         };
         resize = 93;
+        name = "thunderbird";
         startup = "thunderbird";
         systemdCat = true;
         automove = true;
@@ -38,3 +39,4 @@ in {
   };
   meta = {};
 }
+

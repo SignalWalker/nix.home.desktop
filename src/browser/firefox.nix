@@ -13,7 +13,7 @@ in {
   config = let
     firefoxCmd = "firefox-beta";
   in {
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+F" = {
         criteria = {app_id = "^firefox*";};
         resize = 93;

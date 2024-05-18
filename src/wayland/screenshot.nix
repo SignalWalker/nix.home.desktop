@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
 in {
   options = with lib; {
-    signal.desktop.wayland = {
+    desktop.wayland = {
       screenshotScript = mkOption {
         type = types.path;
         default = ./scripts/screenshot;

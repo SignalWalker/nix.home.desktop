@@ -11,7 +11,7 @@ with builtins; let
 in {
   options = with lib; {
     desktop.launcher = {
-      enable = mkEnableOption "desktop launcher";
+      enable = (mkEnableOption "desktop launcher") // {default = true;};
       run = mkOption {
         type = types.str;
       };
@@ -25,7 +25,7 @@ in {
   imports = [];
   config = lib.mkIf launcher.enable {
     desktop.launcher = {
-      yofi.enable = wayland.enable;
+      yofi.enable = lib.mkDefault wayland.enable;
     };
   };
   meta = {};

@@ -96,7 +96,7 @@ with builtins; let
     ];
   };
 in {
-  options.signal.desktop.wayland.idle = with lib; {
+  options.desktop.wayland.idle = with lib; {
     enable = (mkEnableOption "wayland idle daemon") // {default = true;};
     settings = mkOption {
       type = swayidleSettingsModule;
@@ -122,7 +122,7 @@ in {
         };
       };
 
-      signal.desktop.wayland.idle.settings = let
+      desktop.wayland.idle.settings = let
         lock = "swaylock -f --effect-scale 0.5 --effect-blur 5x3";
         outputOn = "swaymsg \"output * dpms on\"";
         outputOff = "swaymsg \"output * dpms off\"";

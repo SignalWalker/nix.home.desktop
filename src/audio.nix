@@ -25,7 +25,7 @@ in {
         source = auto
       '';
       # ${readFile config.desktop.theme.inputs.cava}
-      signal.desktop.scratch.scratchpads = {
+      desktop.scratchpads = {
         "Shift+V" = {
           criteria = {app_id = "pavucontrol";};
           resize = 50;

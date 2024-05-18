@@ -16,7 +16,7 @@ in {
       # authy
     ];
 
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       # "Shift+A" = {
       #   criteria = {class = "Authy Desktop";};
       #   startup = "authy";

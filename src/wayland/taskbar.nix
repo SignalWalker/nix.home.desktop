@@ -24,7 +24,7 @@ in {
     programs.waybar.src = mkOption {
       type = types.path;
     };
-    signal.desktop.wayland.taskbar = {
+    desktop.wayland.taskbar = {
       enable = mkEnableOption "task/status bar";
     };
   };

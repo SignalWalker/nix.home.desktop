@@ -7,26 +7,29 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  theme = desktop.theme;
   wayland = config.desktop.wayland;
-  cfg = wayland.compositor.sway;
-  scratchcfg = config.signal.desktop.scratch.scratchpads;
+  sway_cfg = wayland.compositor.sway;
+  scratchpads = config.desktop.scratchpads;
   bar = wayland.taskbar;
   exports = let
     vars = config.desktop.wayland.sessionVariables;
   in (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)));
 in {
-  options.signal.desktop.wayland.compositor.sway = with lib; {
-    enable = mkEnableOption "sway wayland compositor";
+  options = with lib; {
+    desktop.wayland.compositor.sway = with lib; {
+      enable = mkEnableOption "sway wayland compositor";
+    };
   };
   imports = [];
-  config = lib.mkIf (config.desktop.wayland.enable && cfg.enable) {
+  config = lib.mkIf (wayland.enable && sway_cfg.enable) {
     # home.packages = let
     # in [
     #   (pkgs.writeShellScriptBin "sway-wrapper" ''
     #     set -o errexit
-    #     # BEGIN -- export `signal.desktop.wayland.sessionVariables`
+    #     # BEGIN -- export `desktop.wayland.sessionVariables`
     #     ${exports}
-    #     # END   -- export `signal.desktop.wayland.sessionVariables`
+    #     # END   -- export `desktop.wayland.sessionVariables`
     #     if [ ! "$_SWAY_WRAPPER_ALREADY_EXECUTED" ]; then
     #       export XDG_CURRENT_DESKTOP=sway
     #       export _SWAY_WRAPPER_ALREADY_EXECUTED=1
@@ -39,6 +42,7 @@ in {
     #     fi
     #   '')
     # ];
+
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
       launcher = config.desktop.launcher;
@@ -56,13 +60,6 @@ in {
       config = {
         bars = [];
         assigns = {};
-        # # target                 title     bg    text   indicator  border
-        # client.focused           $pink     $base $text  $rosewater $pink
-        # client.focused_inactive  $mauve    $base $text  $rosewater $mauve
-        # client.unfocused         $mauve    $base $text  $rosewater $mauve
-        # client.urgent            $peach    $base $peach $overlay0  $peach
-        # client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
-        # client.background        $base
         colors = {
           background = "$base";
           focused = {
@@ -101,8 +98,18 @@ in {
             childBorder = "$overlay0";
           };
         };
-        floating = {};
+        floating = {
+          titlebar = true;
+          border = 1;
+          criteria = foldl' (acc: window:
+            if window.floating
+            then acc ++ [window.criteria]
+            else acc) []
+          config.desktop.windows;
+        };
         fonts = {
+          names = map (font: font.name) (theme.font.slab ++ theme.font.symbols);
+          size = 12;
         };
         gaps = {
           inner = 2;
@@ -122,7 +129,14 @@ in {
         window = {
           border = 1;
           hideEdgeBorders = "smart";
-          commands = [];
+          commands =
+            []
+            ++ (foldl' (acc: pad:
+              acc
+              ++ (std.optional pad.automove {
+                command = "move scratchpad";
+                criteria = pad.sway.criteria;
+              })) [] (attrValues scratchpads));
         };
         modifier = mod;
         workspaceAutoBackAndForth = true;
@@ -241,27 +255,26 @@ in {
             in
               acc
               // {
-                "${mod}+${key}" = "[workspace=\"${key}\"] move workspace to output current; workspace number ${key}";
+                "${mod}+${key}" = "workspace number ${key}";
                 "${mod}+Shift+${key}" = "move container to workspace number ${key}";
               })
             {}
             (genList (i: i + 1) 10))
           // (
             foldl'
-            (acc: key: let
-              cfg = scratchcfg.${key};
+            (acc: pad: let
               keybind =
-                if cfg.useMod
-                then "${mod}+${cfg.kb}"
-                else "${cfg.kb}";
+                if pad.useMod
+                then "${mod}+${pad.kb}"
+                else "${pad.kb}";
             in (acc
               // {
-                "${keybind}" = cfg.fn.sway_show;
+                "${keybind}" = pad.sway.show;
               }
               // (
-                if cfg.fn.exec != null
+                if pad.exec != null
                 then {
-                  "Ctrl+${keybind}" = "exec '${cfg.fn.exec}'";
+                  "Ctrl+${keybind}" = "exec '${pad.exec}'";
                 }
                 else {}
               )))
@@ -269,7 +282,7 @@ in {
               "${mod}+Minus" = "scratchpad show";
               "${mod}+Shift+Minus" = "move scratchpad";
             }
-            (attrNames scratchcfg)
+            (attrValues scratchpads)
           );
         modes = {
           "split" = {
@@ -303,8 +316,8 @@ in {
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart
-            then acc ++ [{command = "'${scratch.fn.exec}'";}]
-            else acc) [] (attrValues scratchcfg));
+            then acc ++ [{command = "'${scratch.exec}'";}]
+            else acc) [] (attrValues scratchpads));
       };
       swaynag = {
         enable = true;
@@ -313,14 +326,12 @@ in {
       systemd = {
         enable = true;
       };
-      extraConfig =
-        ''
-          bindswitch --reload --locked {
-            lid:on output eDP-1 dpms off
-            lid:off output eDP-1 dpms on
-          }
-        ''
-        + (std.concatStringsSep "\n" (foldl' (acc: key: let pad = scratchcfg.${key}; in acc ++ (std.optional (pad.automove != false) pad.fn.sway_assign)) [] (attrNames scratchcfg)));
+      extraConfig = ''
+        bindswitch --reload --locked {
+          lid:on output eDP-1 dpms off
+          lid:off output eDP-1 dpms on
+        }
+      '';
       wrapperFeatures = {
         base = true;
         gtk = true;
@@ -338,3 +349,4 @@ in {
     };
   };
 }
+

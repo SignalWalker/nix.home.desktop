@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
   cfg = config.desktop.wayland.compositor.river;
 in {
-  options.signal.desktop.wayland.compositor.river = with lib; {
+  options.desktop.wayland.compositor.river = with lib; {
     enable = mkEnableOption "river wayland compositor";
     package = mkOption {
       type = types.package;

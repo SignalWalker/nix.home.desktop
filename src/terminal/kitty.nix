@@ -5,8 +5,8 @@ inputs @ {
   ...
 }:
 with builtins; let
-  cfg = config.signal.desktop.terminal;
-  kcfg = config.signal.desktop.terminal.kitty;
+  cfg = config.desktop.terminal;
+  kcfg = config.desktop.terminal.kitty;
   kitty = config.programs.kitty;
   kittenAliases = ''
     alias ssh="kitty +kitten ssh"
@@ -19,7 +19,7 @@ with builtins; let
   '';
 in {
   options = with lib; {
-    signal.desktop.terminal.kitty = {};
+    desktop.terminal.kitty = {};
     programs.kitty = {
       themes = mkOption {
         type = types.attrsOf types.path;
@@ -32,7 +32,7 @@ in {
       preview_images = true;
       preview_images_method = "kitty";
     };
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Grave" = {
         criteria = {app_id = "scratch_term";};
         resize = 83;
