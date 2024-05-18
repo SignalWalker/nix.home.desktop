@@ -37,6 +37,7 @@
 
 (defwidget battery_status []
   (icon_percent
+    :visible {(EWW_BATTERY['BAT1'] ?: '') != ''}
     :icon {(EWW_BATTERY['BAT1']['status'] == 'Charging') ? '󰢟' : '󰂎' }
     :percent {EWW_BATTERY['total_avg']}))
 

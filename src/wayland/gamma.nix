@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wln = config.signal.desktop.wayland;
+  wln = config.desktop.wayland;
 in {
   options = with lib; {};
   disabledModules = [];

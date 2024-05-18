@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  fcfg = config.signal.desktop.theme.font;
+  fcfg = config.desktop.theme.font;
   fonts = fcfg.fonts;
   sTypes = fcfg.types;
   iosevka = fonts.iosevka;
@@ -27,7 +27,7 @@ in {
     fontType = sTypes.font;
     familyType = sTypes.fontFamily;
   in {
-    signal.desktop.theme.font = {
+    desktop.theme.font = {
       fonts = mkOption {
         type = types.attrsOf fontType;
         default = {};
@@ -123,7 +123,7 @@ in {
     fonts.fontconfig = {
       enable = true;
     };
-    signal.desktop.theme.font = {
+    desktop.theme.font = {
       fonts = {
         spleen = {
           package = pkgs.spleen;

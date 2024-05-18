@@ -6,12 +6,12 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  tcfg = config.signal.desktop.theme;
+  tcfg = config.desktop.theme;
   tlib = tcfg.font.types;
   submodule = module: lib.types.submoduleWith {modules = [module];};
 in {
   options = with lib; {
-    signal.desktop.theme.font.types = let
+    desktop.theme.font.types = let
       fontFamilyModule = {
         config,
         lib,

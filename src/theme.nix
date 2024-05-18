@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  options.signal.desktop.theme = with lib; {
+  options.desktop.theme = with lib; {
     inputs = mkOption {
       type = types.attrsOf types.anything;
       default = {};

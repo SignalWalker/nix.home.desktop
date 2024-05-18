@@ -51,7 +51,7 @@ with builtins; let
             systemdCat = mkEnableOption "pipe output with systemd-cat";
             name = mkOption {
               type = types.str;
-              default = config.criteria.app_id or config.criteria.class or config.criteria.startup or "<unknown>";
+              default = config.criteria.app_id or config.criteria.instance or config.criteria.class or config.startup or "<unknown>";
             };
             automove = mkOption {
               type = types.either types.bool types.str;

@@ -6,56 +6,36 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.programs.wofi;
+  launcher = config.desktop.launcher;
+  wofi = config.programs.wofi;
 in {
-  options.signal.programs.wofi = with lib; {
-    enable = mkEnableOption "wofi menu";
-    package = mkOption {
-      type = types.package;
-      default = pkgs.wofi;
-    };
-    settings = mkOption {
-      type = types.attrsOf types.anything;
-      default = {};
-    };
-    style = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+  options = with lib; {
+    desktop.launcher.wofi = {
+      enable = mkEnableOption "wofi config";
     };
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf cfg.enable {
-    home.packages = [cfg.package];
-    xdg.configFile = lib.mkMerge [
-      {
-        "wofi/config".text =
-          foldl'
-          (
-            acc: key: let
-              val = cfg.settings.${key};
-              sep =
-                if acc == ""
-                then ""
-                else "\n";
-              valStr =
-                if isBool val
-                then
-                  (
-                    if val
-                    then "true"
-                    else "false"
-                  )
-                else (toString val);
-            in
-              acc + "${sep}${key}=${valStr}"
-          ) ""
-          (attrNames cfg.settings);
-      }
-      (lib.mkIf (cfg.style != null) {
-        "wofi/style.css".text = cfg.style;
-      })
-    ];
+  config = lib.mkIf launcher.wofi.enable {
+    desktop.launcher = {
+      drun = "${wofi.package}/bin/wofi --show=drun";
+      run = "${wofi.package}/bin/wofi --show=run";
+    };
+    programs.wofi = {
+      enable = true;
+      settings = {
+        layer = "overlay";
+        width = "50%";
+        height = "40%";
+        dynamic_lines = true;
+        normal_window = false;
+        allow_images = true;
+        allow_markup = true;
+        matching = "fuzzy";
+        insensitive = true;
+        term = config.signal.desktop.terminal.command;
+      };
+    };
   };
   meta = {};
 }

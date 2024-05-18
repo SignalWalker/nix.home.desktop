@@ -6,10 +6,10 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wlp = config.signal.desktop.theme.wallpaper;
+  wlp = config.desktop.theme.wallpaper;
 in {
   options = with lib; {
-    signal.desktop.theme.wallpaper = {
+    desktop.theme.wallpaper = {
       default = mkOption {
         type = types.path;
         default = ./wallpaper/default.png;

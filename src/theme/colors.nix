@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  theme = config.signal.desktop.theme;
+  theme = config.desktop.theme;
   colors = theme.colors;
   signal = colors.signal;
   colorset = lib.types.submoduleWith {
@@ -52,7 +52,7 @@ with builtins; let
   };
 in {
   options = with lib; {
-    signal.desktop.theme = {
+    desktop.theme = {
       colors = mkOption {
         type = types.attrsOf colorset;
         default = {};
@@ -62,7 +62,7 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    signal.desktop.theme.colors = {
+    desktop.theme.colors = {
       signal = rec {
         black = "262626";
         white = "b7b7b7";

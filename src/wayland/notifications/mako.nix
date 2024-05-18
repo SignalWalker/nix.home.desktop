@@ -6,9 +6,9 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wln = config.signal.desktop.wayland;
+  wln = config.desktop.wayland;
   ntf = wln.notifications;
-  theme = config.signal.desktop.theme;
+  theme = config.desktop.theme;
   mako = config.services.mako;
 in {
   options = with lib; {};

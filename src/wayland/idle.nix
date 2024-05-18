@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wayland = config.signal.desktop.wayland;
+  wayland = config.desktop.wayland;
   idle = wayland.idle;
   swayidle = config.services.swayidle;
   timeoutModule = lib.types.submoduleWith {

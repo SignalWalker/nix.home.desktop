@@ -7,19 +7,19 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wayland = config.signal.desktop.wayland;
+  wayland = config.desktop.wayland;
   cfg = wayland.compositor.sway;
   scratchcfg = config.signal.desktop.scratch.scratchpads;
   bar = wayland.taskbar;
   exports = let
-    vars = config.signal.desktop.wayland.sessionVariables;
+    vars = config.desktop.wayland.sessionVariables;
   in (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)));
 in {
   options.signal.desktop.wayland.compositor.sway = with lib; {
     enable = mkEnableOption "sway wayland compositor";
   };
   imports = [];
-  config = lib.mkIf (config.signal.desktop.wayland.enable && cfg.enable) {
+  config = lib.mkIf (config.desktop.wayland.enable && cfg.enable) {
     # home.packages = let
     # in [
     #   (pkgs.writeShellScriptBin "sway-wrapper" ''
@@ -41,7 +41,7 @@ in {
     # ];
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
-      menu = config.signal.desktop.wayland.menu;
+      launcher = config.desktop.launcher;
       up = "k";
       down = "j";
       left = "h";
@@ -51,7 +51,7 @@ in {
       # chokes on hypersuper
       checkConfig = false;
       extraConfigEarly = ''
-        include ${config.signal.desktop.theme.inputs.i3}
+        include ${config.desktop.theme.inputs.i3}
       '';
       config = {
         bars = [];
@@ -163,8 +163,8 @@ in {
             "${mod}+Return" = "exec kitty";
             "${mod}+Shift+q" = "kill";
 
-            "${mod}+d" = "exec '${menu.drun}'";
-            "${mod}+Alt+d" = "exec '${menu.run}'";
+            "${mod}+d" = "exec '${launcher.drun}'";
+            "${mod}+Alt+d" = "exec '${launcher.run}'";
 
             "${mod}+Ctrl+r" = "reload";
             "${mod}+Ctrl+Alt+Shift+q" = "exec swaymsg exit";
@@ -207,18 +207,18 @@ in {
             "${mod}+Ctrl+b" = "border toggle";
             "${mod}+Ctrl+p" = "floating enable, sticky toggle";
 
-            "Print" = "exec ${config.signal.desktop.wayland.screenshotScript} active";
-            "Ctrl+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} area";
-            "${mod}+Ctrl+F12" = "exec ${config.signal.desktop.wayland.screenshotScript} area";
-            "${mod}+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} output";
-            "${mod}+Alt+Print" = "exec ${config.signal.desktop.wayland.screenshotScript} screen";
+            "Print" = "exec ${config.desktop.wayland.screenshotScript} active";
+            "Ctrl+Print" = "exec ${config.desktop.wayland.screenshotScript} area";
+            "${mod}+Ctrl+F12" = "exec ${config.desktop.wayland.screenshotScript} area";
+            "${mod}+Print" = "exec ${config.desktop.wayland.screenshotScript} output";
+            "${mod}+Alt+Print" = "exec ${config.desktop.wayland.screenshotScript} screen";
 
             "${mod}+n" = "exec makoctl restore";
             "${mod}+Ctrl+n" = "exec makoctl dismiss";
             # "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
             "${mod}+Alt+n" = "exec makoctl invoke on-button-left";
 
-            "${mod}+Alt+w" = "exec ${config.signal.desktop.wayland.wallpaper.randomizeCmd}";
+            "${mod}+Alt+w" = "exec ${config.desktop.wayland.wallpaper.randomizeCmd}";
 
             "${mod}+Alt+l" = "exec swaylock --effect-scale 0.5 --effect-blur 5x3";
 
@@ -295,11 +295,11 @@ in {
           };
         };
         terminal = "kitty";
-        menu = menu.drun;
+        menu = launcher.drun;
         defaultWorkspace = "workspace number 1";
         startup =
           [
-            # {command = "${config.signal.desktop.wayland.__systemdStartupScript}";}
+            # {command = "${config.desktop.wayland.__systemdStartupScript}";}
           ]
           ++ (foldl' (acc: scratch:
             if scratch.autostart
@@ -328,7 +328,7 @@ in {
       extraSessionCommands = ''
         ${exports}
       '';
-      xwayland = config.signal.desktop.wayland.xwayland.enable;
+      xwayland = config.desktop.wayland.xwayland.enable;
     };
     systemd.user.targets."sway-session" = {
       Unit = {

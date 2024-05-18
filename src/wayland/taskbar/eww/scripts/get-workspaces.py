@@ -26,7 +26,7 @@ async def main():
         workspaces[ws.name] = ws_to_dict(ws)
 
     def print_state():
-        print(json.dumps(list(workspaces.values())), sep='', end='\n', file=sys.stdout, flush=True)
+        print(json.dumps([workspaces[key] for key in sorted(workspaces.keys(), key = lambda key: 'zzz' if key == '0' else key)]), sep='', end='\n', file=sys.stdout, flush=True)
 
     def on_workspace(sway, e):
         match e.change:
@@ -34,8 +34,9 @@ async def main():
                 init_ws(e.current)
                 print_state()
             case 'focus':
-                if e.old.name in workspaces:
-                    workspaces[e.old.name]['focused'] = False
+                if e.old is not None:
+                    if e.old.name in workspaces:
+                        workspaces[e.old.name]['focused'] = False
                 if e.current is not None:
                     workspaces[e.current.name]['focused'] = True
                 print_state()

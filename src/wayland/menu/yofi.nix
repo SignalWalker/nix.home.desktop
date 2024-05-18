@@ -6,13 +6,19 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  launcher = config.desktop.launcher;
   yofi = config.programs.yofi;
   toml = pkgs.formats.toml {};
 in {
   options = with lib; {
+    desktop.launcher.yofi = {
+      enable = mkEnableOption "yofi launcher config";
+    };
     programs.yofi = {
       enable = mkEnableOption "yofi";
-      package = mkPackageOption pkgs "yofi" {};
+      package = mkOption {
+        type = types.package;
+      };
       settings = mkOption {
         type = toml.type;
         default = {};
@@ -26,11 +32,22 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf yofi.enable {
-    home.packages = [yofi.package];
-    xdg.configFile."yofi/yofi.config" = {
-      source = yofi.settingsFile;
-    };
-  };
+  config = lib.mkMerge [
+    (lib.mkIf launcher.yofi.enable {
+      programs.yofi = {
+        enable = true;
+      };
+      desktop.launcher = {
+        run = "${yofi.package}/bin/yofi";
+        drun = "${yofi.package}/bin/yofi";
+      };
+    })
+    (lib.mkIf yofi.enable {
+      home.packages = [yofi.package];
+      xdg.configFile."yofi/yofi.config" = {
+        source = yofi.settingsFile;
+      };
+    })
+  ];
   meta = {};
 }

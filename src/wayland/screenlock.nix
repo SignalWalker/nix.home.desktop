@@ -6,9 +6,9 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wln = config.signal.desktop.wayland;
+  wln = config.desktop.wayland;
   lck = wln.screenlock;
-  theme = config.signal.desktop.theme;
+  theme = config.desktop.theme;
   fontCfg = theme.font;
 in {
   options.signal.desktop.wayland.screenlock = with lib; {

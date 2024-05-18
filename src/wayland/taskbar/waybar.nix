@@ -10,7 +10,7 @@ with builtins; let
   taskbar = config.services.taskbar;
   waybar = config.programs.waybar;
 
-  theme = config.signal.desktop.theme;
+  theme = config.desktop.theme;
   font = theme.font;
   fontSize = 11;
 in {

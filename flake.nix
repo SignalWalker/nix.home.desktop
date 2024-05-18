@@ -15,23 +15,10 @@
       url = "git+https://git.ashwalker.net/ash/watch-battery";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # x11
-    polybar-scripts = {
-      url = github:polybar/polybar-scripts;
-      flake = false;
-    };
-    wired = {
-      url = github:Toqozz/wired-notify;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # wayland
     yofi = {
       url = "github:l4l/yofi";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    waybarSrc = {
-      url = "github:alexays/waybar";
-      flake = false;
     };
     ## wallpaper
     swww = {
@@ -86,6 +73,7 @@
       homeManagerModules.default = {
         config,
         lib,
+        pkgs,
         ...
       }: {
         imports = [
@@ -93,24 +81,20 @@
           ./home-manager.nix
         ];
         config = {
-          signal.desktop.polybarScripts = inputs.polybar-scripts;
           signal.desktop.editor.helix.src = inputs.helixSrc;
-          programs.waybar.src = inputs.waybarSrc;
+
+          programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
+
           programs.fish.pluginSources = {
             done = inputs.fishDone;
           };
-          signal.desktop.wayland.wallpaper.swww.src = inputs.swww;
-          signal.desktop.theme.inputs = {
+
+          desktop.wayland.wallpaper.swww.src = inputs.swww;
+
+          desktop.theme.inputs = {
             cava = "${inputs.catppuccin-cava}/frappe.cava";
             i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
-          };
-          programs.kitty.themes = let
-            tk = "${inputs.tokyonight}/extras/kitty";
-          in {
-            tokyonight_day = "${tk}/tokyonight_day.conf";
-            tokyonight_moon = "${tk}/tokyonight_moon.conf";
-            tokyonight_night = "${tk}/tokyonight_night.conf";
-            tokyonight_storm = "${tk}/tokyonight_storm.conf";
+            tokyonight = inputs.tokyonight;
           };
         };
       };

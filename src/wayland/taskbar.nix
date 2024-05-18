@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wayland = config.signal.desktop.wayland;
+  wayland = config.desktop.wayland;
 
   taskbar = config.services.taskbar;
 in {

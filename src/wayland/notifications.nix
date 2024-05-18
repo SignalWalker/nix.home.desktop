@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.wayland;
+  cfg = config.desktop.wayland;
 in {
   options.signal.desktop.wayland.notifications = with lib; {
     enable = (mkEnableOption "Notification daemon") // {default = true;};

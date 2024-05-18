@@ -73,6 +73,7 @@ in {
         startup = "kitty --class scratch_editor nvim";
       };
     };
+
     xdg.configFile =
       {
         "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
@@ -128,9 +129,17 @@ in {
         if (config.system.isNixOS or true)
         then pkgs.kitty
         else (lib.signal.home.linkSystemApp pkgs {app = "kitty";});
+      themes = let
+        tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";
+      in {
+        tokyonight_day = "${tk}/tokyonight_day.conf";
+        tokyonight_moon = "${tk}/tokyonight_moon.conf";
+        tokyonight_night = "${tk}/tokyonight_night.conf";
+        tokyonight_storm = "${tk}/tokyonight_storm.conf";
+      };
       environment = {};
       font = let
-        font = head config.signal.desktop.theme.font.terminal;
+        font = head config.desktop.theme.font.terminal;
       in {
         inherit (font) package name;
         size = font.selectSize 10;

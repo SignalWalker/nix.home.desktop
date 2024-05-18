@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.wayland.compositor.river;
+  cfg = config.desktop.wayland.compositor.river;
 in {
   options.signal.desktop.wayland.compositor.river = with lib; {
     enable = mkEnableOption "river wayland compositor";
@@ -20,7 +20,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (config.signal.desktop.wayland.enable && cfg.enable) {
+  config = lib.mkIf (config.desktop.wayland.enable && cfg.enable) {
     home.packages =
       [
         cfg.package
@@ -29,7 +29,7 @@ in {
     xdg.configFile."river/init" = {
       text = ''
         #! /usr/bin/env sh
-        exec ${config.signal.desktop.wayland.__startupScript}
+        exec ${config.desktop.wayland.__startupScript}
         exec ${./river/init.zsh}
       '';
       executable = true;

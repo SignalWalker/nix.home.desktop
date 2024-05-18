@@ -6,15 +6,17 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  rofi = config.signal.desktop.shared.rofi;
+  rofi = desktop.launcher.rofi;
 in {
-  options.signal.desktop.shared.rofi = with lib; {
-    enable = (mkEnableOption "X11/Wayland rofi config") // {default = true;};
+  options = with lib; {
+    desktop.launcher.rofi = {
+      enable = mkEnableOption "X11/Wayland rofi config";
+    };
   };
   disabledModules = [];
   imports = [];
   config = lib.mkIf rofi.enable {
-    signal.desktop.wayland.menu = let
+    desktop.launcher = let
       rofiBin = "${config.programs.rofi.package}/bin/rofi";
     in {
       drun = "${rofiBin}";
@@ -22,7 +24,7 @@ in {
     };
     programs.rofi = let
       fontSize = 13;
-      font = head (config.signal.desktop.theme.font.bmpsAt fontSize);
+      font = head (config.desktop.theme.font.bmpsAt fontSize);
     in {
       enable = rofi.enable;
       configPath = "${config.xdg.configHome}/rofi/config.rasi";

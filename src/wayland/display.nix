@@ -6,7 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  wayland = config.signal.desktop.wayland;
+  wayland = config.desktop.wayland;
   kanshi = config.services.kanshi;
 in {
   options = with lib; {
