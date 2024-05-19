@@ -12,7 +12,7 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [rssguard];
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+R" = {
         criteria = {
           app_id = "io.github.martinrotter.rssguard";
@@ -22,7 +22,7 @@ in {
         startup = "rssguard";
         systemdCat = true;
         automove = true;
-        autostart = false;
+        autostart = true;
       };
     };
   };

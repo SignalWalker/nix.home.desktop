@@ -22,7 +22,7 @@ in {
       cfg.package
     ];
 
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+M" = {
         criteria = {
           app_id = "Element";

@@ -33,7 +33,7 @@ in {
         lyrics_directory = "${config.xdg.cacheHome}/lyrics";
       };
     };
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+W" = {
         criteria = {
           app_id = "io.github.quodlibet.QuodLibet";

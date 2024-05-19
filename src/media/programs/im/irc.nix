@@ -18,7 +18,7 @@ in {
     #   enable = true;
     # };
     home.packages = [pkgs.weechat];
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+I" = {
         criteria = {app_id = "weechat";};
         resize = 83;

@@ -30,6 +30,16 @@ in {
       heroic
       space-station-14-launcher
     ];
+
+    desktop.windows = [
+      {
+        criteria = {
+          title = "Steam - Update News";
+        };
+        floating = true;
+      }
+    ];
+
     programs.mangohud = {
       enable = true;
       enableSessionWide = true;

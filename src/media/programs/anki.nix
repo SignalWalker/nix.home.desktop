@@ -6,24 +6,45 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  anki = config.programs.anki;
 in {
-  options = with lib; {};
+  options = with lib; {
+    programs.anki = {
+      enable = (mkEnableOption "anki") // {default = true;};
+      package = mkPackageOption pkgs "anki-bin" {};
+    };
+  };
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = with pkgs; [
-      anki-bin
+    home.packages = [
+      anki.package
     ];
-    signal.desktop.scratch.scratchpads = {
+    desktop.windows = [
+      {
+        criteria = {
+          instance = "anki";
+          class = "Anki";
+          title = "(Preferences)|(Add)";
+        };
+        floating = true;
+      }
+    ];
+    desktop.scratchpads = {
       "Shift+A" = {
-        criteria = {app_id = "anki";};
+        criteria = {
+          instance = "anki";
+          class = "Anki";
+          title = ".* - Anki";
+        };
         resize = 83;
         startup = "anki";
         systemdCat = true;
         autostart = true;
-        automove = false;
+        automove = true;
       };
     };
   };
   meta = {};
 }
+

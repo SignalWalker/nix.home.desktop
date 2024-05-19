@@ -25,7 +25,7 @@ in {
       cfg.package
     ];
 
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+D" = {
         criteria = {
           app_id = "discord";
