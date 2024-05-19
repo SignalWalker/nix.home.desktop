@@ -14,7 +14,7 @@ in {
     home.packages = [
       pkgs.obsidian
     ];
-    signal.desktop.scratch.scratchpads = {
+    desktop.scratchpads = {
       "Shift+N" = {
         criteria = {app_id = "scratch_notes";};
         resize = 83;
