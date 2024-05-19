@@ -7,7 +7,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  theme = desktop.theme;
+  theme = config.desktop.theme;
   wayland = config.desktop.wayland;
   sway_cfg = wayland.compositor.sway;
   scratchpads = config.desktop.scratchpads;
@@ -107,9 +107,11 @@ in {
             else acc) []
           config.desktop.windows;
         };
-        fonts = {
-          names = map (font: font.name) (theme.font.slab ++ theme.font.symbols);
-          size = 12;
+        fonts = let
+          fonts = theme.font.slab ++ theme.font.symbols;
+        in {
+          names = map (font: font.name) fonts;
+          size = 12.0;
         };
         gaps = {
           inner = 2;
