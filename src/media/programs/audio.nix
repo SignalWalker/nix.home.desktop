@@ -25,7 +25,7 @@ in {
     home.packages = with pkgs; [
       lmms
       sunvox
-      renoise
+      # renoise
       ardour
       reaper
 
