@@ -38,6 +38,7 @@
           crossSystem = system;
           overlays = [inputs.rust-overlay.overlays.default];
         });
+
       toolchainToml = fromTOML (readFile ./rust-toolchain.toml);
       name = (fromTOML (readFile ./Cargo.toml)).package.name;
     in {
@@ -59,26 +60,39 @@
           "${name}-artifacts" = crane.buildDepsOnly commonArgs;
           ${name} = crane.buildPackage (commonArgs
             // {
-              passthru.toolchain = toolchain;
               cargoArtifacts = self.packages.${system}."${name}-artifacts";
             });
         })
         nixpkgsFor;
+      checks =
+        std.mapAttrs (system: pkgs: {
+          ${name} = pkgs.${name};
+        })
+        self.packages;
+      apps =
+        std.mapAttrs (system: pkgs: {
+          ${name} = {
+            type = "app";
+            program = "${pkgs.${name}}/bin/${name}";
+          };
+          default = self.apps.${system}.${name};
+        })
+        self.packages;
       devShells =
         std.mapAttrs (system: pkgs: let
           selfPkgs = self.packages.${system};
-        in {
-          ${name} = pkgs.mkShell {
-            inputsFrom = [selfPkgs.${name}];
-            packages = [
-              (selfPkgs.${name}.toolchain.override {
-                extensions = [
-                  "rust-analyzer"
-                  "rustfmt"
-                  "clippy"
-                ];
-              })
+          toolchain = (pkgs.rust-bin.fromRustupToolchain toolchainToml.toolchain).override {
+            extensions = [
+              "rust-analyzer"
+              "rustfmt"
+              "clippy"
             ];
+          };
+          crane = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+        in {
+          ${name} = crane.devShell {
+            checks = self.checks.${system};
+            packages = [];
           };
           default = self.devShells.${system}.${name};
         })
