@@ -316,11 +316,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1716715802,
-        "narHash": "sha256-usk0vE7VlxPX8jOavrtpOqphdfqEQpf9lgedlY/r66c=",
+        "lastModified": 1716914467,
+        "narHash": "sha256-KkT6YM/yNQqirtYj/frn6RRakliB8RDvGqVGGaNhdcU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e2dd4e18cc1c7314e24154331bae07df76eb582f",
+        "rev": "4a3fc4cf736b7d2d288d7a8bf775ac8d4c0920b4",
         "type": "github"
       },
       "original": {
@@ -389,11 +389,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716862669,
-        "narHash": "sha256-7oTPM9lcdwiI1cpRC313B+lHawocgpY5F07N+Rbm5Uk=",
+        "lastModified": 1716949111,
+        "narHash": "sha256-ms3aD3Z2jKd1dk8qd0D/N7C8vFxn6z6LQ1G7cvNTVJ8=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "47b2d15658b37716393b2463a019000dbd6ce4bc",
+        "rev": "2e7ccf572ce0f0547d4cf4426de4482936882d0e",
         "type": "github"
       },
       "original": {
@@ -476,11 +476,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1716945149,
-        "narHash": "sha256-+uUWkkQbMdP84PhFEzJjSJD3jtpSLxVECBSF3dHpNTA=",
+        "lastModified": 1716986512,
+        "narHash": "sha256-psGcLjkYY2Kp+a0W0Qw+UPbDJSR42BA2/0xRd1cdomA=",
         "ref": "refs/heads/main",
-        "rev": "71bcc0a7c95324632c15c65ec69d740e530fa380",
-        "revCount": 13,
+        "rev": "d5863065381f06ab9dec7984010d2484a0ece368",
+        "revCount": 14,
         "type": "git",
         "url": "https://git.ashwalker.net/ash/watch-battery"
       },
