@@ -12,9 +12,9 @@ with builtins; let
   sway_cfg = wayland.compositor.sway;
   scratchpads = config.desktop.scratchpads;
   bar = wayland.taskbar;
-  exports = let
-    vars = config.desktop.wayland.sessionVariables;
-  in (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)));
+  # exports = let
+  #   vars = config.desktop.wayland.sessionVariables;
+  # in (std.concatStringsSep "\n" (map (key: "export ${key}='${toString vars.${key}}'") (attrNames vars)));
 in {
   options = with lib; {
     desktop.wayland.compositor.sway = with lib; {
@@ -23,26 +23,6 @@ in {
   };
   imports = [];
   config = lib.mkIf (wayland.enable && sway_cfg.enable) {
-    # home.packages = let
-    # in [
-    #   (pkgs.writeShellScriptBin "sway-wrapper" ''
-    #     set -o errexit
-    #     # BEGIN -- export `desktop.wayland.sessionVariables`
-    #     ${exports}
-    #     # END   -- export `desktop.wayland.sessionVariables`
-    #     if [ ! "$_SWAY_WRAPPER_ALREADY_EXECUTED" ]; then
-    #       export XDG_CURRENT_DESKTOP=sway
-    #       export _SWAY_WRAPPER_ALREADY_EXECUTED=1
-    #     fi
-    #     if [ "$DBUS_SESSION_BUS_ADDRESS" ]; then
-    #       export DBUS_SESSION_BUS_ADDRESS
-    #       exec sway "$@"
-    #     else
-    #       exec dbus-run-session sway "$@"
-    #     fi
-    #   '')
-    # ];
-
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
       launcher = config.desktop.launcher;
@@ -111,7 +91,7 @@ in {
           fonts = theme.font.slab ++ theme.font.symbols;
         in {
           names = map (font: font.name) fonts;
-          size = 12.0;
+          size = 10.0;
         };
         gaps = {
           inner = 2;
@@ -327,6 +307,9 @@ in {
       };
       systemd = {
         enable = true;
+        variables = lib.mkOptionDefault [
+          "PATH"
+        ];
       };
       extraConfig = ''
         bindswitch --reload --locked {
@@ -338,9 +321,6 @@ in {
         base = true;
         gtk = true;
       };
-      extraSessionCommands = ''
-        ${exports}
-      '';
       xwayland = config.desktop.wayland.xwayland.enable;
     };
     systemd.user.targets."sway-session" = {
@@ -351,4 +331,3 @@ in {
     };
   };
 }
-

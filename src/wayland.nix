@@ -14,10 +14,10 @@ in {
     xwayland = {
       enable = (mkEnableOption "XWayland support") // {default = true;};
     };
-    sessionVariables = mkOption {
-      type = types.attrsOf (types.either types.int types.str);
-      default = {};
-    };
+    # sessionVariables = mkOption {
+    #   type = types.attrsOf (types.either types.int types.str);
+    #   default = {};
+    # };
     startupCommands = mkOption {
       type = types.lines;
       default = "";
