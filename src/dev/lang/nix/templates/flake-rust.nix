@@ -31,6 +31,7 @@
   }:
     with builtins; let
       std = nixpkgs.lib;
+
       systems = attrNames inputs.crane.lib;
       nixpkgsFor = std.genAttrs systems (system:
         import nixpkgs {
@@ -40,33 +41,67 @@
         });
 
       toolchainToml = fromTOML (readFile ./rust-toolchain.toml);
-      name = (fromTOML (readFile ./Cargo.toml)).package.name;
+      toolchainFor = std.mapAttrs (system: pkgs: pkgs.rust-bin.fromRustupToolchain toolchainToml.toolchain) nixpkgsFor;
+
+      craneFor = std.mapAttrs (system: pkgs: (inputs.crane.mkLib pkgs).overrideToolchain toolchainFor.${system}) nixpkgsFor;
+
+      commonArgsFor =
+        std.mapAttrs (system: pkgs: let
+          crane = craneFor.${system};
+        in {
+          src = crane.cleanCargoSource (crane.path ./.);
+          strictDeps = true;
+          nativeBuildInputs = with pkgs; [
+            llvmPackages_16.clang
+            mold
+          ];
+        })
+        nixpkgsFor;
+
+      cargoToml = fromTOML (readFile ./Cargo.toml);
+      name = cargoToml.package.metadata.crane.name or cargoToml.package.name or cargoToml.workspace.metadata.crane.name;
+      version = cargoToml.package.version or cargoToml.workspace.package.version;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       packages =
         std.mapAttrs (system: pkgs: let
-          toolchain = pkgs.rust-bin.fromRustupToolchain toolchainToml.toolchain;
-          crane = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+          crane = craneFor.${system};
           src = crane.cleanCargoSource (crane.path ./.);
-          commonArgs = {
-            inherit src;
-            nativeBuildInputs = with pkgs; [
-              llvmPackages_16.clang
-              mold
-            ];
-          };
         in {
           default = self.packages.${system}.${name};
-          "${name}-artifacts" = crane.buildDepsOnly commonArgs;
-          ${name} = crane.buildPackage (commonArgs
+          "${name}-artifacts" = crane.buildDepsOnly commonArgsFor.${system};
+          ${name} = crane.buildPackage (commonArgsFor.${system}
             // {
               cargoArtifacts = self.packages.${system}."${name}-artifacts";
             });
         })
         nixpkgsFor;
       checks =
-        std.mapAttrs (system: pkgs: {
+        std.mapAttrs (system: pkgs: let
+          crane = craneFor.${system};
+          commonArgs = commonArgsFor.${system};
+          cargoArtifacts = self.packages.${system}."${name}-artifacts";
+        in {
           ${name} = pkgs.${name};
+          "${name}-clippy" = crane.cargoClippy (commonArgs
+            // {
+              inherit cargoArtifacts;
+            });
+          "${name}-coverage" = crane.cargoTarpaulin (commonArgs
+            // {
+              inherit cargoArtifacts;
+            });
+          "${name}-audit" = crane.cargoAudit (commonArgs
+            // {
+              pname = name;
+              inherit version;
+              inherit cargoArtifacts;
+              advisory-db = inputs.advisory-db;
+            });
+          "${name}-deny" = crane.cargoDeny (commonArgs
+            // {
+              inherit cargoArtifacts;
+            });
         })
         self.packages;
       apps =
@@ -81,7 +116,7 @@
       devShells =
         std.mapAttrs (system: pkgs: let
           selfPkgs = self.packages.${system};
-          toolchain = (pkgs.rust-bin.fromRustupToolchain toolchainToml.toolchain).override {
+          toolchain = toolchainFor.${system}.override {
             extensions = [
               "rust-analyzer"
               "rustfmt"
@@ -92,7 +127,18 @@
         in {
           ${name} = crane.devShell {
             checks = self.checks.${system};
-            packages = [];
+            packages = with pkgs; [
+              cargo-audit
+              cargo-license
+              cargo-dist
+            ];
+            shellHook = let
+              extraLdPaths =
+                pkgs.lib.makeLibraryPath (with pkgs; [
+                  ]);
+            in ''
+              export LD_LIBRARY_PATH="${extraLdPaths}:$LD_LIBRARY_PATH"
+            '';
           };
           default = self.devShells.${system}.${name};
         })
