@@ -9,5 +9,11 @@ with builtins; let
 in {
   options.signal.media.im = with lib; {};
   imports = lib.signal.fs.path.listFilePaths ./im;
-  config = {};
+  config = {
+    programs.discord = {
+      enable = true;
+      vencord.enable = true;
+      openasar.enable = true;
+    };
+  };
 }

@@ -6,23 +6,24 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.media.im.discord;
+  discord = config.programs.discord;
 in {
-  options.signal.media.im.discord = with lib; {
-    enable = (mkEnableOption "Discord") // {default = true;};
-    package = mkOption {
-      type = types.package;
-      default = pkgs.discord.override {
-        withOpenASAR = true;
-        withVencord = false;
-      };
+  options = with lib; {
+    programs.discord = {
+      enable = mkEnableOption "Discord";
+      package = mkPackageOption pkgs "discord" {};
+      vencord.enable = mkEnableOption "Vencord";
+      openasar.enable = mkEnableOption "OpenASAR";
     };
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      cfg.package
+  config = lib.mkIf discord.enable {
+    home.packages = [
+      (discord.package.override {
+        withOpenASAR = discord.openasar.enable;
+        withVencord = discord.vencord.enable;
+      })
     ];
 
     desktop.scratchpads = {
@@ -32,7 +33,7 @@ in {
           # class = "discord";
         };
         resize = 93;
-        startup = "discord";
+        startup = "${discord.package}/bin/discord";
         systemdCat = true;
         automove = true;
         autostart = true;
@@ -41,3 +42,4 @@ in {
   };
   meta = {};
 }
+
