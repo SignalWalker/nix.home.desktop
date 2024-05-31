@@ -14,7 +14,17 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = lib.mkIf (wln.enable && ntf.enable) {
+  config = lib.mkIf mako.enable {
+    desktop.notifications = {
+      commands = let
+        makoctl = "${mako.package}/bin/makoctl";
+      in {
+        restore = "${makoctl} restore";
+        dismiss = "${makoctl} dismiss";
+        context = "${makoctl} menu ${pkgs.bemenu}/bin/bemenu -p mako";
+      };
+    };
+
     systemd.user.services."mako" = {
       Unit = {
         Description = "Mako notification daemon";
@@ -30,7 +40,6 @@ in {
     services.mako = let
       colors = theme.colors.signal;
     in {
-      enable = ntf.enable;
       # mechanics
       actions = true;
       defaultTimeout = 5000;
@@ -105,3 +114,4 @@ in {
   };
   meta = {};
 }
+

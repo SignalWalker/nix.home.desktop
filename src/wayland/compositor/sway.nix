@@ -154,6 +154,7 @@ in {
           dirMap = {
             inherit up down left right;
           };
+          ntf = config.desktop.notificaations.commands;
         in
           {
             "${mod}+Return" = "exec kitty";
@@ -209,10 +210,9 @@ in {
             "${mod}+Print" = "exec ${config.desktop.wayland.screenshotScript} output";
             "${mod}+Alt+Print" = "exec ${config.desktop.wayland.screenshotScript} screen";
 
-            "${mod}+n" = "exec makoctl restore";
-            "${mod}+Ctrl+n" = "exec makoctl dismiss";
-            # "${mod}+Shift+Ctrl+n" = "exec makoctl dismiss -a";
-            "${mod}+Alt+n" = "exec makoctl invoke on-button-left";
+            "${mod}+n" = "exec ${ntf.restore}";
+            "${mod}+Alt+n" = "exec ${ntf.dismiss}";
+            "${mod}+Ctrl+n" = "exec ${ntf.context}";
 
             "${mod}+Alt+w" = "exec ${config.desktop.wayland.wallpaper.randomizeCmd}";
 
