@@ -154,7 +154,7 @@ in {
           dirMap = {
             inherit up down left right;
           };
-          ntf = config.desktop.notificaations.commands;
+          ntf = config.desktop.notifications.commands;
         in
           {
             "${mod}+Return" = "exec kitty";
@@ -177,17 +177,13 @@ in {
             "${mod}+w" = "mode split";
             "${mod}+r" = "mode resize";
 
-            "XF86MonBrightnessUp" = "exec light -A 5";
-            "XF86MonBrightnessDown" = "exec light -U 5";
+            "XF86MonBrightnessUp" = "exec light -A 2";
+            "XF86MonBrightnessDown" = "exec light -U 2";
             "Ctrl+XF86MonBrightnessUp" = "exec light -S 100";
             "Ctrl+XF86MonBrightnessDown" = "exec light -S 1";
             "${mod}+XF86MonBrightnessUp" = "opacity plus 0.02";
             "${mod}+XF86MonBrightnessDown" = "opacity minus 0.02";
             "${mod}+Ctrl+XF86MonBrightnessUp" = "opacity set 1";
-
-            # workaround for weird keyboard issue with framework laptop
-            "${mod}+F7" = "exec light -U 1";
-            "${mod}+F8" = "exec light -A 1";
 
             "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl -s previous";
             "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -s play-pause";

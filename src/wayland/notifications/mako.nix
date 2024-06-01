@@ -45,14 +45,21 @@ in {
       defaultTimeout = 5000;
       sort = "-priority";
       groupBy = "summary,body";
+
+      maxVisible = -1;
       # theme
       ## default
       layer = "top";
       anchor = "bottom-right";
+
+      width = floor (2256 / 6);
+      height = floor (1504 / 8);
+
       font = let
         size = 11;
         fonts = theme.font.slab ++ theme.font.symbols;
-      in "${std.concatStringsSep ", " (map (font: font.name) fonts)} ${toString size}";
+      in
+        std.concatStringsSep ", " (map (font: "${font.name} ${toString (font.selectSize size)}") fonts);
       # iconPath = std.concatStringsSep ":" [
       #   "${config.home.profileDirectory}/share/icons/hicolor"
       #   "${config.home.profileDirectory}/share/pixmaps"
@@ -60,13 +67,15 @@ in {
       backgroundColor = "#${colors.bg}aa";
       textColor = "#${colors.fg}";
       progressColor = "source #${colors.fg}";
-      margin = "8";
+      margin = "2";
       padding = "4";
       borderColor = "#${colors.border}";
       borderSize = 1;
       borderRadius = 0;
       ## extra
       extraConfig = ''
+        outer-margin=12
+
         [urgency=low]
         background-color=#${colors.bg-low-priority}aa
         text-color=#${colors.fg-low-priority}
