@@ -3,11 +3,11 @@
     "advisory-db": {
       "flake": false,
       "locked": {
-        "lastModified": 1717238897,
-        "narHash": "sha256-+9w8QXpiGvPjJUYxlbLCKqpr0bR6b96fF+TtjaA2nr4=",
+        "lastModified": 1718755832,
+        "narHash": "sha256-bSY6HPtJ9vCp0AGjL5X910aTg0mq32p3BcJmZQkNkMs=",
         "owner": "rustsec",
         "repo": "advisory-db",
-        "rev": "331c2947e70b94a35b53ab25ed64b1bf25080870",
+        "rev": "8eb99abe8c369b48bbd4ca04133e1f05be22a778",
         "type": "github"
       },
       "original": {
@@ -101,11 +101,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717025063,
-        "narHash": "sha256-dIubLa56W9sNNz0e8jGxrX3CAkPXsq7snuFA/Ie6dn8=",
+        "lastModified": 1718730147,
+        "narHash": "sha256-QmD6B6FYpuoCqu6ZuPJH896ItNquDkn0ulQlOn4ykN8=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "480dff0be03dac0e51a8dfc26e882b0d123a450e",
+        "rev": "32c21c29b034d0a93fdb2379d6fabc40fc3d0e6c",
         "type": "github"
       },
       "original": {
@@ -170,11 +170,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717223092,
-        "narHash": "sha256-ih8NPk3Jn5EAILOGQZ+KS5NLmu6QmwohJX+36MaTAQE=",
+        "lastModified": 1717827974,
+        "narHash": "sha256-ixopuTeTouxqTxfMuzs6IaRttbT8JqRW5C9Q/57WxQw=",
         "owner": "nix-community",
         "repo": "fenix",
-        "rev": "9a025daf6799e3af80b677f0af57ef76432c3fcf",
+        "rev": "ab655c627777ab5f9964652fe23bbb1dfbd687a8",
         "type": "github"
       },
       "original": {
@@ -202,24 +202,6 @@
     "flake-utils": {
       "inputs": {
         "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1705309234,
-        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1710146030,
@@ -286,11 +268,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1718757210,
-        "narHash": "sha256-yyatQ3qnMjMe6aYDzXwDgnZkQU/XAGtcyg//Jsj9GxA=",
+        "lastModified": 1718878857,
+        "narHash": "sha256-5TFm0tbCDK6soKeNsbWympRwMGAIrsyPPki4SG5hRu8=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "2bcb32d6119bb3f017dc40ea1aa9b5865d36c128",
+        "rev": "b63e5230986accc1ee97a237a8efadce1fefc67b",
         "type": "github"
       },
       "original": {
@@ -316,11 +298,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1718606988,
-        "narHash": "sha256-pmjP5ePc1jz+Okona3HxD7AYT0wbrCwm9bXAlj08nDM=",
+        "lastModified": 1718742829,
+        "narHash": "sha256-+H7PnuwEDDDxUMa3ItAcSRDK5+jfMJap/zHiuACyIfc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "38d3352a65ac9d621b0cd3074d3bef27199ff78f",
+        "rev": "37a45fb6993f14555f50b18fbcf4945b82a35707",
         "type": "github"
       },
       "original": {
@@ -382,18 +364,17 @@
     },
     "rust-overlay": {
       "inputs": {
-        "flake-utils": "flake-utils",
         "nixpkgs": [
           "watch-battery",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1717208326,
-        "narHash": "sha256-4gVhbC+NjSQ4c6cJvJGNCI1oTcD+8jRRNAnOF9faGCE=",
+        "lastModified": 1718849885,
+        "narHash": "sha256-Qfc5HKpQvGhWXox0WJVzLqrAcFm3uy6xtWRvVmrkLYc=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "ab69b67fac9a96709fbef0b899db308ca714a120",
+        "rev": "bc1a236757cd5f6622f73838e551fb2035afa44a",
         "type": "github"
       },
       "original": {
@@ -419,21 +400,6 @@
       }
     },
     "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -476,11 +442,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1717254393,
-        "narHash": "sha256-ZefxTWpO3GbjGADjcM3nncrNYGUnB4QIdIh9nQ0h6VA=",
+        "lastModified": 1718915255,
+        "narHash": "sha256-Yge7Qs/dfqNcaAtQV+RnMBdBhulXBRCKsPCiNuA7EAA=",
         "ref": "refs/heads/main",
-        "rev": "24fec9207e0383b7627942730c42926c65198a01",
-        "revCount": 17,
+        "rev": "c12b2c2730c15ccbcd5aa50d61303c6a071bc6a0",
+        "revCount": 20,
         "type": "git",
         "url": "https://git.ashwalker.net/ash/watch-battery"
       },
@@ -491,7 +457,7 @@
     },
     "yofi": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
         ]
