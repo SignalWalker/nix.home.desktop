@@ -8,7 +8,7 @@ launch --title "journalctl :: wifi" journalctl --follow --no-tail --boot -t kern
 
 new_tab
 layout vertical
-launch --title "compositor" journalctl --follow --no-tail --user --boot --identifier=compositor
+launch --title "compositor" journalctl --follow --no-tail --user --boot --identifier=sway
 
 new_tab
 layout vertical

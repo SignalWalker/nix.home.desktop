@@ -65,6 +65,7 @@ in {
         startup = "kitty --class scratch_editor nvim";
       };
       # HACK :: framework keyboard doesn't have a calculator button :c
+      # this is the gear button on f12
       "XF86AudioMedia" = {
         useMod = false;
         criteria = {app_id = "scratch_editor";};
@@ -302,3 +303,4 @@ in {
     };
   };
 }
+
