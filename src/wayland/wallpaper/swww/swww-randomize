@@ -12,7 +12,6 @@ import re
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff' }
 ANIMATED_EXTENSIONS = { 'webp', 'gif' }
 
-
 # for pretty printing to stderr
 class Color:
     RED = '\033[31m'
