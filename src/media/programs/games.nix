@@ -11,6 +11,7 @@ in {
   imports = [];
   config = {
     home.packages = with pkgs; [
+      lutris
       dolphin-emu-beta
       duckstation
       # pcsx2 # disabled for build error
@@ -29,6 +30,7 @@ in {
       })
       heroic
       space-station-14-launcher
+      openmw
     ];
 
     desktop.windows = [
