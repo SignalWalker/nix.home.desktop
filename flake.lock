@@ -268,11 +268,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1719929551,
-        "narHash": "sha256-mmIRvHBz8ffKoMjj00DgwmWWCTAdyuo14+IeFxlUWqQ=",
+        "lastModified": 1719977375,
+        "narHash": "sha256-XWQy8B31inHGkI+xFvRAqsDNwfhCaBQ0UI4Wdi7Eew0=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "28a5bfe379dbe43af1e2240efba92e2664a31559",
+        "rev": "1665348b2460660ba54f9b3b653bb01eef555000",
         "type": "github"
       },
       "original": {
@@ -298,11 +298,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1719826879,
-        "narHash": "sha256-xs7PlULe8O1SAcs/9e/HOjeUjBrU5FNtkAF/bSEcFto=",
+        "lastModified": 1719931832,
+        "narHash": "sha256-0LD+KePCKKEb4CcPsTBOwf019wDtZJanjoKm1S8q3Do=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b9014df496d5b68bf7c0145d0e9b0f529ce4f2a8",
+        "rev": "0aeab749216e4c073cece5d34bc01b79e717c3e0",
         "type": "github"
       },
       "original": {
@@ -417,11 +417,11 @@
     "tokyonight": {
       "flake": false,
       "locked": {
-        "lastModified": 1719943939,
-        "narHash": "sha256-yvdRbcBDiuEY2V0gevF9MphN3MYET+zESr3p5BhNOFw=",
+        "lastModified": 1720024203,
+        "narHash": "sha256-AC+ouyfy1Ze4spcLqa59Tgjr/HzOhSL3Dvo9sMIHkSo=",
         "owner": "folke",
         "repo": "tokyonight.nvim",
-        "rev": "5808dbed0682270f0c40ae7a1bc517ad1fbcaede",
+        "rev": "a20e705156d0c6251693570c444cc1858f36fad5",
         "type": "github"
       },
       "original": {
