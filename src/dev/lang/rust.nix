@@ -46,6 +46,7 @@ in {
       pkgs.cargo-limit
       pkgs.cargo-expand
       pkgs.cargo-watch
+      pkgs.cargo-cache
     ];
     home.sessionPath = ["${cfg.cargo.home}/bin"];
     home.file."${cfg.cargo.home}/config.toml" = {
