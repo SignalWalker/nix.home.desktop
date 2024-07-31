@@ -22,7 +22,6 @@ in {
     ];
     programs.quodlibet = {
       enable = config.system.isNixOS or true;
-      package = pkgs.quodlibet-full;
     };
     programs.ncmpcpp = {
       enable = mpd.enable;
@@ -48,3 +47,4 @@ in {
     };
   };
 }
+

@@ -13,7 +13,9 @@ in {
       enable = mkEnableOption "quod libet";
       package = mkOption {
         type = types.package;
-        default = pkgs.quodlibet;
+        default = pkgs.quodlibet-full.override {
+          python3 = pkgs.python311; # workaround for https://github.com/NixOS/nixpkgs/issues/325537
+        };
       };
     };
   };

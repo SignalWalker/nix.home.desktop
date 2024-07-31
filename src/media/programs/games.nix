@@ -31,6 +31,9 @@ in {
       heroic
       space-station-14-launcher
       openmw
+      xivlauncher
+      parsec-bin
+      moonlight-qt
     ];
 
     desktop.windows = [
@@ -44,7 +47,7 @@ in {
 
     programs.mangohud = {
       enable = true;
-      enableSessionWide = true;
+      enableSessionWide = false;
       settings = {
         fps_limit = 60;
         fps_limit_method = "early";
