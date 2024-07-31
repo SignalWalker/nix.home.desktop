@@ -74,7 +74,11 @@ in {
       };
       "swww-randomize" = {
         Unit.PartOf = [cfg.systemd.target];
-        Service.Environment = ["SWWW_TRANSITION_FPS=${toString cfg.img.fps}" "SWWW_TRANSITION_STEP=${toString cfg.img.step}" "SWWW_TRANSITION_DURATION=1"];
+        Service.Environment = [
+          "SWWW_TRANSITION_FPS=${toString cfg.img.fps}"
+          "SWWW_TRANSITION_STEP=${toString cfg.img.step}"
+          "SWWW_TRANSITION_DURATION=1"
+        ];
         Service.Type = "oneshot";
         Service.ExecStart = let
           py = pkgs.python311.withPackages (ps:

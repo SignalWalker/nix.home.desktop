@@ -25,21 +25,21 @@
   (box :orientation "v" :space-evenly false
     ))
 
-(defwidget icon_percent [icon percent]
-  (box :orientation 'v' :class 'widget' :space-evenly false
+(defwidget icon_percent [?visible icon percent]
+  (box :visible visible :orientation 'v' :class 'widget' :space-evenly false
     (label :class 'icon' :halign 'center' :text icon)
-    (label :class 'percent' :halign 'center' :text {round(percent, 0)})))
+    (label :class 'percent' :halign 'center' :text {round(percent ?: 0, 0)})))
 
 (defwidget volume_status []
   (icon_percent
     :icon {volume['icon'] ?: '?'}
     :percent {(volume['value']) * 100}))
 
-(defwidget battery_status []
+(defwidget battery_status [battery average]
   (icon_percent
-    :visible {(EWW_BATTERY['BAT1'] ?: '') != ''}
-    :icon {(EWW_BATTERY['BAT1']['status'] == 'Charging') ? '󰢟' : '󰂎' }
-    :percent {EWW_BATTERY['total_avg']}))
+    :visible {(battery ?: '') != ''}
+    :icon {(battery ?: '' != '') ? ((battery?.['status'] == 'Charging') ? '󰢟' : '󰂎') : "?"}
+    :percent {average}))
 
 (defwidget progress_display [icon value]
   (box :class 'widget' :orientation 'v' :space-evenly false

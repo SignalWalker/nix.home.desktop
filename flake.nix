@@ -60,6 +60,10 @@
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
+    eww = {
+      url = "github:elkowar/eww";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -96,6 +100,8 @@
             i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
             tokyonight = inputs.tokyonight;
           };
+
+          programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
         };
       };
     };

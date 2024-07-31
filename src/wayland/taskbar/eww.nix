@@ -53,6 +53,7 @@ in {
             "/run/current-system/sw"
           ];
           typelibPath = std.makeSearchPathOutput "lib" "lib/girepository-1.0" [
+            pkgs.glib
             pkgs.playerctl
           ];
         in {

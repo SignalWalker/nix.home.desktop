@@ -34,6 +34,7 @@ in {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
         PartOf = [wayland.systemd.target];
+        After = ["swww.service"];
         Before = ["tray.target"];
         BindsTo = ["tray.target"];
       };
@@ -45,3 +46,4 @@ in {
     };
   };
 }
+

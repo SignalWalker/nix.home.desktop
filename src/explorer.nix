@@ -51,7 +51,7 @@ in {
     })
     (lib.mkIf nemo.enable {
       home.packages = with pkgs; [
-        cinnamon.nemo-with-extensions
+        nemo-with-extensions
         # cinnamon.nemo-emblems
         # cinnamon.nemo-fileroller
       ];
@@ -69,3 +69,4 @@ in {
   ];
   meta = {};
 }
+
