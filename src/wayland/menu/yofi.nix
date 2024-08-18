@@ -18,9 +18,7 @@ in {
     };
     programs.yofi = {
       enable = mkEnableOption "yofi";
-      package = mkOption {
-        type = types.package;
-      };
+      package = mkPackageOption pkgs "yofi" {};
       settings = mkOption {
         type = toml.type;
         default = {};

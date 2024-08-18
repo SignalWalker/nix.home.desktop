@@ -17,7 +17,10 @@
     };
     # wayland
     yofi = {
-      url = "github:l4l/yofi";
+      type = "github";
+      owner = "l4l";
+      repo = "yofi";
+      ref = "0.2.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## wallpaper
@@ -87,7 +90,7 @@
         config = {
           signal.desktop.editor.helix.src = inputs.helixSrc;
 
-          programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
+          # programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
 
           programs.fish.pluginSources = {
             done = inputs.fishDone;
