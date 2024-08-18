@@ -114,11 +114,10 @@ in {
           commands =
             [
               {
-                criteria = true;
-                command = "inhibit_idle fullscreen";
-              }
-              {
-                criteria = "instance=\"Godot_Engine\" title=\".*DEBUG.*\"";
+                criteria = {
+                  "instance" = "Godot_Engine";
+                  "title" = ".*DEBUG.*";
+                };
                 command = "floating enable";
               }
             ]
@@ -321,6 +320,7 @@ in {
           lid:on output eDP-1 dpms off
           lid:off output eDP-1 dpms on
         }
+        inhibit_idle fullscreen
       '';
       wrapperFeatures = {
         base = true;
