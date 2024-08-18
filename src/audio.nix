@@ -53,6 +53,7 @@ in {
         pavucontrol
         pwvucontrol
         pulseaudio # for pactl
+        coppwr
         qpwgraph
         # easyeffects # FIX :: disabled 2024-08-01 for build failure
       ];
