@@ -27,9 +27,9 @@ in {
       # ${readFile config.desktop.theme.inputs.cava}
       desktop.scratchpads = {
         "Shift+V" = {
-          criteria = {app_id = "pavucontrol";};
+          criteria = {app_id = "com.saivert.pwvucontrol";};
           resize = 50;
-          startup = "pavucontrol";
+          startup = "pwvucontrol";
           systemdCat = true;
           autostart = false;
           automove = true;
@@ -51,6 +51,7 @@ in {
     (lib.mkIf config.system.isNixOS {
       home.packages = with pkgs; [
         pavucontrol
+        pwvucontrol
         pulseaudio # for pactl
         qpwgraph
         # easyeffects # FIX :: disabled 2024-08-01 for build failure
@@ -59,4 +60,3 @@ in {
   ];
   meta = {};
 }
-
