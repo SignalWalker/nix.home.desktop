@@ -53,9 +53,10 @@ in {
         pavucontrol
         pulseaudio # for pactl
         qpwgraph
-        easyeffects
+        # easyeffects # FIX :: disabled 2024-08-01 for build failure
       ];
     })
   ];
   meta = {};
 }
+

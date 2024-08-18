@@ -112,7 +112,16 @@ in {
           border = 1;
           hideEdgeBorders = "smart";
           commands =
-            []
+            [
+              {
+                criteria = true;
+                command = "inhibit_idle fullscreen";
+              }
+              {
+                criteria = "instance=\"Godot_Engine\" title=\".*DEBUG.*\"";
+                command = "floating enable";
+              }
+            ]
             ++ (foldl' (acc: pad:
               acc
               ++ (std.optional pad.automove {
