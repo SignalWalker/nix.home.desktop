@@ -25,7 +25,7 @@ in {
   imports = [];
   config = lib.mkIf launcher.enable {
     desktop.launcher = {
-      yofi.enable = lib.mkDefault wayland.enable;
+      wofi.enable = lib.mkDefault wayland.enable;
     };
   };
   meta = {};

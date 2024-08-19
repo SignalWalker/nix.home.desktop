@@ -10,9 +10,7 @@ with builtins; let
 in {
   options = with lib; {};
   imports = lib.signal.fs.path.listFilePaths ./menu;
-  config = lib.mkIf (launcher.enable) {
-    desktop.launcher = {
-      yofi.enable = true;
+  config =
+    lib.mkIf (launcher.enable) {
     };
-  };
 }
