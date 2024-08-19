@@ -42,7 +42,7 @@ in {
     home.packages = [
       pkgs.rustup
       # cargo extensions
-      pkgs.cargo-update
+      # pkgs.cargo-update
       pkgs.cargo-limit
       pkgs.cargo-expand
       pkgs.cargo-watch
