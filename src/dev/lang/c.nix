@@ -23,21 +23,24 @@ in {
   config = lib.mkIf (cfg.enable) {
     home.packages =
       [
-        cfg.llvmPackages.clang
+        # cfg.llvmPackages.clang
         cfg.llvmPackages.clang-manpages
+        cfg.llvmPackages.clang-tools
+        # cfg.llvmPackages.bintools
       ]
       ++ (with pkgs; [
         cmake
         cmake-format
         cmake-language-server
+        ninja
       ]);
     systemd.user.sessionVariables = {
-      CC = "clang";
-      CXX = "clang++";
+      # CC = "clang";
+      # CXX = "clang++";
       CMAKE_EXPORT_COMPILE_COMMANDS = "ON";
-      LDFLAGS = "-fuse-ld=${cfg.linker}";
-      CC_LD = cfg.linker; # meson
-      CXX_LD = cfg.linker; # meson
+      # LDFLAGS = "-fuse-ld=${cfg.linker}";
+      # CC_LD = cfg.linker; # meson
+      # CXX_LD = cfg.linker; # meson
     };
   };
 }

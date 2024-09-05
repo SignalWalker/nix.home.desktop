@@ -45,16 +45,16 @@
 
       craneFor = std.mapAttrs (system: pkgs: (inputs.crane.mkLib pkgs).overrideToolchain toolchainFor.${system}) nixpkgsFor;
 
+      stdenvFor = std.mapAttrs (system: pkgs: pkgs.stdenvAdapters.useMoldLinker pkgs.llvmPackages_latest.stdenv) nixpkgsFor;
+
       commonArgsFor =
         std.mapAttrs (system: pkgs: let
           crane = craneFor.${system};
         in {
           src = crane.cleanCargoSource (crane.path ./.);
+          stdenv = stdenvFor.${system};
           strictDeps = true;
-          nativeBuildInputs = with pkgs; [
-            llvmPackages_16.clang
-            mold
-          ];
+          nativeBuildInputs = with pkgs; [];
         })
         nixpkgsFor;
 
@@ -127,6 +127,7 @@
         in {
           ${name} = crane.devShell {
             checks = self.checks.${system};
+            stdenv = commonArgsFor.${system}.stdenv;
             packages = with pkgs; [
               cargo-audit
               cargo-license

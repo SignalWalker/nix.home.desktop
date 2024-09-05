@@ -26,13 +26,14 @@
           crossSystem = system;
           overlays = [];
         });
+      stdenvFor = std.mapAttrs (system: pkgs: pkgs.stdenvAdapters.useMoldLinker pkgs.llvmPackages_latest.stdenv) nixpkgsFor;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       packages =
         std.mapAttrs (system: pkgs: let
           std = pkgs.lib;
         in {
-          default = pkgs.stdenv.mkDerivation {
+          default = stdenvFor.${system}.mkDerivation {
             src = ./.;
           };
         })
@@ -42,6 +43,7 @@
           selfPkgs = self.packages.${system};
         in {
           default = pkgs.mkShell {
+            stdenv = stdenvFor.${system};
             inputsFrom = [selfPkgs.default];
           };
         })
