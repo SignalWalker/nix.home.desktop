@@ -11,7 +11,16 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    home.packages = [pkgs.bottles]; # disabled due to gamescope build error
+    home.packages = [pkgs.bottles];
+    desktop.windows = [
+      {
+        criteria = {
+          app_id = "com.usebottles.bottles";
+          title = "Select Bottle";
+        };
+        floating = true;
+      }
+    ];
     xdg.binFile."wine-bottles" = {
       executable = true;
       text = ''

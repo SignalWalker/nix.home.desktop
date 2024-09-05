@@ -15,8 +15,10 @@ in {
     desktop.scratchpads = {
       "Shift+Z" = {
         criteria = {
-          class = "Zotero";
-          instance = "Navigator";
+          # class = "Zotero";
+          # instance = "Navigator";
+          app_id = "Zotero";
+          title = ".*- Zotero";
         };
         resize = 93;
         name = "zotero";
@@ -29,4 +31,3 @@ in {
   };
   meta = {};
 }
-

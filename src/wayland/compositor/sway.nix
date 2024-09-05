@@ -197,8 +197,10 @@ in {
             "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl -s play-pause";
             "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl -s next";
 
-            "XF86AudioRaiseVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02+";
-            "XF86AudioLowerVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02-";
+            # "XF86AudioRaiseVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02+";
+            # "XF86AudioLowerVolume" = "exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.02-";
+            "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +1dB"; # using pactl isntead of wpctl because it accepts dB, which preserves L/R balance ratio
+            "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -1dB";
             "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "Alt+XF86AudioRaiseVolume" = "exec wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02+";
             "Alt+XF86AudioLowerVolume" = "exec wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02-";
@@ -320,7 +322,6 @@ in {
           lid:on output eDP-1 dpms off
           lid:off output eDP-1 dpms on
         }
-        inhibit_idle fullscreen
       '';
       wrapperFeatures = {
         base = true;

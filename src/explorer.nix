@@ -26,6 +26,16 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkMerge [
+    {
+      desktop.windows = [
+        {
+          criteria = {
+            app_id = "file-roller";
+          };
+          floating = true;
+        }
+      ];
+    }
     (lib.mkIf dolphin.enable {
       home.packages =
         [
@@ -69,4 +79,3 @@ in {
   ];
   meta = {};
 }
-
