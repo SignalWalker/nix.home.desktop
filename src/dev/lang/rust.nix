@@ -56,11 +56,11 @@ in {
       target."x86_64-unknown-linux-gnu" = {
         linker = "clang";
         rustflags = [
-          "-Clink-arg=${
-            if isPath cfg.cargo.linker
-            then "--ld-path=${cfg.cargo.linker}"
-            else "-fuse-ld=${cfg.cargo.linker}"
-          }"
+          # "-Clink-arg=${
+          #   if isPath cfg.cargo.linker
+          #   then "--ld-path=${cfg.cargo.linker}"
+          #   else "-fuse-ld=${cfg.cargo.linker}"
+          # }"
           "-Csplit-debuginfo=packed"
         ]; # "-Zshare-generics=y"
       };
