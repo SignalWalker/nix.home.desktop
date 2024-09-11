@@ -10,11 +10,6 @@
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-analyzer-src.follows = "";
-    };
     advisory-db = {
       url = "github:rustsec/advisory-db";
       flake = false;
@@ -124,15 +119,17 @@
             ];
           };
           crane = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+          stdenv = commonArgsFor.${system}.stdenv;
         in {
-          ${name} = crane.devShell {
-            checks = self.checks.${system};
-            stdenv = commonArgsFor.${system}.stdenv;
-            packages = with pkgs; [
-              cargo-audit
-              cargo-license
-              cargo-dist
-            ];
+          ${name} = (pkgs.mkShell.override {inherit stdenv;}) {
+            inputsFrom = (attrValues self.checks.${system}) ++ [selfPkgs.${name}];
+            packages =
+              [toolchain]
+              ++ (with pkgs; [
+                cargo-audit
+                cargo-license
+                cargo-dist
+              ]);
             shellHook = let
               extraLdPaths =
                 pkgs.lib.makeLibraryPath (with pkgs; [
@@ -140,6 +137,8 @@
             in ''
               export LD_LIBRARY_PATH="${extraLdPaths}:$LD_LIBRARY_PATH"
             '';
+            env = {
+            };
           };
           default = self.devShells.${system}.${name};
         })

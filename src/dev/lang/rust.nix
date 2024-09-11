@@ -26,10 +26,10 @@ in {
         type = toml.type;
         default = {};
       };
-      linker = mkOption {
-        type = types.either types.path types.str;
-        default = "lld";
-      };
+      # linker = mkOption {
+      #   type = types.either types.path types.str;
+      #   default = "lld";
+      # };
     };
   };
   imports = [];
@@ -37,7 +37,7 @@ in {
     systemd.user.sessionVariables = {
       RUSTUP_HOME = cfg.rustup.home;
       CARGO_HOME = cfg.cargo.home;
-      RUSTC_LD = cfg.cargo.linker;
+      # RUSTC_LD = cfg.cargo.linker;
     };
     home.packages = [
       pkgs.rustup
@@ -54,7 +54,7 @@ in {
     };
     signal.dev.lang.rust.cargo.config = {
       target."x86_64-unknown-linux-gnu" = {
-        linker = "clang";
+        # linker = "clang";
         rustflags = [
           # "-Clink-arg=${
           #   if isPath cfg.cargo.linker
@@ -64,9 +64,9 @@ in {
           "-Csplit-debuginfo=packed"
         ]; # "-Zshare-generics=y"
       };
-      profile."release" = {
-        lto = true;
-      };
+      # profile."release" = {
+      #   lto = true;
+      # };
       registries = {
         signal = {
           index = "sparse+https://git.ashwalker.net/api/packages/ash/cargo/";

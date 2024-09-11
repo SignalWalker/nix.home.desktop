@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.signal.dev.cache;
 in {
   options.signal.dev.cache = with lib; {
-    enable = (mkEnableOption "global caching for C/C++/Rust compiler artifacts") // {default = true;};
+    enable = (mkEnableOption "global caching for C/C++/Rust compiler artifacts") // {default = false;};
     cache = {
       path = mkOption {
         type = types.str;
