@@ -33,6 +33,16 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = {};
+  config = {
+    desktop.windows = [
+      {
+        criteria = {
+          app_id = "xdg-desktop-portal-gtk";
+          title = "Open Files";
+        };
+        floating = true;
+      }
+    ];
+  };
   meta = {};
 }
