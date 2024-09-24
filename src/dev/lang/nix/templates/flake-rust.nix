@@ -27,7 +27,7 @@
     with builtins; let
       std = nixpkgs.lib;
 
-      systems = attrNames inputs.crane.lib;
+      systems = attrNames inputs.crane.pkgs;
       nixpkgsFor = std.genAttrs systems (system:
         import nixpkgs {
           localSystem = builtins.currentSystem or system;
