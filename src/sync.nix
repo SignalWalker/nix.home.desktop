@@ -18,7 +18,7 @@ in {
       extraOptions = [];
     };
     services.syncthing.tray = {
-      enable = osConfig.services.syncthing.enable || syncthing.enable;
+      enable = false; # osConfig.services.syncthing.enable || syncthing.enable;
       command = "syncthingtray --wait";
     };
   };
