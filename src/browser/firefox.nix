@@ -11,7 +11,7 @@ in {
   disabledModules = [];
   imports = [];
   config = let
-    firefoxCmd = "firefox-beta";
+    firefoxCmd = "firefox-nightly";
   in {
     desktop.scratchpads = {
       "Shift+F" = {
@@ -122,7 +122,7 @@ in {
     in {
       enable = config.system.isNixOS;
       # package = pkgs.latest.firefox-nightly-bin;
-      package = pkgs.firefox-beta-bin;
+      # package = pkgs.firefox-beta-bin;
       profiles =
         (std.mapAttrs (profile: settings: std.recursiveUpdate (removeAttrs common ["bookmarks"]) settings) {
           main = {
@@ -142,4 +142,3 @@ in {
   };
   meta = {};
 }
-

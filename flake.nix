@@ -10,6 +10,10 @@
     mozilla = {
       url = github:mozilla/nixpkgs-mozilla;
     };
+    firefox-nightly = {
+      url = "github:nix-community/flake-firefox-nightly";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # services
     watch-battery = {
       url = "git+https://git.ashwalker.net/ash/watch-battery";
@@ -105,6 +109,8 @@
           };
 
           programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
+
+          programs.firefox.package = inputs.firefox-nightly.packages.${pkgs.system}.firefox-nightly-bin;
         };
       };
     };
