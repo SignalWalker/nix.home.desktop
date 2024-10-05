@@ -34,6 +34,7 @@ in {
       xivlauncher
       parsec-bin
       moonlight-qt
+      srb2
     ];
 
     desktop.windows = [

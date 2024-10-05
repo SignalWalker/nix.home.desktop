@@ -24,6 +24,8 @@ in {
       })
       aseprite-unfree
       gimp
+      krita
+      blender
     ];
   };
   meta = {};
