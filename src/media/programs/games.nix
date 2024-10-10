@@ -35,6 +35,7 @@ in {
       parsec-bin
       moonlight-qt
       srb2
+      prismlauncher
     ];
 
     desktop.windows = [
