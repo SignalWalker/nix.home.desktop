@@ -113,14 +113,14 @@ in {
           hideEdgeBorders = "smart";
           commands =
             [
-              {
-                criteria = {
-                  "instance" = "Godot_Engine";
-                  "title" = ".*DEBUG.*";
-                };
-                command = "floating enable";
-              }
             ]
+            ++ (foldl' (acc: win:
+              acc
+              ++ (std.optional (win.inhibit_idle != null) {
+                command = "inhibit_idle ${win.inhibit_idle}";
+                inherit (win) criteria;
+              })) []
+            config.desktop.windows)
             ++ (foldl' (acc: pad:
               acc
               ++ (std.optional pad.automove {
