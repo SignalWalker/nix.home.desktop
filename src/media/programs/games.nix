@@ -45,6 +45,13 @@ in {
         };
         floating = true;
       }
+      {
+        criteria = {
+          instance = "tk";
+          class = "Tk";
+        };
+        floating = true;
+      }
     ];
 
     programs.mangohud = {
