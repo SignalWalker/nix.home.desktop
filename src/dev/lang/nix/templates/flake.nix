@@ -2,10 +2,6 @@
   description = "";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    alejandra = {
-      url = "github:kamadorueda/alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
   outputs = inputs @ {
     self,
@@ -27,16 +23,19 @@
           overlays = [];
         });
       stdenvFor = pkgs: pkgs.stdenvAdapters.useMoldLinker pkgs.llvmPackages_latest.stdenv;
+      pname = "package";
     in {
-      formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
+      formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
       packages =
         std.mapAttrs (system: pkgs: let
           std = pkgs.lib;
           stdenv = stdenvFor pkgs;
         in {
-          default = stdenv.mkDerivation {
+          ${pname} = stdenv.mkDerivation {
+            inherit pname;
             src = ./.;
           };
+          default = self.packages.${system}.${pname};
         })
         nixpkgsFor;
       devShells =
@@ -45,7 +44,6 @@
           stdenv = stdenvFor pkgs;
         in {
           default = (pkgs.mkShell.override {inherit stdenv;}) {
-            stdenv = stdenvFor.${system};
             inputsFrom = [selfPkgs.default];
           };
         })
