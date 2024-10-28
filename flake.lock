@@ -111,11 +111,11 @@
     },
     "crane": {
       "locked": {
-        "lastModified": 1729741221,
-        "narHash": "sha256-8AHZZXs1lFkERfBY0C8cZGElSo33D/et7NKEpLRmvzo=",
+        "lastModified": 1730060262,
+        "narHash": "sha256-RMgSVkZ9H03sxC+Vh4jxtLTCzSjPq18UWpiM0gq6shQ=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "f235b656ee5b2bfd6d94c3bfd67896a575d4a6ed",
+        "rev": "498d9f122c413ee1154e8131ace5a35a80d8fa76",
         "type": "github"
       },
       "original": {
@@ -202,11 +202,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1729946050,
-        "narHash": "sha256-jsxSJY8Jyv4S/3h9RcTdXuL0DW8EVhya4kWWWg22Yiw=",
+        "lastModified": 1730078069,
+        "narHash": "sha256-IgoRnIwEWoT8XWpIWYUSx2yiYelfGUQZw/eDC+JQM4w=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "af0076a90f81ab625cdcce80023b87a423a38311",
+        "rev": "61e8ee46a8d89cb5eceaa0ce340890808a5f45e7",
         "type": "github"
       },
       "original": {
@@ -346,11 +346,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1729866774,
-        "narHash": "sha256-GZSdu85wgaZ5I+xPFSpXxt8Fk65MPO0FoSJcN7KzLVU=",
+        "lastModified": 1730104302,
+        "narHash": "sha256-ze28vZJFjTTCZHoGoNvW9GZVY45EnOTPlTwR11Z5NYo=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "ccd2ca88d4e952e64c7517759ac5c45da95d53cb",
+        "rev": "8b7cd98a0eb482a5fa26daef90be7db5fd1be64d",
         "type": "github"
       },
       "original": {
@@ -365,11 +365,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1729426412,
-        "narHash": "sha256-VGbpECf35W4LtWLfx2+ue8zZEPwKQnadJadlT8E1Ceo=",
+        "lastModified": 1730031145,
+        "narHash": "sha256-GZz0LGkeduajnF7zUuPu5evNyoOATcSsRZCkG1OqiwY=",
         "owner": "nix-community",
         "repo": "lib-aggregate",
-        "rev": "736c43de3c953104e1610183d56e90b419c6344e",
+        "rev": "7d235f23a84b54c39b1579b68b13e1ff83f5b1ad",
         "type": "github"
       },
       "original": {
@@ -411,11 +411,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1729850857,
-        "narHash": "sha256-WvLXzNNnnw+qpFOmgaM3JUlNEH+T4s22b5i2oyyCpXE=",
+        "lastModified": 1729980323,
+        "narHash": "sha256-eWPRZAlhf446bKSmzw6x7RWEE4IuZgAp8NW3eXZwRAY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "41dea55321e5a999b17033296ac05fe8a8b5a257",
+        "rev": "86e78d3d2084ff87688da662cf78c2af085d8e73",
         "type": "github"
       },
       "original": {
@@ -427,11 +427,11 @@
     },
     "nixpkgs-lib": {
       "locked": {
-        "lastModified": 1729386149,
+        "lastModified": 1729990941,
         "narHash": "sha256-hUP9oxmnOmNnKcDOf5Y55HQ+NnoT0+bLWHLQWLLw9Ks=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "cce4521b6df014e79a7b7afc58c703ed683c916e",
+        "rev": "7d68864343650322045894951602d6e82b5296d7",
         "type": "github"
       },
       "original": {
@@ -521,11 +521,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1729909612,
-        "narHash": "sha256-eXqxxbOagphPfjPptSlv0pQONB3fH15CQ4G8uCu1BW4=",
+        "lastModified": 1730082698,
+        "narHash": "sha256-xGP95+G2/esys6FpxrunwwfhirfGsFfPKBJ12MLV1Ps=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "17cadbc36da05e75197d082decb382a5f4208e30",
+        "rev": "0d594a39c8f08d81246d06a56e1ccfc04782404f",
         "type": "github"
       },
       "original": {
@@ -537,11 +537,11 @@
     "swww": {
       "flake": false,
       "locked": {
-        "lastModified": 1729719821,
-        "narHash": "sha256-9ipYYIw2QtmGaSlq3gMNP9gtpEezxfg/GomNrh58k9k=",
+        "lastModified": 1730050836,
+        "narHash": "sha256-6xCp6rTJ5MWxfUXUYxWRZz1CA5V9/gGqgb0+34BMF6U=",
         "owner": "horus645",
         "repo": "swww",
-        "rev": "51428631811f6267f6aed4ff9d5d70e6213704e8",
+        "rev": "36808dfd90223e648fcc45075ca57392b3d6a297",
         "type": "github"
       },
       "original": {
@@ -592,11 +592,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1729948068,
-        "narHash": "sha256-gaszOcpToDS7m+LkR5/WNJpUDDVxP2o38nIsGKzfGCA=",
+        "lastModified": 1730121832,
+        "narHash": "sha256-Obtsp5piYvYUbFj4i08Klh0wtelLEmbBT3fAmpqi3p8=",
         "ref": "refs/heads/main",
-        "rev": "21ec3276a17a9abde7b4ffdecfdbca12272663ef",
-        "revCount": 42,
+        "rev": "c10fb66d982941d79100758b3f36ddb94c99df22",
+        "revCount": 43,
         "type": "git",
         "url": "https://git.ashwalker.net/ash/watch-battery"
       },
