@@ -17,8 +17,8 @@ with builtins; let
       }: {
         options = with lib; {
           criteria = mkOption {
-            type = types.addCheck (types.either types.bool (types.attrsOf (types.oneOf [types.int types.bool types.str]))) (v: v != false);
-            description = "Either the criteria used to identify the window, or `true` to indicate that this should apply to all windows.";
+            type = types.attrsOf (types.oneOf [types.int types.bool types.str]);
+            description = "The criteria used to identify the window.";
           };
           floating = mkEnableOption "open window as floating when applicable";
           inhibit_idle = mkOption {
@@ -41,7 +41,7 @@ in {
   config = {
     desktop.windows = [
       {
-        criteria = true;
+        criteria = {};
         inhibit_idle = "fullscreen";
       }
       {
