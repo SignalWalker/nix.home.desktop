@@ -67,9 +67,15 @@
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
+    # HACK :: https://github.com/elkowar/eww/pull/1217
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     eww = {
       url = "github:elkowar/eww";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
   };
   outputs = inputs @ {
