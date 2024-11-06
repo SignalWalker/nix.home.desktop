@@ -1,14 +1,14 @@
 {
   description = "Home manager configuration - graphical desktop";
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     alejandra = {
-      url = github:kamadorueda/alejandra;
+      url = "github:kamadorueda/alejandra";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # browser
     mozilla = {
-      url = github:mozilla/nixpkgs-mozilla;
+      url = "github:mozilla/nixpkgs-mozilla";
     };
     firefox-nightly = {
       url = "github:nix-community/flake-firefox-nightly";
