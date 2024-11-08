@@ -25,7 +25,7 @@ in {
       aseprite-unfree
       gimp
       krita
-      blender
+      # blender
     ];
     desktop.windows = [
       {
