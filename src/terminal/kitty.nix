@@ -28,6 +28,13 @@ in {
     };
   };
   config = lib.mkIf (cfg.app == "kitty") {
+    # TODO :: assert that themefile exists
+    # assertions = [
+    #   {
+    #     assertion = false;
+    #
+    #   }
+    # ];
     programs.ranger.settings = {
       preview_images = true;
       preview_images_method = "kitty";
@@ -150,7 +157,7 @@ in {
         enableZshIntegration = config.programs.zsh.enable;
         enableFishIntegration = config.programs.fish.enable;
       };
-      theme = "Tokyo Night Storm";
+      themeFile = "tokyonight_storm";
       settings = {
         # scrollback
         scrollback_lines = 10000;
@@ -303,4 +310,3 @@ in {
     };
   };
 }
-
