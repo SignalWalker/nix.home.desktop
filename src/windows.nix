@@ -40,10 +40,10 @@ in {
   imports = [];
   config = {
     desktop.windows = [
-      {
-        criteria = {};
-        inhibit_idle = "fullscreen";
-      }
+      # {
+      #   criteria = {};
+      #   inhibit_idle = "fullscreen";
+      # }
       {
         criteria = {
           app_id = "xdg-desktop-portal-gtk";
