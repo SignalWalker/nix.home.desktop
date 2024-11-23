@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -8,6 +9,7 @@ with builtins; let
   std = pkgs.lib;
   cfg = config.signal.dev.git;
   crane = config.signal.dev.inputs.crane.lib.${pkgs.system};
+  gnupg = osConfig.programs.gnupg or {};
 in {
   options.signal.dev.git = with lib; {
     enable = (mkEnableOption "Git configuration") // {default = true;};
@@ -43,8 +45,8 @@ in {
       signing = {
         key = lib.mkDefault null;
         gpgPath =
-          if config.programs.gpg.enable
-          then "${config.programs.gpg.package}/bin/gpg"
+          if (gnupg.agent.enable or false)
+          then "${gnupg.package}/bin/gpg"
           else "/usr/bin/gpg";
         signByDefault = true;
       };
