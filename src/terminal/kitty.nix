@@ -157,7 +157,7 @@ in {
         enableZshIntegration = config.programs.zsh.enable;
         enableFishIntegration = config.programs.fish.enable;
       };
-      themeFile = "tokyonight_storm";
+      # themeFile = "tokyonight_storm";
       settings = {
         # scrollback
         scrollback_lines = 10000;
@@ -223,6 +223,8 @@ in {
       };
 
       extraConfig = ''
+        include ${kitty.themes.tokyonight_storm}
+
         mouse_map left click ungrabbed mouse_handle_click selection link prompt
         mouse_map kitty_mod+left press grabbed discard_event
         mouse_map kitty_mod+left release grabbed,ungrabbed mouse_handle_click link

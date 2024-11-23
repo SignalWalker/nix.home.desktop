@@ -20,7 +20,11 @@ in {
   config = lib.mkIf taskbar.enable {
     systemd.user.services.${taskbar.systemd.serviceName} = lib.mkIf waybar.enable {
       Service = {
-        Environment = ["PATH=/run/current-system/sw/bin:${pkgs.python311}/bin:${pkgs.playerctl}/bin:${pkgs.cava}/bin"];
+        Environment = let
+          path = std.concatStringsSep ":" (["/run/current-system/sw/bin"] ++ (lib.makeBinPath (with pkgs; [python311 playerctl cava])));
+        in [
+          "PATH=${path}"
+        ];
         ExecStart = "${config.programs.waybar.package}/bin/waybar";
         ExecReload = "kill -SIGUSR2 $MAINPID";
         Restart = "on-failure";
@@ -266,3 +270,4 @@ in {
   };
   meta = {};
 }
+

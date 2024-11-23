@@ -12,18 +12,19 @@ in {
   imports = [];
   config = lib.mkMerge [
     {
-      home.packages = with pkgs; [cava];
-      xdg.configFile."cava/config".text = ''
-        [general]
-        framerate = 30
-        autosens = 1
-        bars = 0
-        sleep_timer = 12;
-
-        [input]
-        method = pulse
-        source = auto
-      '';
+      # FIX :: disabled cava 2024-11-19 for build failure
+      # home.packages = with pkgs; [cava];
+      # xdg.configFile."cava/config".text = ''
+      #   [general]
+      #   framerate = 30
+      #   autosens = 1
+      #   bars = 0
+      #   sleep_timer = 12;
+      #
+      #   [input]
+      #   method = pulse
+      #   source = auto
+      # '';
       # ${readFile config.desktop.theme.inputs.cava}
       desktop.scratchpads = {
         "Shift+V" = {
