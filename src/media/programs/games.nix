@@ -42,6 +42,14 @@ in {
       {
         criteria = {
           title = "Steam - Update News";
+          class = "steam";
+        };
+        floating = true;
+      }
+      {
+        criteria = {
+          title = "Steam Settings";
+          class = "steam";
         };
         floating = true;
       }
