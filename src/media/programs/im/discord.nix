@@ -36,10 +36,8 @@ in {
         startup = "${discord.package}/bin/discord";
         systemdCat = true;
         automove = true;
-        autostart = true;
       };
     };
   };
   meta = {};
 }
-

@@ -23,10 +23,8 @@ in {
         startup = "fluent-reader";
         systemdCat = true;
         automove = true;
-        autostart = true;
       };
     };
   };
   meta = {};
 }
-
