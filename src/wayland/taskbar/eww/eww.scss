@@ -27,7 +27,7 @@ $border-width: 5px;
 }
 
 .window {
-   // carefully selected to work with neovim
+  // carefully selected to work with neovim
   padding: 24px 8px;
 }
 
@@ -44,14 +44,14 @@ $border-width: 5px;
   border-color: black;
 }
 
-.music > image {
+.music>image {
   border-width: $border-width;
   border-style: double;
   border-color: black;
   background-color: white;
 }
 
-.music > box {
+.music>box {
   border-width: $border-width;
   border-style: double none double double;
   border-color: black;
@@ -59,28 +59,54 @@ $border-width: 5px;
   padding: 0.5em;
 }
 
-.widget > .icon {
+.widget>.icon {
   font-size: 1.25em;
 }
 
-.widget > .percent {
+.widget>.percent {
   font-size: 0.75em;
 }
 
-.workspaces > label {
+.workspaces>label {
   padding: 0px 2px;
 }
 
-.workspaces > .active {
+.workspaces>.active {
   border-style: solid;
   border-width: 1px 2px 2px 1px;
   border-color: black;
 }
 
-progressbar > trough {
+progressbar>trough {
   border: 1px solid black;
 }
 
-progressbar > trough > progress {
+progressbar>trough>progress {
   background-color: black;
+}
+
+.popup {
+  background-color: white;
+  border-color: black;
+  border-width: $border-width;
+  border-style: double;
+  padding: 8px;
+}
+
+.popup>menu {
+  padding: 8px;
+}
+
+menu>separator {
+  border-style: none none solid none;
+  border-width: 1px;
+  border-color: black;
+}
+
+menu>menuitem {
+  padding: 2px 0px;
+}
+
+menu>menuitem:hover {
+  background-color: #ababab;
 }
