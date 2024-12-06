@@ -12,6 +12,7 @@ in {
   config = {
     home.packages = with pkgs; [
       qbittorrent
+      deluge
     ];
   };
 }

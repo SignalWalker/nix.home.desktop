@@ -14,11 +14,14 @@ in {
     programs.yt-dlp = {
       enable = true;
       settings = {
-        "cookies-from-browser" = "firefox+kwallet";
+        "cookies-from-browser" = "firefox+gnomekeyring";
         "audio-quality" = 0;
         "embed-thumbnail" = true;
         "embed-metadata" = true;
         "embed-subs" = true;
+        "write-link" = true;
+        "write-description" = true;
+        "abort-on-error" = true;
       };
     };
 

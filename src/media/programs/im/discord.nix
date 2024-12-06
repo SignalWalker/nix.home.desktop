@@ -18,12 +18,14 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf discord.enable {
+  config = lib.mkIf discord.enable (let
+    pkg = discord.package.override {
+      withOpenASAR = discord.openasar.enable;
+      withVencord = discord.vencord.enable;
+    };
+  in {
     home.packages = [
-      (discord.package.override {
-        withOpenASAR = discord.openasar.enable;
-        withVencord = discord.vencord.enable;
-      })
+      pkg
     ];
 
     desktop.scratchpads = {
@@ -33,11 +35,11 @@ in {
           # class = "discord";
         };
         resize = 93;
-        startup = "${discord.package}/bin/discord";
+        startup = "${pkg}/bin/discord";
         systemdCat = true;
         automove = true;
       };
     };
-  };
+  });
   meta = {};
 }
