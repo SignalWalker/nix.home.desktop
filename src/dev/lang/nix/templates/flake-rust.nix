@@ -2,13 +2,8 @@
   description = "";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    alejandra = {
-      url = "github:kamadorueda/alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     crane = {
       url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     advisory-db = {
       url = "github:rustsec/advisory-db";
@@ -27,7 +22,7 @@
     with builtins; let
       std = nixpkgs.lib;
 
-      systems = attrNames inputs.crane.pkgs;
+      systems = attrNames inputs.crane.packages;
       nixpkgsFor = std.genAttrs systems (system:
         import nixpkgs {
           localSystem = builtins.currentSystem or system;
@@ -50,24 +45,49 @@
           stdenv = stdenvFor.${system};
           strictDeps = true;
           nativeBuildInputs = with pkgs; [];
+          buildInputs = with pkgs; [];
         })
         nixpkgsFor;
 
       cargoToml = fromTOML (readFile ./Cargo.toml);
       name = cargoToml.package.metadata.crane.name or cargoToml.package.name or cargoToml.workspace.metadata.crane.name;
       version = cargoToml.package.version or cargoToml.workspace.package.version;
+
+      metaFor =
+        std.mapAttrs (system: pkgs: let
+          lib = pkgs.lib;
+        in {
+          description = cargoToml.package.description or null;
+          homepage = cargoToml.package.repository or null;
+          license = cargoToml.package.license or [];
+          sourceProvenance = with lib.sourceTypes; [fromSource];
+          mainProgram = name;
+          platforms = with lib.platforms; [linux];
+          maintainers = [
+            {
+              name = "Ash Walker";
+              email = "ashurstwalker@gmail.com";
+              github = "SignalWalker";
+              githubId = 7883605;
+              keys = [{fingerprint = "501A A952 63CF 564B 5E08 26A9 893F FE5C 7CDA 81A3";}];
+            }
+          ];
+        })
+        nixpkgsFor;
     in {
-      formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
+      formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
       packages =
         std.mapAttrs (system: pkgs: let
           crane = craneFor.${system};
-          src = crane.cleanCargoSource (crane.path ./.);
+          commonArgs = commonArgsFor.${system};
+          meta = metaFor.${system};
         in {
           default = self.packages.${system}.${name};
-          "${name}-artifacts" = crane.buildDepsOnly commonArgsFor.${system};
-          ${name} = crane.buildPackage (commonArgsFor.${system}
+          "${name}-artifacts" = crane.buildDepsOnly commonArgs;
+          ${name} = crane.buildPackage (commonArgs
             // {
               cargoArtifacts = self.packages.${system}."${name}-artifacts";
+              inherit meta;
             });
         })
         nixpkgsFor;
@@ -103,7 +123,7 @@
         std.mapAttrs (system: pkgs: {
           ${name} = {
             type = "app";
-            program = "${pkgs.${name}}/bin/${name}";
+            program = "${pkgs.${name}}/bin/${pkgs.${name}.meta.mainProgram}";
           };
           default = self.apps.${system}.${name};
         })
@@ -113,6 +133,7 @@
           selfPkgs = self.packages.${system};
           toolchain = toolchainFor.${system}.override {
             extensions = [
+              "rust-src"
               "rust-analyzer"
               "rustfmt"
               "clippy"
