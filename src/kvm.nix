@@ -6,16 +6,15 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.signal.desktop.kvm;
 in {
-  options.signal.desktop.kvm = with lib; {
-    enable = (mkEnableOption "kvm") // {default = false;};
-  };
   imports = lib.signal.fs.path.listFilePaths ./kvm;
-  config = lib.mkIf cfg.enable {
+  config = {
+    home.packages = with pkgs; [
+      lan-mouse
+    ];
     services.input-leap = {
-      package = lib.signal.home.linkSystemApp pkgs {app = "barriers";};
-      server.enable = true;
+      client.enable = false;
+      server.enable = false;
     };
   };
 }

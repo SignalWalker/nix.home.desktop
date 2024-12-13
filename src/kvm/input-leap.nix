@@ -13,6 +13,7 @@ in {
   options.services.input-leap = with lib; {
     package = mkOption {
       type = types.package;
+      default = pkgs.input-leap;
     };
     server = {
       enable = mkEnableOption "input-leap kvm -- server";
