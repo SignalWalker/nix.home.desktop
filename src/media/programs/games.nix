@@ -19,15 +19,15 @@ in {
       mgba
       # snes9x-gtk
       melonDS
-      (retroarch.override {
-        cores = with libretro; [
-          beetle-saturn
-          flycast
-          # fbneo
-          # parallel-n64 # build error
-          mupen64plus
-        ];
-      })
+      # (retroarch.override {
+      #   cores = with libretro; [
+      #     beetle-saturn
+      #     flycast
+      #     # fbneo
+      #     # parallel-n64 # build error
+      #     mupen64plus
+      #   ];
+      # })
       heroic
       space-station-14-launcher
       openmw
