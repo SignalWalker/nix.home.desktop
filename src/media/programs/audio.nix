@@ -26,7 +26,7 @@ in {
     };
 
     home.packages = with pkgs; [
-      lmms
+      # lmms # build failure 2025-01-07
       sunvox
       renoise
       # ardour
