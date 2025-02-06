@@ -77,6 +77,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
+    # shikane = {
+    #   url = "gitlab:w0lff/shikane";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs = inputs @ {
     self,
