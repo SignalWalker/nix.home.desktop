@@ -14,10 +14,10 @@ in {
       lutris
       dolphin-emu-beta
       duckstation
-      # pcsx2 # disabled for build error
+      pcsx2
       ppsspp
       mgba
-      # snes9x-gtk
+      snes9x-gtk
       melonDS
       # (retroarch.override {
       #   cores = with libretro; [
