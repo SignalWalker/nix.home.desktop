@@ -19,6 +19,7 @@ in {
       mgba
       snes9x-gtk
       melonDS
+      ruffle
       # (retroarch.override {
       #   cores = with libretro; [
       #     beetle-saturn
