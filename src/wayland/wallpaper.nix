@@ -33,20 +33,21 @@ in {
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
     desktop.wayland.wallpaper.randomizeCmd = "systemctl --user start swww-randomize.service";
-    services.wpaperd = {
-      enable = !config.services.swww.enable;
-      systemd = {
-        enable = true;
-        target = cfg.systemd.target;
-      };
-      package = lib.signal.home.linkSystemApp pkgs {app = "wpaperd";};
-      settings = {
-        default = {
-          path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
-          duration = "30m";
-          apply-shadow = false;
-        };
-      };
-    };
+    # services.wpaperd = {
+    #   enable = !config.services.swww.enable;
+    #   systemd = {
+    #     enable = true;
+    #     target = cfg.systemd.target;
+    #   };
+    #   package = lib.signal.home.linkSystemApp pkgs {app = "wpaperd";};
+    #   settings = {
+    #     default = {
+    #       path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
+    #       duration = "30m";
+    #       apply-shadow = false;
+    #     };
+    #   };
+    # };
   };
 }
+

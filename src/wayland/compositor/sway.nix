@@ -140,6 +140,7 @@ in {
           "type:pointer" = {
             accel_profile = "adaptive";
             pointer_accel = "1.0";
+            drag_lock = "disabled";
           };
           "type:keyboard" = {
             # lib.mkIf (!(osConfig ? services.xserver.extraLayouts.hypersuper)) {

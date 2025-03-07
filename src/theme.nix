@@ -28,7 +28,7 @@ in {
       };
       gtk4 = {};
       theme = {
-        package = pkgs.breeze-gtk;
+        package = pkgs.kdePackages.breeze-gtk;
         name = "Breeze";
       };
       iconTheme = {
@@ -58,3 +58,4 @@ in {
     };
   };
 }
+
