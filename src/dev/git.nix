@@ -44,7 +44,7 @@ in {
       lfs.enable = true;
       signing = {
         key = lib.mkDefault null;
-        gpgPath =
+        signer =
           if (gnupg.agent.enable or false)
           then "${gnupg.package}/bin/gpg"
           else "/usr/bin/gpg";
