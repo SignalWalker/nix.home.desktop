@@ -26,7 +26,7 @@ in {
       targetName = mkOption {
         type = types.str;
         readOnly = true;
-        default = "wayland-session";
+        default = "wayland-session@";
       };
       target = mkOption {
         type = types.str;
@@ -43,15 +43,16 @@ in {
       wl-clipboard
       xdg-utils
     ];
-    systemd.user.targets."${wayland.systemd.targetName}" = {
-      Unit = {
-        Description = "wayland graphical session";
-        BindsTo = ["graphical-session.target"];
-        Wants = ["graphical-session-pre.target" "xdg-desktop-autostart.target"];
-        After = ["graphical-session-pre.target"];
-        Before = ["xdg-desktop-autostart.target"];
-      };
-    };
+    # using UWSM
+    # systemd.user.targets."${wayland.systemd.targetName}" = {
+    #   Unit = {
+    #     Description = "wayland graphical session";
+    #     BindsTo = ["graphical-session.target"];
+    #     Wants = ["graphical-session-pre.target" "xdg-desktop-autostart.target"];
+    #     After = ["graphical-session-pre.target"];
+    #     Before = ["xdg-desktop-autostart.target"];
+    #   };
+    # };
     xdg.configFile."electron-flags.conf".text = ''
       --enable-features=WaylandWindowDecorations
       --ozone-platform-hint=auto

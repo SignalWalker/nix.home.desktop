@@ -57,6 +57,22 @@ with builtins; let
                   + (std.optionalString config.center ", move position center");
               };
             };
+            hypr = {
+              criteria = mkOption {
+                type = types.attrsOf types.str;
+                readOnly = true;
+                default = mapAttrs (key: val:
+                  if val == false
+                  then "false"
+                  else toString val)
+                config.criteria;
+              };
+              show = mkOption {
+                type = types.str;
+                readOnly = true;
+                default = "exec,echo buh";
+              };
+            };
             resize = mkOption {
               type = let
                 dimsToStr = dims: "width ${toString (elemAt dims 0)} ppt height ${toString (elemAt dims 1)} ppt";

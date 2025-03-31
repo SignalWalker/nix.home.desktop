@@ -25,7 +25,7 @@ in {
       enable = mkEnableOption "swww systemd integration";
       target = mkOption {
         type = types.str;
-        default = "wayland-session.target";
+        default = config.desktop.wayland.systemd.target;
       };
       randomize = {
         interval = mkOption {
@@ -49,6 +49,7 @@ in {
     };
   };
   imports = [];
+  disabledModules = ["services/swww.nix"];
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       cfg.package
