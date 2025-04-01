@@ -37,6 +37,9 @@ in {
           class = "Anki";
           title = ".* - Anki";
         };
+        hypr = {
+          process_tracking = false;
+        };
         resize = 83;
         startup = "anki";
         systemdCat = true;
@@ -47,4 +50,3 @@ in {
   };
   meta = {};
 }
-

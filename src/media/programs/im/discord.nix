@@ -32,7 +32,10 @@ in {
       "Shift+D" = {
         criteria = {
           app_id = "discord";
-          # class = "discord";
+          class = "discord";
+        };
+        hypr = {
+          process_tracking = false;
         };
         resize = 93;
         startup = "${pkg}/bin/discord";
