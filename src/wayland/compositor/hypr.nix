@@ -61,8 +61,8 @@ in {
             };
           };
           animations = {
-            enabled = true;
-            first_launch_animation = true;
+            enabled = false;
+            first_launch_animation = false;
           };
           input = {
             kb_model = "pc104";
