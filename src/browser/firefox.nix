@@ -16,6 +16,9 @@ in {
     desktop.scratchpads = {
       "Shift+F" = {
         criteria = {app_id = "^firefox*";};
+        hypr = {
+          class = firefoxCmd;
+        };
         resize = 93;
         startup = firefoxCmd;
         name = "firefox";

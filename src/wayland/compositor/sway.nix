@@ -125,7 +125,7 @@ in {
               acc
               ++ (std.optional pad.automove {
                 command = "move scratchpad";
-                criteria = pad.sway.criteria;
+                criteria = pad.criteriaStr;
               })) [] (attrValues scratchpads));
         };
         modifier = mod;

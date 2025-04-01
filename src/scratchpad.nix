@@ -26,6 +26,15 @@ with builtins; let
               type = types.attrsOf (types.oneOf [types.bool types.int types.str]);
               default = {};
             };
+            criteriaStr = mkOption {
+              type = types.attrsOf types.str;
+              readOnly = true;
+              default = mapAttrs (key: val:
+                if val == false
+                then "false"
+                else toString val)
+              config.criteria;
+            };
             exec = mkOption {
               type = types.nullOr types.str;
               readOnly = true;
@@ -37,54 +46,81 @@ with builtins; let
                 else config.startup;
             };
             sway = {
-              criteria = mkOption {
-                type = types.attrsOf types.str;
+              resize = mkOption {
+                type = types.nullOr types.str;
                 readOnly = true;
-                default = mapAttrs (key: val:
-                  if val == false
-                  then "false"
-                  else toString val)
-                config.criteria;
+                default = let
+                  dimsToStr = dims: "width ${toString (elemAt dims 0)} ppt height ${toString (elemAt dims 1)} ppt";
+                in (
+                  if config.resize == null
+                  then null
+                  else (dimsToStr config.resize)
+                );
               };
               show = mkOption {
                 type = types.str;
                 readOnly = true;
                 default = let
-                  criteria = std.concatStringsSep " " (map (key: "${key}=\"${config.sway.criteria.${key}}\"") (attrNames config.sway.criteria));
+                  criteria = std.concatStringsSep " " (map (key: "${key}=\"${config.criteriaStr.${key}}\"") (attrNames config.criteriaStr));
                 in
                   "[${criteria}] scratchpad show"
-                  + (std.optionalString (config.resize != null) ", resize set ${config.resize}")
+                  + (std.optionalString (config.sway.resize != null) ", resize set ${config.sway.resize}")
                   + (std.optionalString config.center ", move position center");
               };
             };
             hypr = {
-              criteria = mkOption {
-                type = types.attrsOf types.str;
-                readOnly = true;
-                default = mapAttrs (key: val:
-                  if val == false
-                  then "false"
-                  else toString val)
-                config.criteria;
+              class = mkOption {
+                type = types.nullOr types.str;
+                default = config.criteria.class or config.criteria.app_id or config.criteria.instance or null;
               };
-              show = mkOption {
-                type = types.str;
-                readOnly = true;
-                default = "exec,echo buh";
+              match_by = mkOption {
+                type = types.nullOr types.str;
+                default =
+                  if config.hypr.process_tracking
+                  then null
+                  else "class";
+              };
+              animation = mkOption {
+                type = types.enum ["" "fromTop" "fromBottom" "fromLeft" "fromRight"];
+                default = "";
+              };
+              multi = mkOption {
+                type = types.bool;
+                default = true;
+              };
+              pinned = mkOption {
+                type = types.bool;
+                default = false;
+              };
+              excludes = mkOption {
+                type = types.listOf types.str;
+                default = [];
+              };
+              restore_excluded = mkOption {
+                type = types.bool;
+                default = false;
+              };
+              unfocus = mkOption {
+                type = types.enum ["" "hide"];
+                default = "";
+              };
+              hysteresis = mkOption {
+                type = types.float;
+                default = 0.4;
+              };
+              lazy = mkOption {
+                type = types.bool;
+                default = !config.autostart;
+              };
+              process_tracking = mkOption {
+                type = types.bool;
+                default = true;
               };
             };
             resize = mkOption {
-              type = let
-                dimsToStr = dims: "width ${toString (elemAt dims 0)} ppt height ${toString (elemAt dims 1)} ppt";
-              in
-                types.nullOr (types.coercedTo (types.either (types.listOf types.int) types.int)
-                  (e:
-                    dimsToStr (
-                      if isInt e
-                      then [e e]
-                      else e
-                    ))
-                  types.str);
+              type = types.nullOr (types.coercedTo types.int
+                (e: [e e])
+                (types.listOf types.int));
               default = null;
             };
             center = mkOption {

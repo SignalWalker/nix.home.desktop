@@ -66,7 +66,7 @@ in {
           PartOf = [cfg.systemd.target];
         };
         Install = {
-          WantedBy = [cfg.systemd.target];
+          WantedBy = [cfg.systemd.target "graphical-session.target"];
         };
         Service = {
           Type = "simple";
