@@ -15,10 +15,10 @@ in {
   config = lib.mkIf (cfg.enable) {
     home.packages = with pkgs; [
       statix
-      alejandra
       agenix
       snowfallorg.thaw
       deploy-rs
+      nixfmt-rfc-style
     ];
     programs.jq.enable = true;
   };
