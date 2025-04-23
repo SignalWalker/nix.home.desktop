@@ -29,12 +29,14 @@ in {
       Unit = {
         Description = "Mako notification daemon";
         Documentation = "man:mako(1)";
-        PartOf = [wln.systemd.target];
+        PartOf = [config.wayland.systemd.target];
+        After = [config.wayland.systemd.target];
       };
       Service = {
         Type = "dbus";
         BusName = "org.freedesktop.Notifications";
         ExecStart = "mako";
+        Slice = "service-graphical.slice";
       };
     };
     services.mako = let
@@ -123,4 +125,3 @@ in {
   };
   meta = {};
 }
-

@@ -32,7 +32,7 @@ in {
           enable = (mkEnableOption "input-leap server socket") // {default = true;};
           target = mkOption {
             type = types.str;
-            default = "graphical-session.target";
+            default = config.wayland.systemd.target;
           };
         };
       };

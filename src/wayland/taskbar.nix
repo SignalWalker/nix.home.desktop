@@ -33,17 +33,17 @@ in {
     systemd.user.services.${taskbar.systemd.serviceName} = {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
-        PartOf = [wayland.systemd.target];
-        After = ["swww.service"];
+        PartOf = [config.wayland.systemd.target];
         Before = ["tray.target"];
         BindsTo = ["tray.target"];
+        After = [config.wayland.systemd.target];
       };
+      Service.Slice = "background-graphical.slice";
       # service config provided by enabled bar
       Install = {
-        WantedBy = [wayland.systemd.target];
+        WantedBy = [config.wayland.systemd.target];
         RequiredBy = ["tray.target"];
       };
     };
   };
 }
-

@@ -19,23 +19,23 @@ in {
       ];
     })
     {
-      systemd.user.services."polkit-kde-authentication-agent-1" = {
-        Unit = {
-          Description = "polkit-kde-authentication-agent-1";
-          PartOf = ["graphical-session.target"];
-          Before = ["graphical-session.target"];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 12;
-        };
-        Install = {
-          WantedBy = ["graphical-session-pre.target"];
-        };
-      };
+      # systemd.user.services."polkit-kde-authentication-agent-1" = {
+      #   Unit = {
+      #     Description = "polkit-kde-authentication-agent-1";
+      #     PartOf = [config.wayland.systemd.target];
+      #     Before = [config.wayland.systemd.target];
+      #   };
+      #   Service = {
+      #     Type = "simple";
+      #     ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+      #     Restart = "on-failure";
+      #     RestartSec = 1;
+      #     TimeoutStopSec = 12;
+      #   };
+      #   Install = {
+      #     WantedBy = ["graphical-session-pre.target"];
+      #   };
+      # };
     }
   ];
   meta = {};

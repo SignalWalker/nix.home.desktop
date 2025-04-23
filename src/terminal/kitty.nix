@@ -35,6 +35,11 @@ in {
     #
     #   }
     # ];
+
+    systemd.user.sessionVariables = {
+      TERMINAL = "kitty";
+    };
+
     programs.ranger.settings = {
       preview_images = true;
       preview_images_method = "kitty";

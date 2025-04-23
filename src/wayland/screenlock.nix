@@ -15,7 +15,7 @@ in {
     enable = (mkEnableOption "screenlock") // {default = true;};
   };
   imports = [];
-  config = lib.mkIf (wln.enable && lck.enable) {
+  config = lib.mkIf lck.enable {
     programs.swaylock = {
       package = pkgs.swaylock-effects;
       settings = let
@@ -36,3 +36,4 @@ in {
     };
   };
 }
+

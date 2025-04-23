@@ -20,7 +20,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (config.desktop.wayland.enable && cfg.enable) {
+  config = lib.mkIf cfg.enable {
     home.packages =
       [
         cfg.package
@@ -36,3 +36,4 @@ in {
     };
   };
 }
+

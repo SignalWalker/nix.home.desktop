@@ -25,7 +25,7 @@ in {
       enable = mkEnableOption "swww systemd integration";
       target = mkOption {
         type = types.str;
-        default = config.desktop.wayland.systemd.target;
+        default = config.wayland.systemd.target;
       };
       randomize = {
         interval = mkOption {
@@ -64,13 +64,15 @@ in {
           Description = "swww wallpaper daemon";
           Documentation = "man:swww(1)";
           PartOf = [cfg.systemd.target];
+          After = [cfg.systemd.target];
         };
         Install = {
-          WantedBy = [cfg.systemd.target "graphical-session.target"];
+          WantedBy = [cfg.systemd.target];
         };
         Service = {
           Type = "simple";
-          ExecStart = "${cfg.package}/bin/swww-daemon";
+          ExecStart = "${cfg.package}/bin/swww-daemon --quiet --no-cache";
+          Slice = "background-graphical.slice";
         };
       };
       "swww-randomize" = {

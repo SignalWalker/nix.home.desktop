@@ -6,8 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
-  cfg = config.desktop.wayland;
-  wp = cfg.wallpaper;
+  wp = config.desktop.wayland.wallpaper;
 in {
   options.desktop.wayland.wallpaper = with lib; {
     enable = (mkEnableOption "wallpaper") // {default = true;};
@@ -23,7 +22,7 @@ in {
     };
   };
   imports = lib.signal.fs.path.listFilePaths ./wallpaper;
-  config = lib.mkIf (cfg.enable && wp.enable) {
+  config = lib.mkIf wp.enable {
     services.swww = {
       enable = true;
       # package = lib.mkIf (wp.swww.src != null) (pkgs.swww.overrideAttrs (final: prev: {
@@ -50,4 +49,3 @@ in {
     # };
   };
 }
-

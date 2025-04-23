@@ -12,11 +12,10 @@ in {
     enable = (mkEnableOption "Notification daemon") // {default = true;};
   };
   imports = lib.signal.fs.path.listFilePaths ./notifications;
-  config = lib.mkIf (wln.enable && wln.notifications.enable) {
+  config = lib.mkIf wln.notifications.enable {
     services.dunst = {
       enable = false;
     };
     services.mako.enable = !config.services.dunst.enable;
   };
 }
-

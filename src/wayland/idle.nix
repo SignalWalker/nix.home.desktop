@@ -105,20 +105,22 @@ in {
   };
   imports = [];
   config =
-    lib.mkIf (wayland.enable && idle.enable)
+    lib.mkIf idle.enable
     {
       xdg.configFile."swayidle/config".text = toString idle.settings;
       systemd.user.services."wayland-idle" = {
         Unit = {
           Description = "Idle manager daemon for Wayland.";
-          PartOf = [wayland.systemd.target];
+          PartOf = [config.wayland.systemd.target];
+          After = [config.wayland.systemd.target];
         };
         Service = {
           Environment = ["PATH=/run/current-system/sw/bin:/etc/profiles/per-user/%u/bin"];
           ExecStart = "${swayidle.package}/bin/swayidle -w";
+          Slice = "service-graphical.slice";
         };
         Install = {
-          WantedBy = [wayland.systemd.target];
+          WantedBy = [config.wayland.systemd.target];
         };
       };
 

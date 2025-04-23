@@ -22,7 +22,7 @@ in {
     };
   };
   imports = [];
-  config = lib.mkIf (wayland.enable && sway_cfg.enable) {
+  config = lib.mkIf sway_cfg.enable {
     wayland.windowManager.sway = let
       mod = config.signal.desktop.keyboard.compositor.modifier;
       launcher = config.desktop.launcher;
@@ -328,12 +328,12 @@ in {
         base = true;
         gtk = true;
       };
-      xwayland = config.desktop.wayland.xwayland.enable;
+      xwayland = true;
     };
     systemd.user.targets."sway-session" = {
       Unit = {
-        Wants = [wayland.systemd.target];
-        Before = [wayland.systemd.target];
+        Wants = [config.wayland.systemd.target];
+        Before = [config.wayland.systemd.target];
       };
     };
   };

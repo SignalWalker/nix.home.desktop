@@ -37,7 +37,7 @@ in {
       package = pkgs.waybar;
       systemd = {
         enable = false;
-        target = wayland.systemd.target;
+        target = config.wayland.systemd.target;
       };
       settings.mainBar = {
         layer = "bottom";
@@ -270,4 +270,3 @@ in {
   };
   meta = {};
 }
-

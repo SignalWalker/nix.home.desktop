@@ -11,7 +11,7 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = lib.mkIf wln.enable {
+  config = {
     # services.gammastep = {
     #   enable = true; # causes issues with nvidia drivers -_-
     #   provider = "geoclue2";
@@ -21,3 +21,4 @@ in {
   };
   meta = {};
 }
+

@@ -7,7 +7,8 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  options = with lib; {};
+  options = with lib; {
+  };
   disabledModules = [];
   imports = [];
   config = {
@@ -15,6 +16,10 @@ in {
       mime.enable = true;
       portal = {
         enable = false;
+      };
+      autostart = {
+        enable = true;
+        readOnly = true;
       };
     };
   };

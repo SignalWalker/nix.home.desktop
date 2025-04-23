@@ -25,7 +25,7 @@ in {
   imports = [];
   config = lib.mkIf launcher.enable {
     desktop.launcher = {
-      fuzzel.enable = lib.mkDefault wayland.enable;
+      fuzzel.enable = true;
     };
   };
   meta = {};
