@@ -4,19 +4,37 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wayland = config.desktop.wayland;
   kanshi = config.services.kanshi;
-in {
+in
+{
   options = with lib; {
   };
-  disabledModules = [];
-  imports = lib.signal.fs.path.listFilePaths ./display;
+  disabledModules = [ ];
+  imports = [ ];
   config = {
     home.packages = with pkgs; [
       nwg-displays # GUI output management
     ];
+    services.shikane = {
+      enable = true;
+      settings = {
+        profile = [
+          {
+            name = "builtin-only";
+            output = [
+              {
+                match = "eDP-1";
+                enable = true;
+              }
+            ];
+          }
+        ];
+      };
+    };
   };
-  meta = {};
+  meta = { };
 }
