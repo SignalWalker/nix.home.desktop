@@ -4,11 +4,13 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options = with lib; {};
-  imports = [];
+in
+{
+  options = with lib; { };
+  imports = [ ];
   config = {
     home.packages = with pkgs; [
       lutris
@@ -31,7 +33,9 @@ in {
       # })
       heroic
       space-station-14-launcher
-      openmw
+      # openmw # NOTE :: using openmw-dev; installed through desktop flake
+      # openmw-tes3mp # FIX :: disabled for build error 2025-04-28
+      # portmod # openmw mod manager (?)
       xivlauncher
       parsec-bin
       moonlight-qt
