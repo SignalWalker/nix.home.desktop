@@ -4,13 +4,15 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   accounts = config.accounts.email.accounts;
-in {
-  options.signal.desktop.email = with lib; {};
-  disabledModules = [];
-  imports = [];
+in
+{
+  options.signal.desktop.email = with lib; { };
+  disabledModules = [ ];
+  imports = [ ];
   config = {
     desktop.scratchpads = {
       "Shift+E" = {
@@ -27,16 +29,13 @@ in {
       };
     };
     signal.email.thunderbird.enable = false;
-    programs.thunderbird = {
-      enable = true;
-      package = pkgs.thunderbird;
-      settings = {};
-      profiles.main = {
-        isDefault = true;
-        settings = {};
-      };
-    };
+    # programs.thunderbird = {
+    #   enable = true;
+    #   package = pkgs.thunderbird;
+    # };
+    home.packages = with pkgs; [
+      thunderbird
+    ];
   };
-  meta = {};
+  meta = { };
 }
-

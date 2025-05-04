@@ -127,6 +127,7 @@ in
             force_default_wallpaper = 0;
             disable_splash_rendering = true;
             disable_hyprland_logo = true;
+            enable_anr_dialog = false;
           };
           binds = {
             workspace_back_and_forth = false; # switch to previous workspace when trying to switch to current workspace
