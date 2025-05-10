@@ -4,13 +4,15 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
+in
+{
   options.desktop.theme = with lib; {
     inputs = mkOption {
       type = types.attrsOf types.anything;
-      default = {};
+      default = { };
     };
   };
   imports = lib.signal.fs.path.listFilePaths ./theme;
@@ -26,7 +28,7 @@ in {
       gtk3 = {
         bookmarks = map (dir: "file://${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
       };
-      gtk4 = {};
+      gtk4 = { };
       theme = {
         package = pkgs.kdePackages.breeze-gtk;
         name = "Breeze";
@@ -56,6 +58,8 @@ in {
       x11.enable = true;
       size = 24;
     };
+    systemd.user.sessionVariables = {
+      "_JAVA_OPTIONS" = "-Dawt.useSystemAAFontSettings=lcd";
+    };
   };
 }
-

@@ -128,6 +128,8 @@ in
             disable_splash_rendering = true;
             disable_hyprland_logo = true;
             enable_anr_dialog = false;
+            vfr = true;
+            vrr = 2;
           };
           binds = {
             workspace_back_and_forth = false; # switch to previous workspace when trying to switch to current workspace
@@ -145,8 +147,8 @@ in
           };
           cursor = {
             no_warps = true;
-          };
 
+          };
           plugin = {
             "dynamic-cursors" = {
               enabled = true;
@@ -160,6 +162,9 @@ in
           };
           ecosystem = {
             no_donation_nag = true;
+          };
+          experimental = {
+            xx_color_management_v4 = true;
           };
           monitor = [
             ",preferred,auto,1"
@@ -198,16 +203,10 @@ in
               "MOD3ALT,W,execr,${config.desktop.wayland.wallpaper.randomizeCmd}"
               "MOD3ALT,L,execr,swaylock --effect-scale 0.5 --effect-blur 5x3"
 
-              ",XF86MonBrightnessUp,execr,light -A 2"
-              ",XF86MonBrightnessDown,execr,light -U 2"
               "CTRL,XF86MonBrightnessUp,execr,light -S 100"
               "CTRL,XF86MonBrightnessDown,execr,light -S 1"
 
-              ",XF86AudioRaiseVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ +1dB" # using pactl isntead of wpctl because it accepts dB, which preserves L/R balance ratio
-              ",XF86AudioLowerVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ -1dB"
               ",XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-              "ALT,XF86AudioRaiseVolume,execr,wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02+"
-              "ALT,XF86AudioLowerVolume,execr,wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02-"
               ",XF86AudioMicMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
               "ALT,XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
 
@@ -251,6 +250,16 @@ in
                 "MOD3SHIFT,${key},movetoworkspacesilent,${key}"
               ]
             ) [ ] (genList (i: i + 1) 10));
+          # NOTE :: e = repeats if held down
+          binde = [
+            ",XF86AudioRaiseVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ +1dB" # using pactl isntead of wpctl because it accepts dB, which preserves L/R balance ratio
+            ",XF86AudioLowerVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ -1dB"
+            "ALT,XF86AudioRaiseVolume,execr,wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02+"
+            "ALT,XF86AudioLowerVolume,execr,wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02-"
+
+            ",XF86MonBrightnessUp,execr,light -A 2"
+            ",XF86MonBrightnessDown,execr,light -U 2"
+          ];
         };
       };
     }
