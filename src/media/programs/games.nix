@@ -31,16 +31,21 @@ in
       #     mupen64plus
       #   ];
       # })
+      # emulationstation-de # FIX :: disabled due to freeimage cve
       heroic
       space-station-14-launcher
       # openmw # NOTE :: using openmw-dev; installed through desktop flake
-      # openmw-tes3mp # FIX :: disabled for build error 2025-04-28
+      # openmw-tes3mp
       # portmod # openmw mod manager (?)
       xivlauncher
       parsec-bin
       moonlight-qt
       srb2
       prismlauncher
+      openrct2
+      openttd
+      cockatrice
+      forge-mtg
     ];
 
     desktop.windows = [

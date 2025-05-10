@@ -4,12 +4,14 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+in
+{
+  options = with lib; { };
+  disabledModules = [ ];
+  imports = [ ];
   config = {
     home.packages = with pkgs; [
       jellyfin-media-player
@@ -25,7 +27,7 @@ in {
       aseprite-unfree
       gimp
       krita
-      # blender
+      blender
     ];
     desktop.windows = [
       {
@@ -36,5 +38,5 @@ in {
       }
     ];
   };
-  meta = {};
+  meta = { };
 }
