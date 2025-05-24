@@ -7,46 +7,58 @@
 with builtins;
 let
   std = pkgs.lib;
+  inputs = config.signal.media.flakeInputs;
 in
 {
   options = with lib; { };
   imports = [ ];
   config = {
-    home.packages = with pkgs; [
-      lutris
-      dolphin-emu-beta
-      duckstation
-      pcsx2
-      ppsspp
-      mgba
-      snes9x-gtk
-      melonDS
-      ruffle
-      # (retroarch.override {
-      #   cores = with libretro; [
-      #     beetle-saturn
-      #     flycast
-      #     # fbneo
-      #     # parallel-n64 # build error
-      #     mupen64plus
-      #   ];
-      # })
-      # emulationstation-de # FIX :: disabled due to freeimage cve
-      heroic
-      space-station-14-launcher
-      # openmw # NOTE :: using openmw-dev; installed through desktop flake
-      # openmw-tes3mp
-      # portmod # openmw mod manager (?)
-      xivlauncher
-      parsec-bin
-      moonlight-qt
-      srb2
-      prismlauncher
-      openrct2
-      openttd
-      cockatrice
-      forge-mtg
-    ];
+    home.packages =
+      (
+        if hasAttr pkgs.system inputs.bizhawk.packages then
+          [
+            inputs.bizhawk.packages.${pkgs.system}.emuhawk-latest-bin
+          ]
+        else
+          [ ]
+      )
+      ++ (with pkgs; [
+        # launchers
+        lutris
+        heroic
+        # emulationstation-de # FIX :: disabled due to freeimage cve
+        # emulators
+        ## misc
+        ruffle # flash
+        ## sony
+        duckstation # psx
+        pcsx2 # ps2
+        ppsspp # psp
+        ## nintendo
+        mgba # gb/gbc/gba
+        snes9x-gtk # snes
+        dolphin-emu-beta # gcn/wii
+        melonDS # ds
+        azahar # 3ds
+        ## sega
+        yabause # saturn
+        flycast # dreamcast
+        # tools
+        parsec-bin
+        moonlight-qt
+        # games
+        space-station-14-launcher
+        # openmw # NOTE :: using openmw-dev; installed through desktop flake
+        # openmw-tes3mp
+        # portmod # openmw mod manager (?)
+        xivlauncher
+        srb2
+        prismlauncher
+        openrct2
+        openttd
+        cockatrice
+        forge-mtg
+      ]);
 
     desktop.windows = [
       {

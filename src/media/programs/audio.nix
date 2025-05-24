@@ -4,11 +4,13 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
+in
+{
+  options = with lib; { };
+  disabledModules = [ ];
   imports = lib.signal.fs.path.listFilePaths ./audio;
   config = {
     programs.yt-dlp = {
@@ -32,8 +34,8 @@ in {
       # ardour
       reaper
 
-      nicotine-plus
+      # nicotine-plus # removed due to collision with httm
     ];
   };
-  meta = {};
+  meta = { };
 }
