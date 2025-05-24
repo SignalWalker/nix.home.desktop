@@ -1,10 +1,11 @@
-inputs @ {
+inputs@{
   config,
   pkgs,
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   cfg = config.desktop.terminal;
   kcfg = config.desktop.terminal.kitty;
   kitty = config.programs.kitty;
@@ -17,13 +18,14 @@ with builtins; let
     alias kthemes="kitty +kitten themes"
     alias kdiffgit="git difftool --no-symlinks --dir-diff"
   '';
-in {
+in
+{
   options = with lib; {
-    desktop.terminal.kitty = {};
+    desktop.terminal.kitty = { };
     programs.kitty = {
       themes = mkOption {
         type = types.attrsOf types.path;
-        default = {};
+        default = { };
       };
     };
   };
@@ -46,7 +48,9 @@ in {
     };
     desktop.scratchpads = {
       "Grave" = {
-        criteria = {app_id = "scratch_term";};
+        criteria = {
+          app_id = "scratch_term";
+        };
         resize = 83;
         startup = "kitty --class scratch_term";
         systemdCat = true;
@@ -54,7 +58,9 @@ in {
         automove = true;
       };
       "F1" = {
-        criteria = {app_id = "scratch_logs";};
+        criteria = {
+          app_id = "scratch_logs";
+        };
         resize = 75;
         startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
         systemdCat = true;
@@ -62,7 +68,9 @@ in {
         automove = true;
       };
       "F2" = {
-        criteria = {app_id = "scratch_top";};
+        criteria = {
+          app_id = "scratch_top";
+        };
         resize = 83;
         startup = "kitty --class scratch_top btop";
         systemdCat = true;
@@ -71,19 +79,23 @@ in {
       };
       "XF86Calculator" = {
         useMod = false;
-        criteria = {app_id = "scratch_editor";};
+        criteria = {
+          app_id = "scratch_editor";
+        };
         systemdCat = true;
         resize = 83;
-        startup = "kitty --class scratch_editor nvim";
+        startup = "kitty --class scratch_editor ounce --trace ${config.systemd.user.sessionVariables.EDITOR}";
       };
       # HACK :: framework keyboard doesn't have a calculator button :c
       # this is the gear button on f12
       "XF86AudioMedia" = {
         useMod = false;
-        criteria = {app_id = "scratch_editor";};
+        criteria = {
+          app_id = "scratch_editor";
+        };
         systemdCat = true;
         resize = 83;
-        startup = "kitty --class scratch_editor nvim";
+        startup = "kitty --class scratch_editor ounce --trace ${config.systemd.user.sessionVariables.EDITOR}";
       };
     };
 
@@ -91,15 +103,18 @@ in {
       {
         "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
       }
-      // (foldl' (acc: name: let
-        theme = kitty.themes.${name};
-      in
+      // (foldl' (
+        acc: name:
+        let
+          theme = kitty.themes.${name};
+        in
         acc
         // {
           "kitty/themes/${name}.conf" = {
             source = theme;
           };
-        }) {} (attrNames kitty.themes));
+        }
+      ) { } (attrNames kitty.themes));
     xdg.binFile."kg" = {
       executable = true;
       source = ./kitty/kg;
@@ -139,24 +154,29 @@ in {
     programs.kitty = {
       enable = true;
       package =
-        if (config.system.isNixOS or true)
-        then pkgs.kitty
-        else (lib.signal.home.linkSystemApp pkgs {app = "kitty";});
-      themes = let
-        tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";
-      in {
-        tokyonight_day = "${tk}/tokyonight_day.conf";
-        tokyonight_moon = "${tk}/tokyonight_moon.conf";
-        tokyonight_night = "${tk}/tokyonight_night.conf";
-        tokyonight_storm = "${tk}/tokyonight_storm.conf";
-      };
-      environment = {};
-      font = let
-        font = head config.desktop.theme.font.terminal;
-      in {
-        inherit (font) package name;
-        size = font.selectSize 10;
-      };
+        if (config.system.isNixOS or true) then
+          pkgs.kitty
+        else
+          (lib.signal.home.linkSystemApp pkgs { app = "kitty"; });
+      themes =
+        let
+          tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";
+        in
+        {
+          tokyonight_day = "${tk}/tokyonight_day.conf";
+          tokyonight_moon = "${tk}/tokyonight_moon.conf";
+          tokyonight_night = "${tk}/tokyonight_night.conf";
+          tokyonight_storm = "${tk}/tokyonight_storm.conf";
+        };
+      environment = { };
+      font =
+        let
+          font = head config.desktop.theme.font.terminal;
+        in
+        {
+          inherit (font) package name;
+          size = font.selectSize 10;
+        };
       shellIntegration = {
         enableBashIntegration = true;
         enableZshIntegration = config.programs.zsh.enable;
@@ -238,82 +258,85 @@ in {
         mouse_map kitty_mod+right press ungrabbed mouse_show_command_output
       '';
 
-      keybindings = let
-        vlaunch = "launch --location=vsplit";
-        hlaunch = "launch --location=hsplit";
-      in {
-        # meta
-        "kitty_mod+t>s" = "kitty_shell";
-        "kitty_mod+f1" = "show_kitty_env_vars";
+      keybindings =
+        let
+          vlaunch = "launch --location=vsplit";
+          hlaunch = "launch --location=hsplit";
+        in
+        {
+          # meta
+          "kitty_mod+t>s" = "kitty_shell";
+          "kitty_mod+f1" = "show_kitty_env_vars";
 
-        # view
-        "kitty_mod+minus" = "change_font_size all -1.0";
-        "kitty_mod+equal" = "change_font_size all 0";
-        "kitty_mod+plus" = "change_font_size all +1.0";
-        "kitty_mod+kp_minus" = "change_font_size all -1.0";
-        "kitty_mod+kp_plus" = "change_font_size all +1.0";
-        "kitty_mod+alt+minus" = "set_background_opacity -0.01";
-        "kitty_mod+alt+equal" = "set_background_opacity default";
-        "kitty_mod+alt+plus" = "set_background_opacity +0.01";
-        "kitty_mod+alt+kp_minus" = "set_background_opacity -0.01";
-        "kitty_mod+alt+kp_plus" = "set_background_opacity +0.01";
+          # view
+          "kitty_mod+minus" = "change_font_size all -1.0";
+          "kitty_mod+equal" = "change_font_size all 0";
+          "kitty_mod+plus" = "change_font_size all +1.0";
+          "kitty_mod+kp_minus" = "change_font_size all -1.0";
+          "kitty_mod+kp_plus" = "change_font_size all +1.0";
+          "kitty_mod+alt+minus" = "set_background_opacity -0.01";
+          "kitty_mod+alt+equal" = "set_background_opacity default";
+          "kitty_mod+alt+plus" = "set_background_opacity +0.01";
+          "kitty_mod+alt+kp_minus" = "set_background_opacity -0.01";
+          "kitty_mod+alt+kp_plus" = "set_background_opacity +0.01";
 
-        # clipboard
-        "kitty_mod+p" = "paste_from_clipboard";
-        "kitty_mod+y" = "copy_to_clipboard";
-        "ctrl+c" = "copy_and_clear_or_interrupt";
+          # clipboard
+          "kitty_mod+p" = "paste_from_clipboard";
+          "kitty_mod+y" = "copy_to_clipboard";
+          "ctrl+c" = "copy_and_clear_or_interrupt";
 
-        # windows
-        "kitty_mod+v" = "${vlaunch} --cwd=current";
-        "kitty_mod+s" = "${hlaunch} --cwd=current";
-        "kitty_mod+ctrl+v" = vlaunch;
-        "kitty_mod+ctrl+s" = hlaunch;
-        "kitty_mod+w" = "close_window";
+          # windows
+          "kitty_mod+v" = "${vlaunch} --cwd=current";
+          "kitty_mod+s" = "${hlaunch} --cwd=current";
+          "kitty_mod+ctrl+v" = vlaunch;
+          "kitty_mod+ctrl+s" = hlaunch;
+          "kitty_mod+w" = "close_window";
 
-        "kitty_mod+h" = "neighboring_window left";
-        "kitty_mod+j" = "neighboring_window down";
-        "kitty_mod+k" = "neighboring_window up";
-        "kitty_mod+l" = "neighboring_window right";
+          "kitty_mod+h" = "neighboring_window left";
+          "kitty_mod+j" = "neighboring_window down";
+          "kitty_mod+k" = "neighboring_window up";
+          "kitty_mod+l" = "neighboring_window right";
 
-        "kitty_mod+shift+h" = "move_window_backward";
-        "kitty_mod+shift+l" = "move_window_forward";
+          "kitty_mod+shift+h" = "move_window_backward";
+          "kitty_mod+shift+l" = "move_window_forward";
 
-        "kitty_mod+r" = "start_resizing_window";
-        "kitty_mod+alt+shift+h" = "resize_window narrower";
-        "kitty_mod+alt+shift+j" = "resize_window shorter";
-        "kitty_mod+alt+shift+k" = "resize_window taller";
-        "kitty_mod+alt+shift+l" = "resize_window wider";
+          "kitty_mod+r" = "start_resizing_window";
+          "kitty_mod+alt+shift+h" = "resize_window narrower";
+          "kitty_mod+alt+shift+j" = "resize_window shorter";
+          "kitty_mod+alt+shift+k" = "resize_window taller";
+          "kitty_mod+alt+shift+l" = "resize_window wider";
 
-        # tabs
-        "kitty_mod+alt+h" = "previous_tab";
-        "kitty_mod+alt+l" = "next_tab";
-        "kitty_mod+alt+v" = "new_tab_with_cwd";
-        "kitty_mod+alt+w" = "close_tab";
-        "kitty_mod+alt+ctrl+h" = "move_tab_backward";
-        "kitty_mod+alt+ctrl+l" = "move_tab_forward";
+          # tabs
+          "kitty_mod+alt+h" = "previous_tab";
+          "kitty_mod+alt+l" = "next_tab";
+          "kitty_mod+alt+v" = "new_tab_with_cwd";
+          "kitty_mod+alt+w" = "close_tab";
+          "kitty_mod+alt+ctrl+h" = "move_tab_backward";
+          "kitty_mod+alt+ctrl+l" = "move_tab_forward";
 
-        # history
-        "kitty_mod+/" = "show_scrollback";
-        "kitty_mod+alt+/" = "show_last_command_output";
-        "kitty_mod+up" = "scroll_line_up";
-        "kitty_mod+down" = "scroll_line_down";
-        "kitty_mod+home" = "scroll_home";
-        "kitty_mod+end" = "scroll_end";
-        "kitty_mod+Page_Up" = "scroll_page_up";
-        "kitty_mod+Page_Down" = "scroll_page_down";
-        "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
-        "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
-        "kitty_mod+delete" = "clear_terminal scroll active";
+          # history
+          "kitty_mod+/" = "show_scrollback";
+          "kitty_mod+alt+/" = "show_last_command_output";
+          "kitty_mod+up" = "scroll_line_up";
+          "kitty_mod+down" = "scroll_line_down";
+          "kitty_mod+home" = "scroll_home";
+          "kitty_mod+end" = "scroll_end";
+          "kitty_mod+Page_Up" = "scroll_page_up";
+          "kitty_mod+Page_Down" = "scroll_page_down";
+          "kitty_mod+alt+Page_Up" = "scroll_to_prompt -1";
+          "kitty_mod+alt+Page_Down" = "scroll_to_prompt 1";
+          "kitty_mod+delete" = "clear_terminal scroll active";
 
-        # signals
-        "kitty_mod+ctrl+w" = "signal_child SIGTERM";
-        "kitty_mod+ctrl+shift+w" = "signal_child SIGKILL";
+          # signals
+          "kitty_mod+ctrl+w" = "signal_child SIGTERM";
+          "kitty_mod+ctrl+shift+w" = "signal_child SIGKILL";
 
-        # files
-        "kitty_mod+f>y" = "kitten hints --program=@";
-        "kitty_mod+f>o" = "kitten hints --type=hyperlink";
-        "kitty_mod+f>l" = "kitten hints --type=linenum --linenum-action=tab nvim +{line} {path}";
-      };
+          # files
+          "kitty_mod+f>y" = "kitten hints --program=@";
+          "kitty_mod+f>o" = "kitten hints --type=hyperlink";
+          "kitty_mod+f>l" =
+            "kitten hints --type=linenum --linenum-action=tab ounce --trace nvim +{line} {path}";
+        };
     };
   };
 }

@@ -169,6 +169,11 @@ in
           monitor = [
             ",preferred,auto,1"
           ];
+          # TODO :: impl config.desktop.windows
+          windowrulev2 = [
+            "idleinhibit fullscreen, class:.*"
+            "idleinhibit focus, class:scratch_term"
+          ];
           bind =
             [
               "MOD3,Return,execr,uwsm-app -T"
@@ -214,9 +219,9 @@ in
               ",XF86AudioPlay, execr, playerctl -s play-pause"
               ",XF86AudioNext, execr, playerctl -s next"
 
-              "CTRL,XF86Calculator,execr,uwsm-app -T nvim"
+              "CTRL,XF86Calculator,execr,uwsm-app -T ounce --trace ${config.systemd.user.sessionVariables.EDITOR}"
               # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
-              "CTRL,XF86AudioMedia,execr,uwsm-app -T nvim"
+              "CTRL,XF86AudioMedia,execr,uwsm-app -T ounce --trace ${config.systemd.user.sessionVariables.EDITOR}"
             ]
             ++ (
               let
