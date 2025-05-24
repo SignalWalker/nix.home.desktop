@@ -4,54 +4,62 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   cfg = config.signal.dev.editor;
   editor = lib.types.submoduleWith {
     modules = [
-      ({
-        config,
-        lib,
-        ...
-      }: {
-        options = with lib; {
-          cmd = {
-            term = mkOption {type = types.str;};
-            visual = mkOption {
-              type = types.nullOr types.str;
-              default = config.cmd.term;
-            };
-            gui = mkOption {
-              type = types.nullOr types.str;
-              default = null;
+      (
+        {
+          config,
+          lib,
+          ...
+        }:
+        {
+          options = with lib; {
+            cmd = {
+              term = mkOption { type = types.str; };
+              visual = mkOption {
+                type = types.nullOr types.str;
+                default = config.cmd.term;
+              };
+              gui = mkOption {
+                type = types.nullOr types.str;
+                default = null;
+              };
             };
           };
-        };
-        imports = [];
-        config = {};
-      })
+          imports = [ ];
+          config = { };
+        }
+      )
     ];
   };
-in {
+in
+{
   options.signal.dev.editor = with lib; {
-    enable = (mkEnableOption "text editor") // {default = true;};
+    enable = (mkEnableOption "text editor") // {
+      default = true;
+    };
     editors = mkOption {
       type = types.attrsOf editor;
-      default = {};
+      default = { };
     };
     default = mkOption {
       type = editor;
       default = cfg.editors."neovim";
     };
   };
-  disabledModules = [];
+  disabledModules = [ ];
   imports = lib.signal.fs.path.listFilePaths ./editor;
   config = lib.mkIf cfg.enable {
+    programs.neovim.defaultEditor = lib.mkForce false; # avoid conflicts trying to set EDITOR
     lib.signal.dev.types.editor = editor;
     systemd.user.sessionVariables = lib.mkMerge [
-      {EDITOR = cfg.default.cmd.term;}
-      (lib.mkIf (cfg.default.cmd.visual != null) {VISUAL = cfg.default.cmd.visual;})
+      { EDITOR = cfg.default.cmd.term; }
+      (lib.mkIf (cfg.default.cmd.visual != null) { VISUAL = cfg.default.cmd.visual; })
     ];
   };
-  meta = {};
+  meta = { };
 }
