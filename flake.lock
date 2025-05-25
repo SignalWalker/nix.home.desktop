@@ -186,11 +186,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748090005,
-        "narHash": "sha256-LBYoBDNNsYYlWDBgCvuHIDv/P1EPC8okVpLIBT5jSSQ=",
+        "lastModified": 1748182933,
+        "narHash": "sha256-DlKA/O2KSyEEaq/PuQVxjQYYd7teSNbt4b6vkpcYw38=",
         "owner": "nix-community",
         "repo": "flake-firefox-nightly",
-        "rev": "2023f7b2782387c72f2ed0c7f3780b63b0b83629",
+        "rev": "2ddd7491d46cc8ded0ce6b6854af0e575aa521ae",
         "type": "github"
       },
       "original": {
@@ -314,11 +314,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1748101349,
-        "narHash": "sha256-XKqmBA2kCZkZLa/sZ4PQbNiYAe0oWODSahLzdCOHacU=",
+        "lastModified": 1748180830,
+        "narHash": "sha256-KKsqcJDszs4NAYCI2VTDXfEgD2ulotobpKr5kAZjWBU=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "702a9615178bc9f06b07ef5eb6a8768d403a4431",
+        "rev": "8d58f6ce8d4c78f9205ee95e1bbaef729068afed",
         "type": "github"
       },
       "original": {
@@ -330,11 +330,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1748076554,
-        "narHash": "sha256-0XOnumbdfMbSvou1z4RcSAksxTbMri1EOblqR1Hxirc=",
+        "lastModified": 1748186044,
+        "narHash": "sha256-4RRjpdZ8A7JwD2nmnITMGGToHGdFYQn9E2Quzio9Npw=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "fbdce69adc42157ce8babead2cff1eb99ef3dd4b",
+        "rev": "0cf34a78c6036e9767122b54e97ca2124dec29dd",
         "type": "github"
       },
       "original": {
@@ -349,11 +349,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1747570461,
-        "narHash": "sha256-fgQ04UN0hBZScRr1XV7iLq0L5LptM1hG/GJwyto48u0=",
+        "lastModified": 1748175247,
+        "narHash": "sha256-DC7TFJEYd/bYhom92xFOOGD81IX3t4IetUbBEBD3kmc=",
         "owner": "nix-community",
         "repo": "lib-aggregate",
-        "rev": "b5b3d54d21831fd134e056a91f00088a14288fbd",
+        "rev": "39c611b62ce2e7fa0809593a7f993a8e72d67ce0",
         "type": "github"
       },
       "original": {
@@ -395,11 +395,11 @@
     },
     "nixpkgs-lib": {
       "locked": {
-        "lastModified": 1747530816,
-        "narHash": "sha256-GAwJUpq2pm9J0P6SVqzMBF5Gn6FmiLnBGfSd0v23Khc=",
+        "lastModified": 1748135671,
+        "narHash": "sha256-PIkcBpddXRAGWstWV7zTwRZ9EAPqgzFNssux17p1NTg=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "59938251d4ed9d18fbb1462165897e50fac1492f",
+        "rev": "6194ba204e5b188965da97ebb16e05191e560427",
         "type": "github"
       },
       "original": {
@@ -468,11 +468,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748054080,
-        "narHash": "sha256-rwFiLLNCwkj9bqePtH1sMqzs1xmohE0Ojq249piMzF4=",
+        "lastModified": 1748140821,
+        "narHash": "sha256-GZcjWLQtDifSYMd1ueLDmuVTcQQdD5mONIBTqABooOk=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "2221d8d53c128beb69346fa3ab36da3f19bb1691",
+        "rev": "476b2ba7dc99ddbf70b1f45357dbbdbdbdfb4422",
         "type": "github"
       },
       "original": {
@@ -489,11 +489,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748054080,
-        "narHash": "sha256-rwFiLLNCwkj9bqePtH1sMqzs1xmohE0Ojq249piMzF4=",
+        "lastModified": 1748140821,
+        "narHash": "sha256-GZcjWLQtDifSYMd1ueLDmuVTcQQdD5mONIBTqABooOk=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "2221d8d53c128beb69346fa3ab36da3f19bb1691",
+        "rev": "476b2ba7dc99ddbf70b1f45357dbbdbdbdfb4422",
         "type": "github"
       },
       "original": {
@@ -505,11 +505,11 @@
     "swww": {
       "flake": false,
       "locked": {
-        "lastModified": 1747226816,
-        "narHash": "sha256-Aox2JTWcTculS2s6Lwki2KUCsqEw9SKi7hr4pjtOvmE=",
+        "lastModified": 1748196981,
+        "narHash": "sha256-ruSQ2sV0LbJmwmbfn53zLx0wE9m4OJlKA+ppoibL2j8=",
         "owner": "horus645",
         "repo": "swww",
-        "rev": "92201587875c9b636ed556d9cd17f940484e7550",
+        "rev": "107576af07520db094b891da014a86c2c3a7b174",
         "type": "github"
       },
       "original": {
@@ -560,11 +560,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1748098845,
-        "narHash": "sha256-TjOu8tRuCGyM5vihhGum5my+fjv5ksBFq95vjSlYIhc=",
+        "lastModified": 1748199241,
+        "narHash": "sha256-Uy/yMVsdcv9Xpn4zA/truorRa9aV8hyB1W70uzCXvDQ=",
         "ref": "refs/heads/main",
-        "rev": "96905a7f07dec4f1dd19ca6e0f0ef19614d0f56b",
-        "revCount": 75,
+        "rev": "a46c9fbcba75b5bcac8271cdc3938f68c2319205",
+        "revCount": 76,
         "type": "git",
         "url": "https://git.ashwalker.net/ash/watch-battery"
       },
