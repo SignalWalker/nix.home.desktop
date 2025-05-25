@@ -84,7 +84,7 @@ in
         };
         systemdCat = true;
         resize = 83;
-        startup = "kitty --class scratch_editor ounce --trace ${config.systemd.user.sessionVariables.EDITOR}";
+        startup = "kitty --class scratch_editor ${config.systemd.user.sessionVariables.EDITOR}";
       };
       # HACK :: framework keyboard doesn't have a calculator button :c
       # this is the gear button on f12
@@ -95,7 +95,7 @@ in
         };
         systemdCat = true;
         resize = 83;
-        startup = "kitty --class scratch_editor ounce --trace ${config.systemd.user.sessionVariables.EDITOR}";
+        startup = "kitty --class scratch_editor ${config.systemd.user.sessionVariables.EDITOR}";
       };
     };
 
@@ -334,8 +334,7 @@ in
           # files
           "kitty_mod+f>y" = "kitten hints --program=@";
           "kitty_mod+f>o" = "kitten hints --type=hyperlink";
-          "kitty_mod+f>l" =
-            "kitten hints --type=linenum --linenum-action=tab ounce --trace nvim +{line} {path}";
+          "kitty_mod+f>l" = "kitten hints --type=linenum --linenum-action=tab +{line} {path}";
         };
     };
   };
