@@ -28,6 +28,22 @@ in
         heroic
         # emulationstation-de # FIX :: disabled due to freeimage cve
         # emulators
+        ## multi
+        (retroarch.withCores (
+          cores: with cores; [
+            # this is only because i want retroachievements for some systems whose real emulators don't support it (or don't support it well; i.e. bizhawk not allowing hardcore, seemingly)
+            # nintendo
+            nestopia # TODO :: is this really the best one...?
+            snes9x
+            mupen64plus
+            # NEC
+            beetle-pce-fast
+            beetle-pcfx
+            beetle-supergrafx
+            # sega
+            beetle-saturn
+          ]
+        ))
         ## misc
         ruffle # flash
         ## sony
@@ -35,10 +51,10 @@ in
         pcsx2 # ps2
         ppsspp # psp
         ## nintendo
-        mgba # gb/gbc/gba
+        mgba # gb/gbc/gba (no retroachievements)
+        skyemu # gb/gbc/gba/ds (retroachievements)
         snes9x-gtk # snes
         dolphin-emu-beta # gcn/wii
-        melonDS # ds
         azahar # 3ds
         ## sega
         yabause # saturn
