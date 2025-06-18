@@ -5,14 +5,18 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   cfg = config.signal.dev.git;
   crane = config.signal.dev.inputs.crane.lib.${pkgs.system};
-  gnupg = osConfig.programs.gnupg or {};
-in {
+  gnupg = osConfig.programs.gnupg or { };
+in
+{
   options.signal.dev.git = with lib; {
-    enable = (mkEnableOption "Git configuration") // {default = true;};
+    enable = (mkEnableOption "Git configuration") // {
+      default = true;
+    };
     onefetch = {
       src = mkOption {
         type = types.path;
@@ -33,6 +37,7 @@ in {
       # gitoxide
       gh
       glab
+      jujutsu
     ];
     # home.shellAliases = {
     #   gx = "gix"; # really don't like the default gitoxide command
@@ -44,15 +49,13 @@ in {
       lfs.enable = true;
       signing = {
         key = lib.mkDefault null;
-        signer =
-          if (gnupg.agent.enable or false)
-          then "${gnupg.package}/bin/gpg"
-          else "/usr/bin/gpg";
+        signer = if (gnupg.agent.enable or false) then "${gnupg.package}/bin/gpg" else "/usr/bin/gpg";
         signByDefault = true;
       };
       ignores = [
         "/.lnvim.*"
         "/.envrc"
+        "/.godot"
       ];
       extraConfig = {
         core = {
