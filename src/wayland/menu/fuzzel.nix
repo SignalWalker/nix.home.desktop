@@ -4,18 +4,20 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   launcher = config.desktop.launcher;
   fuzzel = config.programs.fuzzel;
-in {
+in
+{
   options = with lib; {
     desktop.launcher.fuzzel = {
       enable = mkEnableOption "fuzzel config";
     };
   };
-  disabledModules = [];
-  imports = [];
+  disabledModules = [ ];
+  imports = [ ];
   config = lib.mkIf launcher.fuzzel.enable {
     desktop.launcher = {
       drun = "${fuzzel.package}/bin/fuzzel";
@@ -33,5 +35,5 @@ in {
       };
     };
   };
-  meta = {};
+  meta = { };
 }

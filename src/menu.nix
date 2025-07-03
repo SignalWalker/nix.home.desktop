@@ -4,14 +4,18 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wayland = config.desktop.wayland;
   launcher = config.desktop.launcher;
-in {
+in
+{
   options = with lib; {
     desktop.launcher = {
-      enable = (mkEnableOption "desktop launcher") // {default = true;};
+      enable = (mkEnableOption "desktop launcher") // {
+        default = true;
+      };
       run = mkOption {
         type = types.str;
       };
@@ -21,12 +25,12 @@ in {
       };
     };
   };
-  disabledModules = [];
-  imports = [];
+  disabledModules = [ ];
+  imports = [ ];
   config = lib.mkIf launcher.enable {
-    desktop.launcher = {
-      fuzzel.enable = true;
-    };
+    # desktop.launcher = {
+    #   fuzzel.enable = true;
+    # };
   };
-  meta = {};
+  meta = { };
 }
