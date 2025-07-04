@@ -4,10 +4,12 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   music = config.xdg.userDirs.music;
   mpd = config.services.mpd;
-in {
+in
+{
   imports = lib.signal.fs.path.listFilePaths ./player;
   config = {
     home.packages = lib.mkMerge [
@@ -21,11 +23,11 @@ in {
       ])
     ];
     programs.quodlibet = {
-      enable = config.system.isNixOS or true;
+      enable = false; # config.system.isNixOS or true;
     };
     programs.ncmpcpp = {
       enable = mpd.enable;
-      package = pkgs.ncmpcpp.override {visualizerSupport = true;};
+      package = pkgs.ncmpcpp.override { visualizerSupport = true; };
       mpdMusicDir = "${music}/library";
       settings = {
         ncmpcpp_directory = "${config.xdg.dataHome}/ncmpcpp";
