@@ -82,46 +82,52 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
   };
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    ...
-  }:
-    with builtins; let
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      ...
+    }:
+    with builtins;
+    let
       std = nixpkgs.lib;
-    in {
+    in
+    {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
-      homeManagerModules.default = {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
-        imports = [
-          inputs.watch-battery.homeManagerModules.default
-          ./home-manager.nix
-        ];
-        config = {
-          signal.desktop.editor.helix.src = inputs.helixSrc;
+      homeManagerModules.default =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        {
+          imports = [
+            inputs.watch-battery.homeManagerModules.default
+            ./home-manager.nix
+          ];
+          config = {
+            signal.desktop.editor.helix.src = inputs.helixSrc;
 
-          # programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
+            # programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
 
-          programs.fish.pluginSources = {
-            done = inputs.fishDone;
+            programs.fish.pluginSources = {
+              done = inputs.fishDone;
+            };
+
+            desktop.wayland.wallpaper.swww.src = inputs.swww;
+
+            desktop.theme.inputs = {
+              cava = "${inputs.catppuccin-cava}/frappe.cava";
+              i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
+              tokyonight = inputs.tokyonight;
+            };
+
+            programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
+
+            # programs.firefox.package = inputs.firefox-nightly.packages.${pkgs.system}.firefox-nightly-bin;
+            programs.firefox.package = pkgs.firefox-devedition;
           };
-
-          desktop.wayland.wallpaper.swww.src = inputs.swww;
-
-          desktop.theme.inputs = {
-            cava = "${inputs.catppuccin-cava}/frappe.cava";
-            i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
-            tokyonight = inputs.tokyonight;
-          };
-
-          programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
-
-          programs.firefox.package = inputs.firefox-nightly.packages.${pkgs.system}.firefox-nightly-bin;
         };
-      };
     };
 }
