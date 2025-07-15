@@ -13,7 +13,7 @@ let
 in
 {
   options = with lib; { };
-  imports = lib.signal.fs.path.listFilePaths ./browser;
+  imports = lib.listFilePaths ./browser;
   config = {
     programs.qutebrowser = {
       enable = false;

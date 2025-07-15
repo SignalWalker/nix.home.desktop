@@ -8,7 +8,7 @@ with builtins;
 {
   options = with lib; { };
   disabledModules = [ ];
-  imports = lib.signal.fs.path.listFilePaths ./dev;
+  imports = lib.listFilePaths ./dev;
   config = {
   };
   meta = { };

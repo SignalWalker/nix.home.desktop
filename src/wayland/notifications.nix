@@ -11,7 +11,7 @@ in {
   options.desktop.wayland.notifications = with lib; {
     enable = (mkEnableOption "Notification daemon") // {default = true;};
   };
-  imports = lib.signal.fs.path.listFilePaths ./notifications;
+  imports = lib.listFilePaths ./notifications;
   config = lib.mkIf wln.notifications.enable {
     services.dunst = {
       enable = false;

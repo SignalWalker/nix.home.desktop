@@ -11,7 +11,7 @@ in
 {
   options = with lib; { };
   disabledModules = [ ];
-  imports = lib.signal.fs.path.listFilePaths ./audio;
+  imports = lib.listFilePaths ./audio;
   config = {
     programs.yt-dlp = {
       enable = true;

@@ -52,10 +52,9 @@ in
     };
   };
   disabledModules = [ ];
-  imports = lib.signal.fs.path.listFilePaths ./editor;
+  imports = lib.listFilePaths ./editor;
   config = lib.mkIf cfg.enable {
     programs.neovim.defaultEditor = lib.mkForce false; # avoid conflicts trying to set EDITOR
-    lib.signal.dev.types.editor = editor;
     systemd.user.sessionVariables = lib.mkMerge [
       { EDITOR = cfg.default.cmd.term; }
       (lib.mkIf (cfg.default.cmd.visual != null) { VISUAL = cfg.default.cmd.visual; })
@@ -63,3 +62,4 @@ in
   };
   meta = { };
 }
+

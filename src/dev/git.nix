@@ -25,7 +25,7 @@ in
       };
     };
   };
-  imports = lib.signal.fs.path.listFilePaths ./git;
+  imports = lib.listFilePaths ./git;
   config = lib.mkIf (cfg.enable) {
     programs.onefetch = {
       enable = false;

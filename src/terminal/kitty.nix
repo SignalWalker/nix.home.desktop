@@ -153,11 +153,7 @@ in
     };
     programs.kitty = {
       enable = true;
-      package =
-        if (config.system.isNixOS or true) then
-          pkgs.kitty
-        else
-          (lib.signal.home.linkSystemApp pkgs { app = "kitty"; });
+      package = pkgs.kitty;
       themes =
         let
           tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";

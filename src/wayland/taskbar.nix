@@ -28,7 +28,7 @@ in {
       enable = mkEnableOption "task/status bar";
     };
   };
-  imports = lib.signal.fs.path.listFilePaths ./taskbar;
+  imports = lib.listFilePaths ./taskbar;
   config = lib.mkIf taskbar.enable {
     systemd.user.services.${taskbar.systemd.serviceName} = {
       Unit = {

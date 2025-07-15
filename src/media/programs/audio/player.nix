@@ -10,7 +10,7 @@ let
   mpd = config.services.mpd;
 in
 {
-  imports = lib.signal.fs.path.listFilePaths ./player;
+  imports = lib.listFilePaths ./player;
   config = {
     home.packages = lib.mkMerge [
       (lib.mkIf mpd.enable [

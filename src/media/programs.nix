@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
 in {
   options = with lib; {};
-  imports = lib.signal.fs.path.listFilePaths ./programs;
+  imports = lib.listFilePaths ./programs;
   config = {
     home.packages = with pkgs; [
       qbittorrent

@@ -15,7 +15,7 @@ in
       default = { };
     };
   };
-  imports = lib.signal.fs.path.listFilePaths ./theme;
+  imports = lib.listFilePaths ./theme;
   config = {
     home.packages = with pkgs; [
       glib.bin

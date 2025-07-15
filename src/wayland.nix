@@ -10,7 +10,7 @@ with builtins; let
 in {
   options = with lib; {
   };
-  imports = lib.signal.fs.path.listFilePaths ./wayland;
+  imports = lib.listFilePaths ./wayland;
   config = {
     home.packages = with pkgs; [
       # meta

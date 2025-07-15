@@ -8,7 +8,7 @@ with builtins; let
   std = pkgs.lib;
 in {
   options.signal.media.im = with lib; {};
-  imports = lib.signal.fs.path.listFilePaths ./im;
+  imports = lib.listFilePaths ./im;
   config = {
     programs.discord = {
       enable = true;

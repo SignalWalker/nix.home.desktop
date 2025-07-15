@@ -9,7 +9,7 @@ with builtins; let
   cfg = config.desktop.wayland.compositor;
 in {
   options = with lib; {};
-  imports = lib.signal.fs.path.listFilePaths ./compositor;
+  imports = lib.listFilePaths ./compositor;
   config = {
   };
 }

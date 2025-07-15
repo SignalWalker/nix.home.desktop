@@ -2,10 +2,6 @@
   description = "Home manager configuration - graphical desktop";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    alejandra = {
-      url = "github:kamadorueda/alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # browser
     mozilla = {
       url = "github:mozilla/nixpkgs-mozilla";
@@ -106,9 +102,23 @@
     with builtins;
     let
       std = nixpkgs.lib;
+      systems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
+      nixpkgsFor = std.genAttrs systems (
+        system:
+        import nixpkgs {
+          localSystem = builtins.currentSystem or system;
+          crossSystem = system;
+          overlays = [ ];
+        }
+      );
     in
     {
-      formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
+      formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
       homeManagerModules.default =
         {
           config,

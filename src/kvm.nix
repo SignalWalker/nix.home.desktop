@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  imports = lib.signal.fs.path.listFilePaths ./kvm;
+  imports = lib.listFilePaths ./kvm;
   config = {
     home.packages = with pkgs; [
       lan-mouse

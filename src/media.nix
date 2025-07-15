@@ -11,7 +11,7 @@ in
 {
   options = with lib; { };
   disabledModules = [ ];
-  imports = lib.signal.fs.path.listFilePaths ./media;
+  imports = lib.listFilePaths ./media;
   config = {
   };
   meta = { };

@@ -11,7 +11,7 @@ in {
     mkOption {
       type = types.attrsOf types.anything;
     };
-  imports = lib.signal.fs.path.listFilePaths ./src;
+  imports = lib.listFilePaths ./src;
   config = {
     home.stateVersion = "22.11";
   };

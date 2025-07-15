@@ -23,7 +23,7 @@ in {
     };
   };
   disabledModules = [];
-  imports = lib.signal.fs.path.listFilePaths ./notifications;
+  imports = lib.listFilePaths ./notifications;
   config = {
   };
   meta = {};

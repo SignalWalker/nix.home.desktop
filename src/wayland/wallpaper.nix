@@ -4,12 +4,16 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wp = config.desktop.wayland.wallpaper;
-in {
+in
+{
   options.desktop.wayland.wallpaper = with lib; {
-    enable = (mkEnableOption "wallpaper") // {default = true;};
+    enable = (mkEnableOption "wallpaper") // {
+      default = true;
+    };
     randomizeCmd = mkOption {
       type = types.str;
       default = "echo";
@@ -21,7 +25,7 @@ in {
       };
     };
   };
-  imports = lib.signal.fs.path.listFilePaths ./wallpaper;
+  imports = lib.listFilePaths ./wallpaper;
   config = lib.mkIf wp.enable {
     services.swww = {
       enable = true;
@@ -38,7 +42,6 @@ in {
     #     enable = true;
     #     target = cfg.systemd.target;
     #   };
-    #   package = lib.signal.home.linkSystemApp pkgs {app = "wpaperd";};
     #   settings = {
     #     default = {
     #       path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
@@ -49,3 +52,4 @@ in {
     # };
   };
 }
+

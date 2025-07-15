@@ -11,7 +11,7 @@ let
 in
 {
   options = with lib; { };
-  imports = lib.signal.fs.path.listFilePaths ./menu;
+  imports = lib.listFilePaths ./menu;
   config = lib.mkIf (launcher.enable) {
     desktop.launcher = {
       fuzzel.enable = true;

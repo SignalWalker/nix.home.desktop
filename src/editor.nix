@@ -12,6 +12,6 @@ in {
   options.signal.desktop.editor = with lib; {
     enable = (mkEnableOption "text editor GUI") // {default = config.signal.dev.editor.enable or false;};
   };
-  imports = lib.signal.fs.path.listFilePaths ./editor;
+  imports = lib.listFilePaths ./editor;
   config = lib.mkIf cfg.enable {};
 }
