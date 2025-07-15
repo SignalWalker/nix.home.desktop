@@ -111,6 +111,8 @@ in
             natural_scroll = false; # NOTE :: this is *mouse* only; *not* touchpad
             # focus
             follow_mouse = 0;
+            mouse_refocus = false;
+            float_switch_override_focus = 0;
             special_fallthrough = true;
             focus_on_close = 0;
             touchpad = {
