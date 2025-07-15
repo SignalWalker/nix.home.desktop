@@ -81,6 +81,21 @@
     #   url = "gitlab:w0lff/shikane";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+
+    # DEV
+    nix-direnv = {
+      url = "github:nix-community/nix-direnv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ## editor
+    ashvim = {
+      url = "github:signalwalker/cfg.neovim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ashmacs = {
+      url = "github:signalwalker/cfg.emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -108,6 +123,7 @@
           ];
           config = {
             signal.desktop.editor.helix.src = inputs.helixSrc;
+            programs.direnv.nix-direnv.package = inputs.nix-direnv.packages.${pkgs.system}.nix-direnv;
 
             # programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
 
