@@ -4,14 +4,13 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+with builtins;
+{
+  options = with lib; { };
+  disabledModules = [ ];
+  imports = [ ];
   config = {
-    warnings = ["warning"];
+    warnings = [ "warning" ];
     assertions = [
       {
         assertion = false;
@@ -19,5 +18,5 @@ in {
       }
     ];
   };
-  meta = {};
+  meta = { };
 }
