@@ -11,6 +11,8 @@ let
   cfg = config.signal.dev.git;
   crane = config.signal.dev.inputs.crane.lib.${pkgs.system};
   gnupg = osConfig.programs.gnupg or { };
+  git = config.programs.git;
+  jj = config.programs.jujutsu;
 in
 {
   options.signal.dev.git = with lib; {
@@ -37,8 +39,36 @@ in
       # gitoxide
       gh
       glab
-      jujutsu
     ];
+    programs.jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          name = git.userName;
+          email = git.userEmail;
+        };
+        ui = {
+          "default-command" = "status";
+        };
+        "merge-tool" = {
+          # from https://github.com/rafikdraoui/jj-diffconflicts#invoking-through-jj-resolve
+          "diffconflicts" = {
+            program = "nvim";
+            "merge-args" = [
+              "-c"
+              "let g:jj_diffconflicts_marker_length=$marker_length"
+              "-c"
+              "JJDiffConflicts!"
+              "$output"
+              "$base"
+              "$left"
+              "$right"
+            ];
+            "merge-tool-edits-conflict-markers" = true;
+          };
+        };
+      };
+    };
     # home.shellAliases = {
     #   gx = "gix"; # really don't like the default gitoxide command
     # };
