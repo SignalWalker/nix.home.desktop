@@ -27,15 +27,38 @@ in
       };
     };
 
-    home.packages = with pkgs; [
-      # lmms # build failure 2025-01-07
-      sunvox
-      renoise
-      # ardour
-      reaper
+    home.packages =
+      [
+        (pkgs.renoise.override {
+          releasePath = pkgs.requireFile {
+            name = "rns_350_linux_x86_64.tar.gz";
+            url = "https://backstage.renoise.com/frontend/app/index.html#/product/rns";
+            hash = "sha256-YGe7VsUNZwJA2liiyL/CHEXYvQRYRGX0eVDdbXZZuu8=";
+          };
+        })
+      ]
+      ++ [
+      ]
+      # plugins
+      ++ [
+        pkgs.sfizz
+        pkgs.redux
+        pkgs.CHOWTapeModel
+        pkgs.artyFX
+        # pkgs.fmsynth
+        pkgs.infamousPlugins
+      ]
+      ++ (with pkgs; [
+        # lmms # build failure 2025-01-07
+        sunvox
+        furnace
+        # ardour
+        reaper
 
-      # nicotine-plus # removed due to collision with httm
-    ];
+        supercollider-with-plugins
+
+        # nicotine-plus # removed due to collision with httm
+      ]);
   };
   meta = { };
 }
