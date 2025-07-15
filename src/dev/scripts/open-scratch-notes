@@ -1,0 +1,7 @@
+#! /usr/bin/env fish
+
+set notes_dir $XDG_NOTES_DIR
+set yesterday "$notes_dir/daily/$(date -d yesterday +%Y-%m-%d).md"
+set today "$notes_dir/daily/$(date +%Y-%m-%d).md"
+
+exec kitty --class scratch_notes nvim +"tcd $XDG_NOTES_DIR" -O $yesterday $today +ObsidianToday
