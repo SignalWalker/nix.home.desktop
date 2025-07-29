@@ -60,7 +60,7 @@
         (progress :valign 'center' :hexpand true :orientation "h"
           :value {((player?.['position'] ?: 0) / (player?.['metadata']?.['mpris:length'] ?: 1)) * 100})))
     (image
-      :path {player?.['metadata']?.['mpris:artUrl'] ?: "/home/ash/pictures/avatars/pond/pond.ico"}
+      :path {player?.['metadata']?.['mpris:artUrl'] ?: "/home/ash/.config/eww/pond.ico"}
       :image-width 128
       :image-height 128
       )))

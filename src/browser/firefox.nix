@@ -14,7 +14,7 @@ in
   imports = [ ];
   config =
     let
-      firefoxCmd = "firefox-devedition";
+      firefoxCmd = "firefox-beta";
     in
     {
       desktop.scratchpads = {
@@ -45,17 +45,19 @@ in
         MOZ_DBUS_REMOTE = 1;
       };
       programs.firefox = {
-        enable = config.system.isNixOS;
+        enable = true;
+        package = pkgs.firefox-beta;
         # package = pkgs.latest.firefox-nightly-bin;
         # package = pkgs.firefox-beta-bin;
-        # profiles = {
-        #   main = {
-        #     id = 0;
-        #     name = "main";
-        #     isDefault = true;
-        #   };
-        # };
+        profiles = {
+          main = {
+            id = 0;
+            name = "main";
+            isDefault = true;
+          };
+        };
       };
+      stylix.targets.firefox.profileNames = [ "main" ];
     };
   meta = { };
 }

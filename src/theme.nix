@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -20,6 +21,17 @@ in
     home.packages = with pkgs; [
       glib.bin
     ];
+
+    stylix = {
+      icons = {
+        enable = true;
+        package = pkgs.kdePackages.breeze-icons;
+        light = "breeze-dark";
+        dark = "breeze-dark";
+      };
+      targets.neovim.enable = false;
+    };
+
     gtk = {
       enable = true;
       gtk2 = {
@@ -29,34 +41,14 @@ in
         bookmarks = map (dir: "file://${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
       };
       gtk4 = { };
-      theme = {
-        package = pkgs.kdePackages.breeze-gtk;
-        name = "Breeze";
-      };
-      iconTheme = {
-        package = pkgs.kdePackages.breeze-icons;
-        # NOTE :: experimentally, this has to be lowercase???
-        name = "breeze";
-      };
+    };
+    dconf.settings = {
+      # "org/gtk/settings/file-chooser" = {
+      #   "sort-directories-first" = true;
+      # };
     };
     qt = {
       enable = true;
-      platformTheme = {
-        name = "breeze";
-        package = pkgs.kdePackages.breeze;
-      };
-      style = {
-        name = "breeze";
-        package = pkgs.kdePackages.breeze;
-      };
-    };
-    home.pointerCursor = {
-      package = pkgs.rose-pine-cursor;
-      # NOTE :: this is the name of the folder within `{pkg}/share/icons/`
-      name = "BreezeX-RosePineDawn-Linux";
-      gtk.enable = true;
-      x11.enable = true;
-      size = 24;
     };
     systemd.user.sessionVariables = {
       "_JAVA_OPTIONS" = "-Dawt.useSystemAAFontSettings=lcd";

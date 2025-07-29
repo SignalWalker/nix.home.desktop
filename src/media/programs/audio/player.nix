@@ -21,6 +21,9 @@ in
           withMusicbrainz = true;
         })
       ])
+      [
+        pkgs.tauon
+      ]
     ];
     programs.quodlibet = {
       enable = false; # config.system.isNixOS or true;
@@ -37,14 +40,16 @@ in
     desktop.scratchpads = {
       "Shift+W" = {
         criteria = {
-          app_id = "io.github.quodlibet.QuodLibet";
-          title = "^(.* - )?Quod Libet";
+          # app_id = "io.github.quodlibet.QuodLibet";
+          # title = "^(.* - )?Quod Libet";
+          app_id = "tauonmb";
         };
         resize = 75;
-        startup = "quodlibet";
+        startup = "tauon";
         systemdCat = true;
         automove = true;
       };
     };
   };
 }
+

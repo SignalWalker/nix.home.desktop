@@ -4,9 +4,8 @@
   lib,
   ...
 }:
-with builtins;
 {
-  options = with lib; { };
+  options = { };
   disabledModules = [ ];
   imports = [ ];
   config = {

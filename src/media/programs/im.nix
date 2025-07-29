@@ -4,17 +4,14 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options.signal.media.im = with lib; {};
+in
+{
+  options.signal.media.im = with lib; { };
   imports = lib.listFilePaths ./im;
   config = {
-    programs.discord = {
-      enable = true;
-      vencord.enable = true;
-      openasar.enable = true;
-    };
     home.packages = with pkgs; [
       slack
     ];
@@ -31,3 +28,4 @@ in {
     };
   };
 }
+

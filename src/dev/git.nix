@@ -50,6 +50,9 @@ in
         ui = {
           "default-command" = "status";
         };
+        "snapshot" = {
+          "auto-track" = "none()";
+        };
         "merge-tool" = {
           # from https://github.com/rafikdraoui/jj-diffconflicts#invoking-through-jj-resolve
           "diffconflicts" = {
@@ -104,3 +107,4 @@ in
     };
   };
 }
+

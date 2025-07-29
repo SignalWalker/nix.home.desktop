@@ -4,45 +4,47 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   discord = config.programs.discord;
-in {
+in
+{
   options = with lib; {
-    programs.discord = {
-      enable = mkEnableOption "Discord";
-      package = mkPackageOption pkgs "discord" {};
-      vencord.enable = mkEnableOption "Vencord";
-      openasar.enable = mkEnableOption "OpenASAR";
-    };
   };
-  disabledModules = [];
-  imports = [];
-  config = lib.mkIf discord.enable (let
-    pkg = discord.package.override {
-      withOpenASAR = discord.openasar.enable;
-      withVencord = discord.vencord.enable;
-    };
-  in {
-    home.packages = [
-      pkg
-    ];
+  disabledModules = [ ];
+  imports = [ ];
+  config = (
+    # let
+    #   pkg = discord.package.override {
+    #     withOpenASAR = discord.openasar.enable;
+    #     withVencord = discord.vencord.enable;
+    #   };
+    # in
+    {
+      # home.packages = [
+      #   pkg
+      # ];
 
-    desktop.scratchpads = {
-      "Shift+D" = {
-        criteria = {
-          app_id = "discord";
-          class = "discord";
-        };
-        hypr = {
-          process_tracking = false;
-        };
-        resize = 93;
-        startup = "${pkg}/bin/discord";
-        systemdCat = true;
-        automove = true;
+      programs.vesktop = {
+        enable = true;
       };
-    };
-  });
-  meta = {};
+
+      desktop.scratchpads = {
+        "Shift+D" = {
+          criteria = {
+            app_id = "vesktop";
+            class = "vesktop";
+          };
+          hypr = {
+            process_tracking = false;
+          };
+          resize = 93;
+          startup = "vesktop";
+          systemdCat = true;
+          automove = true;
+        };
+      };
+    });
+  meta = { };
 }

@@ -42,85 +42,82 @@ in
       TERMINAL = "kitty";
     };
 
+    stylix.targets.kitty.variant256Colors = true;
+
     programs.ranger.settings = {
       preview_images = true;
       preview_images_method = "kitty";
     };
-    desktop.scratchpads = {
-      "Grave" = {
-        criteria = {
-          app_id = "scratch_term";
-        };
-        resize = 83;
-        startup = "kitty --class scratch_term";
-        systemdCat = true;
-        autostart = true;
-        automove = true;
-      };
-      "F1" = {
-        criteria = {
-          app_id = "scratch_logs";
-        };
-        resize = 75;
-        startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
-        systemdCat = true;
-        autostart = true;
-        automove = true;
-      };
-      "F2" = {
-        criteria = {
-          app_id = "scratch_top";
-        };
-        resize = 83;
-        startup = "kitty --class scratch_top btop";
-        systemdCat = true;
-        autostart = true;
-        automove = true;
-      };
-      "XF86Calculator" = {
-        useMod = false;
-        criteria = {
-          app_id = "scratch_editor";
-        };
-        systemdCat = true;
-        resize = 83;
-        startup = "kitty --class scratch_editor ${config.systemd.user.sessionVariables.EDITOR}";
-      };
-      # HACK :: framework keyboard doesn't have a calculator button :c
-      # this is the gear button on f12
-      "XF86AudioMedia" = {
-        useMod = false;
-        criteria = {
-          app_id = "scratch_editor";
-        };
-        systemdCat = true;
-        resize = 83;
-        startup = "kitty --class scratch_editor ${config.systemd.user.sessionVariables.EDITOR}";
-      };
-    };
-
-    xdg.configFile =
-      {
-        "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
-      }
-      // (foldl' (
-        acc: name:
-        let
-          theme = kitty.themes.${name};
-        in
-        acc
-        // {
-          "kitty/themes/${name}.conf" = {
-            source = theme;
+    desktop.scratchpads =
+      let
+        editorPad = {
+          useMod = false;
+          criteria = {
+            app_id = "scratch_editor";
           };
-        }
-      ) { } (attrNames kitty.themes));
+          systemdCat = true;
+          resize = 83;
+          startup = "kitty --class scratch_editor ${config.systemd.user.sessionVariables.EDITOR}";
+        };
+      in
+      {
+        "Grave" = {
+          criteria = {
+            app_id = "scratch_term";
+          };
+          resize = 83;
+          startup = "kitty --class scratch_term";
+          systemdCat = true;
+          autostart = true;
+          automove = true;
+        };
+        "F1" = {
+          criteria = {
+            app_id = "scratch_logs";
+          };
+          resize = 75;
+          startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
+          systemdCat = true;
+          autostart = true;
+          automove = true;
+        };
+        "F2" = {
+          criteria = {
+            app_id = "scratch_top";
+          };
+          resize = 83;
+          startup = "kitty --class scratch_top btop";
+          systemdCat = true;
+          autostart = true;
+          automove = true;
+        };
+        "XF86Calculator" = editorPad;
+        # HACK :: framework keyboard doesn't have a calculator button :c
+        # this is the gear button on f12
+        "XF86AudioMedia" = editorPad;
+      };
+
+    xdg.configFile = {
+      "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
+    }
+    // (foldl' (
+      acc: name:
+      let
+        theme = kitty.themes.${name};
+      in
+      acc
+      // {
+        "kitty/themes/${name}.conf" = {
+          source = theme;
+        };
+      }
+    ) { } (attrNames kitty.themes));
     xdg.binFile."kg" = {
       executable = true;
       source = ./kitty/kg;
     };
     programs.zsh = {
-      initExtra = ''
+      initContent = lib.mkOrder 1000 ''
         if [[ "$TERM" = "${config.programs.kitty.settings.term}" ]]; then
           compdef _rg kg
           ${kittenAliases}
@@ -154,25 +151,17 @@ in
     programs.kitty = {
       enable = true;
       package = pkgs.kitty;
-      themes =
-        let
-          tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";
-        in
-        {
-          tokyonight_day = "${tk}/tokyonight_day.conf";
-          tokyonight_moon = "${tk}/tokyonight_moon.conf";
-          tokyonight_night = "${tk}/tokyonight_night.conf";
-          tokyonight_storm = "${tk}/tokyonight_storm.conf";
-        };
+      # themes =
+      #   let
+      #     tk = "${config.desktop.theme.inputs.tokyonight}/extras/kitty";
+      #   in
+      #   {
+      #     tokyonight_day = "${tk}/tokyonight_day.conf";
+      #     tokyonight_moon = "${tk}/tokyonight_moon.conf";
+      #     tokyonight_night = "${tk}/tokyonight_night.conf";
+      #     tokyonight_storm = "${tk}/tokyonight_storm.conf";
+      #   };
       environment = { };
-      font =
-        let
-          font = head config.desktop.theme.font.terminal;
-        in
-        {
-          inherit (font) package name;
-          size = font.selectSize 10;
-        };
       shellIntegration = {
         enableBashIntegration = true;
         enableZshIntegration = config.programs.zsh.enable;
@@ -211,13 +200,12 @@ in
         # os
         linux_display_server = "auto";
         # background
-        background_opacity = "0.96";
         dynamic_background_opacity = true;
         background_tint = "0.2";
         # text
-        bold_font = "auto";
-        italic_font = "auto";
-        bold_italic_font = "auto";
+        # bold_font = "auto";
+        # italic_font = "auto";
+        # bold_italic_font = "auto";
         force_ltr = false;
         disable_ligatures = "never";
         box_drawing_scale = "0.001, 1, 1.5, 2";
@@ -243,8 +231,8 @@ in
         clear_all_mouse_actions = true;
       };
 
+      # include ${kitty.themes.tokyonight_storm}
       extraConfig = ''
-        include ${kitty.themes.tokyonight_storm}
 
         mouse_map left click ungrabbed mouse_handle_click selection link prompt
         mouse_map kitty_mod+left press grabbed discard_event

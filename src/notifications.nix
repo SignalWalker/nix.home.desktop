@@ -4,9 +4,11 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
+in
+{
   options = with lib; {
     desktop.notifications = {
       commands = {
@@ -22,9 +24,13 @@ in {
       };
     };
   };
-  disabledModules = [];
+  disabledModules = [ ];
   imports = lib.listFilePaths ./notifications;
   config = {
+    services.swayosd = {
+      enable = true;
+    };
   };
-  meta = {};
+  meta = { };
 }
+

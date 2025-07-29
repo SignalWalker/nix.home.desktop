@@ -102,7 +102,6 @@ in
           };
           animations = {
             enabled = false;
-            first_launch_animation = false;
           };
           input = {
             kb_model = "pc104";
@@ -176,87 +175,86 @@ in
             "idleinhibit fullscreen, class:.*"
             "idleinhibit focus, class:scratch_term"
           ];
-          bind =
-            [
-              "MOD3,Return,execr,uwsm-app -T"
+          bind = [
+            "MOD3,Return,execr,uwsm-app -T"
 
-              "MOD3SHIFT,Q,killactive"
-              "MOD3SHIFTCTRL,Q,forcekillactive"
+            "MOD3SHIFT,Q,killactive"
+            "MOD3SHIFTCTRL,Q,forcekillactive"
 
-              "MOD3,D,execr,uwsm-app ${launcher.drun}"
-              "MOD3ALT,D,execr,uwsm-app ${launcher.run}"
+            "MOD3,D,execr,uwsm-app ${launcher.drun}"
+            "MOD3ALT,D,execr,uwsm-app ${launcher.run}"
 
-              "MOD3SHIFT,Space,togglefloating,active"
+            "MOD3SHIFT,Space,togglefloating,active"
 
-              "MOD3,F,fullscreen,0"
-              "MOD3ALT,F,fullscreen,1"
+            "MOD3,F,fullscreen,0"
+            "MOD3ALT,F,fullscreen,1"
 
-              "MOD3CTRL,P,pin,active"
+            "MOD3CTRL,P,pin,active"
 
-              "MOD3,O,workspace,previous"
+            "MOD3,O,workspace,previous"
 
-              "MOD3,BracketRight,cyclenext"
-              "MOD3,BracketLeft,cyclenext,prev"
+            "MOD3,BracketRight,cyclenext"
+            "MOD3,BracketLeft,cyclenext,prev"
 
-              ",Print,execr,${config.desktop.wayland.screenshotScript} active"
-              "CTRL,Print,execr,${config.desktop.wayland.screenshotScript} area"
-              "MOD3,Print,execr,${config.desktop.wayland.screenshotScript} output"
-              "MOD3ALT,Print,execr,${config.desktop.wayland.screenshotScript} screen"
+            ",Print,execr,${config.desktop.wayland.screenshotScript} active"
+            "CTRL,Print,execr,${config.desktop.wayland.screenshotScript} area"
+            "MOD3,Print,execr,${config.desktop.wayland.screenshotScript} output"
+            "MOD3ALT,Print,execr,${config.desktop.wayland.screenshotScript} screen"
 
-              "MOD3,N,execr,${ntf.restore}"
-              "MOD3ALT,N,execr,${ntf.dismiss}"
-              "MOD3CTRL,N,execr,${ntf.context}"
+            "MOD3,N,execr,${ntf.restore}"
+            "MOD3ALT,N,execr,${ntf.dismiss}"
+            "MOD3CTRL,N,execr,${ntf.context}"
 
-              "MOD3ALT,W,execr,${config.desktop.wayland.wallpaper.randomizeCmd}"
-              "MOD3ALT,L,execr,swaylock --effect-scale 0.5 --effect-blur 5x3"
+            "MOD3ALT,W,execr,${config.desktop.wayland.wallpaper.randomizeCmd}"
+            "MOD3ALT,L,execr,swaylock --effect-scale 0.5 --effect-blur 5x3"
 
-              "CTRL,XF86MonBrightnessUp,execr,light -S 100"
-              "CTRL,XF86MonBrightnessDown,execr,light -S 1"
+            "CTRL,XF86MonBrightnessUp,execr,light -S 100"
+            "CTRL,XF86MonBrightnessDown,execr,light -S 1"
 
-              ",XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-              ",XF86AudioMicMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-              "ALT,XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+            ",XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+            ",XF86AudioMicMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+            "ALT,XF86AudioMute,execr,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
 
-              ",XF86AudioPrev, execr, playerctl -s previous"
-              ",XF86AudioPlay, execr, playerctl -s play-pause"
-              ",XF86AudioNext, execr, playerctl -s next"
+            ",XF86AudioPrev, execr, playerctl -s previous"
+            ",XF86AudioPlay, execr, playerctl -s play-pause"
+            ",XF86AudioNext, execr, playerctl -s next"
 
-              "CTRL,XF86Calculator,execr,uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}"
-              # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
-              "CTRL,XF86AudioMedia,execr,uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}"
-            ]
-            ++ (
+            "CTRL,XF86Calculator,execr,uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}"
+            # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
+            "CTRL,XF86AudioMedia,execr,uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}"
+          ]
+          ++ (
+            let
+              dirMap = {
+                "u" = "K";
+                "d" = "J";
+                "l" = "H";
+                "r" = "L";
+              };
+            in
+            (foldl' (
+              acc: dir:
               let
-                dirMap = {
-                  "u" = "K";
-                  "d" = "J";
-                  "l" = "H";
-                  "r" = "L";
-                };
-              in
-              (foldl' (
-                acc: dir:
-                let
-                  key = dirMap.${dir};
-                in
-                acc
-                ++ [
-                  "MOD3,${key},movefocus,${dir}"
-                  "MOD3 SHIFT,${key},movewindow,${dir}"
-                ]
-              ) [ ] (attrNames dirMap))
-            )
-            ++ (foldl' (
-              acc: space:
-              let
-                key = toString (space - 1);
+                key = dirMap.${dir};
               in
               acc
               ++ [
-                "MOD3,${key},workspace,${key}"
-                "MOD3SHIFT,${key},movetoworkspacesilent,${key}"
+                "MOD3,${key},movefocus,${dir}"
+                "MOD3 SHIFT,${key},movewindow,${dir}"
               ]
-            ) [ ] (genList (i: i + 1) 10));
+            ) [ ] (attrNames dirMap))
+          )
+          ++ (foldl' (
+            acc: space:
+            let
+              key = toString (space - 1);
+            in
+            acc
+            ++ [
+              "MOD3,${key},workspace,${key}"
+              "MOD3SHIFT,${key},movetoworkspacesilent,${key}"
+            ]
+          ) [ ] (genList (i: i + 1) 10));
           # NOTE :: e = repeats if held down
           binde = [
             ",XF86AudioRaiseVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ +1dB" # using pactl isntead of wpctl because it accepts dB, which preserves L/R balance ratio

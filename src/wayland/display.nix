@@ -17,7 +17,7 @@ in
   imports = [ ];
   config = {
     home.packages = with pkgs; [
-      nwg-displays # GUI output management
+      # nwg-displays # GUI output management
     ];
     services.shikane = {
       enable = true;

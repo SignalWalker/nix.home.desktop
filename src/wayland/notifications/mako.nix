@@ -59,22 +59,12 @@ in
         width = floor (2256 / 6);
         height = floor (1504 / 8);
 
-        font =
-          let
-            size = 11;
-            fonts = theme.font.slab ++ theme.font.symbols;
-          in
-          std.concatStringsSep ", " (map (font: "${font.name} ${toString (font.selectSize size)}") fonts);
         # iconPath = std.concatStringsSep ":" [
         #   "${config.home.profileDirectory}/share/icons/hicolor"
         #   "${config.home.profileDirectory}/share/pixmaps"
         # ];
-        backgroundColor = "#${colors.bg}aa";
-        textColor = "#${colors.fg}";
-        progressColor = "source #${colors.fg}";
         margin = "2";
         padding = "4";
-        borderColor = "#${colors.border}";
         borderSize = 1;
         borderRadius = 0;
         settings = {

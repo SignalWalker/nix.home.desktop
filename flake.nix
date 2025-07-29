@@ -2,14 +2,13 @@
   description = "Home manager configuration - graphical desktop";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # browser
-    mozilla = {
-      url = "github:mozilla/nixpkgs-mozilla";
-    };
-    firefox-nightly = {
-      url = "github:nix-community/flake-firefox-nightly";
+
+    # theme
+    stylix = {
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     # services
     watch-battery = {
       url = "git+https://git.ashwalker.net/ash/watch-battery";
@@ -119,7 +118,7 @@
     in
     {
       formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
-      homeManagerModules.default =
+      homeModules.default =
         {
           config,
           lib,
@@ -129,6 +128,8 @@
         {
           imports = [
             inputs.watch-battery.homeManagerModules.default
+            inputs.ashvim.homeManagerModules.default
+            # inputs.stylix.homeModules.stylix
             ./home-manager.nix
           ];
           config = {
@@ -150,9 +151,6 @@
             };
 
             programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
-
-            # programs.firefox.package = inputs.firefox-nightly.packages.${pkgs.system}.firefox-nightly-bin;
-            programs.firefox.package = pkgs.firefox-devedition;
           };
         };
     };

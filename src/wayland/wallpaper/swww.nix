@@ -4,12 +4,14 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-  tomlFormat = pkgs.formats.toml {};
+  tomlFormat = pkgs.formats.toml { };
   cfg = config.services.swww;
   swww-randomize = ./swww/swww-randomize;
-in {
+in
+{
   options.services.swww = with lib; {
     enable = mkEnableOption "swww wallpaper daemon";
     package = mkOption {
@@ -48,8 +50,8 @@ in {
       };
     };
   };
-  imports = [];
-  disabledModules = ["services/swww.nix"];
+  imports = [ ];
+  disabledModules = [ "services/swww.nix" ];
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       cfg.package
@@ -63,42 +65,59 @@ in {
         Unit = {
           Description = "swww wallpaper daemon";
           Documentation = "man:swww(1)";
-          PartOf = [cfg.systemd.target];
-          After = [cfg.systemd.target];
+          PartOf = [ cfg.systemd.target ];
+          After = [ cfg.systemd.target ];
         };
         Install = {
-          WantedBy = [cfg.systemd.target];
+          WantedBy = [ cfg.systemd.target ];
         };
         Service = {
           Type = "simple";
           ExecStart = "${cfg.package}/bin/swww-daemon --quiet --no-cache";
+          ExecStop = "${cfg.package}/bin/swww kill";
           Slice = "background-graphical.slice";
+          Restart = "on-failure";
         };
       };
       "swww-randomize" = {
-        Unit.PartOf = [cfg.systemd.target];
-        Service.Environment = [
-          "SWWW_TRANSITION_FPS=${toString cfg.img.fps}"
-          "SWWW_TRANSITION_STEP=${toString cfg.img.step}"
-          "SWWW_TRANSITION_DURATION=1"
-        ];
-        Service.Type = "oneshot";
-        Service.ExecStart = let
-          py = pkgs.python311.withPackages (ps:
-            with ps; [
-              pillow
-            ]);
-        in "${py}/bin/python3 ${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
+        Unit = {
+          PartOf = [ cfg.systemd.target ];
+          Requires = [ "swww.service" ];
+          After = [ "swww.service" ];
+        };
+        Service = {
+          Environment = [
+            "SWWW_TRANSITION_FPS=${toString cfg.img.fps}"
+            "SWWW_TRANSITION_STEP=${toString cfg.img.step}"
+            "SWWW_TRANSITION_DURATION=1"
+          ];
+          Type = "oneshot";
+          ExecStart =
+            let
+              py = pkgs.python311.withPackages (
+                ps: with ps; [
+                  pillow
+                ]
+              );
+            in
+            "${py}/bin/python3 ${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
+        };
       };
     };
     systemd.user.timers = lib.mkIf cfg.systemd.enable {
       "swww-randomize" = {
-        Unit.Description = "wallpaper randomizer";
-        Unit.PartOf = [cfg.systemd.target];
-        Unit.After = ["swww.service"];
-        Install.WantedBy = ["swww.service"];
-        Timer.OnUnitActiveSec = cfg.systemd.randomize.interval;
-        Timer.OnActiveSec = "0s";
+        Unit = {
+          Description = "wallpaper randomizer";
+          PartOf = [ cfg.systemd.target ];
+          After = [ "swww.service" ];
+        };
+        Install = {
+          WantedBy = [ "swww.service" ];
+        };
+        Timer = {
+          OnUnitActiveSec = cfg.systemd.randomize.interval;
+          OnActiveSec = "0s";
+        };
       };
     };
   };

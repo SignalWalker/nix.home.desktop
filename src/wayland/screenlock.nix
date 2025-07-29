@@ -4,28 +4,26 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wln = config.desktop.wayland;
   lck = wln.screenlock;
   theme = config.desktop.theme;
-  fontCfg = theme.font;
-in {
+in
+{
   options.desktop.wayland.screenlock = with lib; {
-    enable = (mkEnableOption "screenlock") // {default = true;};
+    enable = (mkEnableOption "screenlock") // {
+      default = true;
+    };
   };
-  imports = [];
+  imports = [ ];
   config = lib.mkIf lck.enable {
     programs.swaylock = {
       package = pkgs.swaylock-effects;
-      settings = let
-        font = head fontCfg.slab;
-      in {
+      settings = {
         ignore-empty-password = true;
         indicator-caps-lock = true;
-        font = font.name;
-        font-size = font.selectSize 11;
-        # image = "${config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR"}/pond_bg.png";
         scaling = "fit";
         color = "000000";
         clock = true;
@@ -36,4 +34,3 @@ in {
     };
   };
 }
-

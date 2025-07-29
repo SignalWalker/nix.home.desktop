@@ -4,22 +4,20 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   anki = config.programs.anki;
-in {
+in
+{
   options = with lib; {
-    programs.anki = {
-      enable = (mkEnableOption "anki") // {default = true;};
-      package = mkPackageOption pkgs "anki-bin" {};
-    };
   };
-  disabledModules = [];
-  imports = [];
+  disabledModules = [ ];
+  imports = [ ];
   config = {
-    home.packages = [
-      anki.package
-    ];
+    programs.anki = {
+      enable = true;
+    };
     desktop.windows = [
       {
         criteria = {
@@ -48,5 +46,5 @@ in {
       };
     };
   };
-  meta = {};
+  meta = { };
 }

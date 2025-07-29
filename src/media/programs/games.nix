@@ -7,22 +7,14 @@
 with builtins;
 let
   std = pkgs.lib;
-  inputs = config.signal.media.flakeInputs;
 in
 {
   options = with lib; { };
   imports = [ ];
   config = {
-    home.packages =
-      (
-        if hasAttr pkgs.system inputs.bizhawk.packages then
-          [
-            inputs.bizhawk.packages.${pkgs.system}.emuhawk-latest-bin
-          ]
-        else
-          [ ]
-      )
-      ++ (with pkgs; [
+    home.packages = (
+      with pkgs;
+      [
         # launchers
         lutris
         heroic
@@ -47,7 +39,7 @@ in
         ## misc
         ruffle # flash
         ## sony
-        duckstation # psx
+        # duckstation # psx # TODO :: maintainer decided to be goofy as hell, gotta find a new psx emulator
         pcsx2 # ps2
         ppsspp # psp
         ## nintendo
@@ -74,7 +66,8 @@ in
         openttd
         cockatrice
         forge-mtg
-      ]);
+      ]
+    );
 
     desktop.windows = [
       {
@@ -127,8 +120,6 @@ in
         gamemode = true;
 
         position = "bottom-right";
-        font_size = 12;
-        font_size_text = 12; # ???
         hud_compact = true;
         hud_no_margin = true;
 

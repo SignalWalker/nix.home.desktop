@@ -4,18 +4,23 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wln = config.desktop.wayland;
-in {
+in
+{
   options.desktop.wayland.notifications = with lib; {
-    enable = (mkEnableOption "Notification daemon") // {default = true;};
+    enable = (mkEnableOption "Notification daemon") // {
+      default = true;
+    };
   };
   imports = lib.listFilePaths ./notifications;
   config = lib.mkIf wln.notifications.enable {
     services.dunst = {
-      enable = false;
+      enable = true;
     };
-    services.mako.enable = !config.services.dunst.enable;
+    # services.mako.enable = !config.services.dunst.enable;
   };
 }
+

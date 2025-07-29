@@ -5,19 +5,14 @@
   ...
 }:
 with builtins;
-let
-  std = pkgs.lib;
-in
 {
   options = with lib; { };
   disabledModules = [ ];
   imports = [ ];
   config = {
-    home.packages = [
-      # (pkgs.openjdk.override {
-      #   enableJavaFX = true;
-      # })
-    ];
+    age = {
+      identityPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+    };
   };
   meta = { };
 }

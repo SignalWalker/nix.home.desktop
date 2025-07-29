@@ -4,35 +4,35 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
-  config = let
-    pkg = pkgs.mpris-scrobbler;
-  in
-    lib.mkIf false {
-      home.packages = [pkg];
-      systemd.user.services."mpris-scrobbler" = {
-        Unit = {
-          Description = "daemon to scrobble tracks loaded from the MPRIS DBus interface to compatible services";
-          Requires = ["dbus.socket"];
-        };
-        Install = {
-          WantedBy = ["default.target"];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkg}/bin/mpris-scrobbler -vv";
-          ExecReload = "/usr/bin/env kill -HUP $MAINPID";
-          CPUQuota = "1%";
-          Restart = "on-failure";
-          RestartSec = 30;
-          PassEnvironment = ["PROXY"];
-        };
-      };
+in
+{
+  options = with lib; { };
+  disabledModules = [ ];
+  imports = [ ];
+  config = {
+    age.secrets."rescrobbledCfg" = {
+      file = ./secrets/rescrobbledCfg.age;
     };
-  meta = {};
+    services.rescrobbled = {
+      enable = true;
+    };
+    systemd.user.services.rescrobbled.Unit = {
+      Wants = [
+        "agenix.service"
+      ];
+      After = [
+        "agenix.service"
+      ];
+    };
+    home.activation.rescrobbledCfg = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run mkdir $VERBOSE_ARG -p "${config.xdg.configHome}/rescrobbled"
+      run ln $VERBOSE_ARG -sfT "${
+        config.age.secrets."rescrobbledCfg".path
+      }" "${config.xdg.configHome}/rescrobbled/config.toml"
+    '';
+  };
+  meta = { };
 }
