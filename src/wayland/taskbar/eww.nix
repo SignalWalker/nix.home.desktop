@@ -29,7 +29,7 @@ in
   };
   disabledModules = [ "programs/eww.nix" ];
   imports = [ ];
-  config = lib.mkIf taskbar.enable (
+  config = lib.mkIf (taskbar.enable && (taskbar.type == "eww")) (
     lib.mkMerge [
       {
         warnings = [ "using custom eww module" ];

@@ -67,7 +67,7 @@ def swww(*args, bin_path = "swww", stdout = subprocess.PIPE, stderr = subprocess
     except subprocess.CalledProcessError:
         return None
 
-query_reg = re.compile(r"^(?P<id>[^:]+):\s+(?P<width>\d+)x(?P<height>\d+)")
+query_reg = re.compile(r"^(?P<name>[^:]*):\s+(?P<id>[^:]+):\s+(?P<width>\d+)x(?P<height>\d+)")
 def swww_query(bin_path = "swww") -> dict[str, tuple[int, int]] | None:
     query = swww("query", bin_path = bin_path)
     if query is None: return None

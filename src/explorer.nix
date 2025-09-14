@@ -45,7 +45,11 @@ in
       ];
       home.packages = [
         pkgs.kdePackages.kdialog
+        # yazi
+        pkgs.resvg # svg preview
+        pkgs.poppler # pdf preview
       ];
+
     }
     (lib.mkIf dolphin.enable {
       home.packages = [

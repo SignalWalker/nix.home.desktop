@@ -35,23 +35,32 @@ in
       #   buildInputs = with pkgs; [zstd];
       # };
     };
-    home.packages = with pkgs; [
+    home.packages = [
       # gitoxide
-      gh
-      glab
+      pkgs.gh
+      pkgs.glab
+      pkgs.git-filter-repo
     ];
     programs.jujutsu = {
       enable = true;
       settings = {
-        user = {
+        "user" = {
           name = git.userName;
           email = git.userEmail;
         };
-        ui = {
+        "ui" = {
           "default-command" = "status";
         };
         "snapshot" = {
           "auto-track" = "none()";
+        };
+        "signing" = {
+          behavior = "own";
+          backend = "gpg";
+        };
+        "git" = {
+          "sign-on-push" = true;
+          colocate = false;
         };
         "merge-tool" = {
           # from https://github.com/rafikdraoui/jj-diffconflicts#invoking-through-jj-resolve
@@ -86,9 +95,20 @@ in
         signByDefault = true;
       };
       ignores = [
+        # neovim
         "/.lnvim.*"
+        "/.exrc"
+        "/.nvim.lua"
+        "/.nvimrc"
+        # direnv
         "/.envrc"
+        # godot
         "/.godot"
+        # vscode (mostly for .vscode/settings.json)
+        "/.vscode"
+        # devenv
+        "/devenv.local.nix"
+        "/devenv.local.yaml"
       ];
       extraConfig = {
         core = {
@@ -107,4 +127,3 @@ in
     };
   };
 }
-

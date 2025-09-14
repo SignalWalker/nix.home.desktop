@@ -206,6 +206,7 @@ in
         # bold_font = "auto";
         # italic_font = "auto";
         # bold_italic_font = "auto";
+        font_size = "15.0";
         force_ltr = false;
         disable_ligatures = "never";
         box_drawing_scale = "0.001, 1, 1.5, 2";

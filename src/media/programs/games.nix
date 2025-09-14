@@ -61,6 +61,7 @@ in
         # portmod # openmw mod manager (?)
         xivlauncher
         srb2
+        ringracers
         prismlauncher
         openrct2
         openttd

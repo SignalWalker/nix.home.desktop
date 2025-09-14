@@ -22,6 +22,10 @@
       ref = "0.2.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # quickshell = {
+    #   url = "github:quickshell-mirror/quickshell";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     ## wallpaper
     swww = {
       url = "github:horus645/swww";
@@ -82,6 +86,10 @@
       url = "github:nix-community/nix-direnv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # lorri = {
+    #   url = "github:nix-community/lorri";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     ## editor
     ashvim = {
       url = "github:signalwalker/cfg.neovim";
@@ -89,6 +97,21 @@
     };
     ashmacs = {
       url = "github:signalwalker/cfg.emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # file explorer
+    yazi = {
+      url = "github:sxyazi/yazi";
+    };
+
+    lan-mouse = {
+      url = "github:feschber/lan-mouse";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixcord = {
+      url = "github:KaylorBen/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -129,6 +152,8 @@
           imports = [
             inputs.watch-battery.homeManagerModules.default
             inputs.ashvim.homeManagerModules.default
+            inputs.lan-mouse.homeManagerModules.default
+            inputs.nixcord.homeModules.default
             # inputs.stylix.homeModules.stylix
             ./home-manager.nix
           ];
@@ -150,8 +175,40 @@
               tokyonight = inputs.tokyonight;
             };
 
+            programs.yazi.package = inputs.yazi.packages.${pkgs.system}.default;
+
             programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
+
+            # programs.quickshell.package = inputs.quickshell.packages.${pkgs.system}.default;
+
           };
         };
+      devShells = std.mapAttrs (
+        system: pkgs:
+        let
+          qt = pkgs.qt6;
+          qtEnv = qt.env "qt-custom-${qt.qtbase.version}" [
+            qt.qtdeclarative
+            qt.qtsvg
+            qt.qtimageformats
+            qt.qtmultimedia
+            qt.qt5compat
+            pkgs.libglvnd
+          ];
+        in
+        {
+          default = pkgs.mkShell {
+            buildInputs = [
+              qtEnv
+              pkgs.quickshell
+            ];
+            shellHook = ''
+              # Required for qmlls to find the correct type declarations
+              export QMLLS_BUILD_DIRS=${qtEnv}/lib/qt-6/qml/:${pkgs.quickshell}/lib/qt-6/qml/
+              export QML_IMPORT_PATH=$PWD/src/wayland/taskbar/quickshell
+            '';
+          };
+        }
+      ) nixpkgsFor;
     };
 }

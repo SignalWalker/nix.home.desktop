@@ -14,7 +14,7 @@ in
   imports = [ ];
   config = {
     home.packages = with pkgs; [
-      jellyfin-media-player
+      # jellyfin-media-player
       aseprite-unfree
       gimp
       krita
@@ -35,7 +35,7 @@ in
     };
 
     services.jellyfin-mpv-shim = {
-      enable = true;
+      enable = false;
     };
 
     desktop.windows = [

@@ -4,15 +4,26 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
   wayland = config.desktop.wayland;
 
   taskbar = config.services.taskbar;
-in {
+in
+{
   options = with lib; {
     services.taskbar = {
-      enable = (mkEnableOption "task/status bar") // {default = true;};
+      enable = (mkEnableOption "task/status bar") // {
+        default = true;
+      };
+      type = mkOption {
+        type = types.enum [
+          "eww"
+          "quickshell"
+        ];
+        default = "quickshell";
+      };
       systemd = {
         serviceName = mkOption {
           type = types.str;
@@ -33,17 +44,18 @@ in {
     systemd.user.services.${taskbar.systemd.serviceName} = {
       Unit = {
         Description = "Taskbar for Wayland compositors.";
-        PartOf = [config.wayland.systemd.target];
-        Before = ["tray.target"];
-        BindsTo = ["tray.target"];
-        After = [config.wayland.systemd.target];
+        PartOf = [ config.wayland.systemd.target ];
+        Before = [ "tray.target" ];
+        BindsTo = [ "tray.target" ];
+        After = [ config.wayland.systemd.target ];
       };
       Service.Slice = "background-graphical.slice";
       # service config provided by enabled bar
       Install = {
-        WantedBy = [config.wayland.systemd.target];
-        RequiredBy = ["tray.target"];
+        WantedBy = [ config.wayland.systemd.target ];
+        RequiredBy = [ "tray.target" ];
       };
     };
   };
 }
+

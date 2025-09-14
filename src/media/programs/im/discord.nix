@@ -26,21 +26,49 @@ in
       #   pkg
       # ];
 
-      programs.vesktop = {
-        enable = true;
+      # programs.vesktop = {
+      #   enable = true;
+      # };
+
+      # programs.nixcord = {
+      #   enable = true;
+      #   vesktop.enable = true;
+      #   config = {
+      #     useQuickCss = false;
+      #     themeLinks = [
+      #       "https://minidiscordthemes.github.io/Pesterchum/Pesterchum.theme.css"
+      #     ];
+      #   };
+      #   dorion = {
+      #     enable = true;
+      #     autoClearCache = true;
+      #     cacheCss = true;
+      #     desktopNotifications = true;
+      #     sysTray = true;
+      #     useNativeTitlebar = true;
+      #     extraSettings = {
+      #
+      #     };
+      #   };
+      # };
+
+      home.packages = [
+        pkgs.dorion
+        pkgs.vesktop
+      ];
+
+      stylix.targets = {
+        nixcord.enable = false;
+        vencord.enable = false;
       };
 
       desktop.scratchpads = {
         "Shift+D" = {
           criteria = {
-            app_id = "vesktop";
-            class = "vesktop";
-          };
-          hypr = {
-            process_tracking = false;
+            app_id = "Dorion";
           };
           resize = 93;
-          startup = "vesktop";
+          startup = "Dorion";
           systemdCat = true;
           automove = true;
         };

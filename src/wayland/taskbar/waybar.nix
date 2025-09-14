@@ -17,7 +17,7 @@ in
   options = with lib; { };
   disabledModules = [ ];
   imports = [ ];
-  config = lib.mkIf taskbar.enable {
+  config = lib.mkIf (taskbar.enable && (taskbar.type == "waybar")) {
     systemd.user.services.${taskbar.systemd.serviceName} = lib.mkIf waybar.enable {
       Service = {
         Environment =
@@ -308,4 +308,3 @@ in
   };
   meta = { };
 }
-

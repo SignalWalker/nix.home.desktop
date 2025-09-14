@@ -54,8 +54,8 @@
           src = crane.cleanCargoSource (crane.path ./.);
           stdenv = makeStdenv;
           strictDeps = true;
-          nativeBuildInputs = with pkgs; [ ];
-          buildInputs = with pkgs; [ ];
+          nativeBuildInputs = [ ];
+          buildInputs = [ ];
         }
       ) nixpkgsFor;
 
@@ -65,29 +65,23 @@
           or cargoToml.workspace.metadata.crane.name;
       version = cargoToml.package.version or cargoToml.workspace.package.version;
 
-      metaFor = std.mapAttrs (
-        system: pkgs:
-        let
-          lib = pkgs.lib;
-        in
-        {
-          description = cargoToml.package.description or null;
-          homepage = cargoToml.package.repository or null;
-          license = cargoToml.package.license or [ ];
-          sourceProvenance = with lib.sourceTypes; [ fromSource ];
-          mainProgram = name;
-          platforms = with lib.platforms; [ linux ];
-          maintainers = [
-            {
-              name = "Ash Walker";
-              email = "ashurstwalker@gmail.com";
-              github = "SignalWalker";
-              githubId = 7883605;
-              keys = [ { fingerprint = "501A A952 63CF 564B 5E08 26A9 893F FE5C 7CDA 81A3"; } ];
-            }
-          ];
-        }
-      ) nixpkgsFor;
+      makeMeta = lib: {
+        description = cargoToml.package.description or null;
+        homepage = cargoToml.package.repository or null;
+        license = cargoToml.package.license or [ ];
+        sourceProvenance = [ lib.sourceTypes.fromSource ];
+        mainProgram = name;
+        platforms = [ lib.platforms.linux ];
+        maintainers = [
+          {
+            name = "Ash Walker";
+            email = "ashurstwalker@gmail.com";
+            github = "SignalWalker";
+            githubId = 7883605;
+            keys = [ { fingerprint = "501A A952 63CF 564B 5E08 26A9 893F FE5C 7CDA 81A3"; } ];
+          }
+        ];
+      };
     in
     {
       formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
@@ -96,7 +90,7 @@
         let
           crane = craneFor.${system};
           commonArgs = commonArgsFor.${system};
-          meta = metaFor.${system};
+          meta = makeMeta pkgs.lib;
         in
         {
           default = self.packages.${system}.${name};

@@ -4,13 +4,23 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-  cfg = config.signal.dev;
-in {
-  options = with lib; {};
-  imports = [];
+  direnv = config.programs.direnv;
+  lorri = config.services.lorri;
+in
+{
+  options = with lib; { };
+  imports = [ ];
   config = {
+    home.packages = [
+      pkgs.devenv
+    ];
+    services.lorri = {
+      enable = true;
+      enableNotifications = true;
+    };
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
@@ -19,7 +29,7 @@ in {
       enableZshIntegration = config.programs.zsh.enable;
       nix-direnv.enable = true;
     };
-    xdg.configFile = lib.mkIf config.programs.direnv.enable {
+    xdg.configFile = lib.mkIf direnv.enable {
       "direnv/direnvrc" = {
         text = ''
           # strict_env

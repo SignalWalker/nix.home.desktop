@@ -175,6 +175,13 @@ in
             "idleinhibit fullscreen, class:.*"
             "idleinhibit focus, class:scratch_term"
           ];
+          # mouse binds
+          bindm = [
+            "MOD3,mouse:272,movewindow"
+            "MOD3CTRL,mouse:272,resizewindow"
+            # resize and keep aspect ratio
+            "MOD3CTRLALT,mouse:272,resizewindow 1"
+          ];
           bind = [
             "MOD3,Return,execr,uwsm-app -T"
 
@@ -185,6 +192,7 @@ in
             "MOD3ALT,D,execr,uwsm-app ${launcher.run}"
 
             "MOD3SHIFT,Space,togglefloating,active"
+            "MOD3,C,centerwindow"
 
             "MOD3,F,fullscreen,0"
             "MOD3ALT,F,fullscreen,1"
@@ -226,21 +234,40 @@ in
           ++ (
             let
               dirMap = {
-                "u" = "K";
-                "d" = "J";
-                "l" = "H";
-                "r" = "L";
+                "u" = {
+                  key = "K";
+                  move = "exact 0% -1%";
+                  resize = "0% -1%";
+                };
+                "d" = {
+                  key = "J";
+                  move = "exact 0% 1%";
+                  resize = "0% 1%";
+                };
+                "l" = {
+                  key = "H";
+                  move = "exact -1% 0%";
+                  resize = "-1% 0%";
+                };
+                "r" = {
+                  key = "L";
+                  move = "exact 1% 0%";
+                  resize = "1% 0%";
+                };
               };
             in
             (foldl' (
               acc: dir:
               let
-                key = dirMap.${dir};
+                opts = dirMap.${dir};
+                key = opts.key;
               in
               acc
               ++ [
                 "MOD3,${key},movefocus,${dir}"
                 "MOD3 SHIFT,${key},movewindow,${dir}"
+                "MOD3 ALT SHIFT,${key},movewindowpixel,${opts.move},activewindow"
+                "MOD3 CTRL,${key},resizewindowpixel,${opts.resize},activewindow"
               ]
             ) [ ] (attrNames dirMap))
           )
@@ -257,6 +284,7 @@ in
           ) [ ] (genList (i: i + 1) 10));
           # NOTE :: e = repeats if held down
           binde = [
+            # TODO :: max volume?
             ",XF86AudioRaiseVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ +1dB" # using pactl isntead of wpctl because it accepts dB, which preserves L/R balance ratio
             ",XF86AudioLowerVolume,execr,pactl set-sink-volume @DEFAULT_SINK@ -1dB"
             "ALT,XF86AudioRaiseVolume,execr,wpctl set-volume -L 1.0 @DEFAULT_AUDIO_SOURCE@ 0.02+"
