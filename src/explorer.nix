@@ -4,28 +4,26 @@
   lib,
   ...
 }:
-with builtins;
 let
-  std = pkgs.lib;
   dolphin = config.signal.desktop.explorer.dolphin;
   nemo = config.signal.desktop.explorer.nemo;
-  thunar = config.signal.desktop.explorer.thunar;
+  yazi = config.programs.yazi;
 in
 {
-  options = with lib; {
+  options = {
     signal.desktop.explorer = {
       dolphin = {
-        enable = (mkEnableOption "dolphin file explorer") // {
+        enable = (lib.mkEnableOption "dolphin file explorer") // {
           default = false;
         };
       };
       nemo = {
-        enable = (mkEnableOption "nemo file explorer") // {
+        enable = (lib.mkEnableOption "nemo file explorer") // {
           default = !dolphin.enable;
         };
       };
       thunar = {
-        enable = (mkEnableOption "thunar file explorer") // {
+        enable = (lib.mkEnableOption "thunar file explorer") // {
           default = (!dolphin.enable) && (!nemo.enable);
         };
       };
@@ -44,40 +42,32 @@ in
         }
       ];
       home.packages = [
+        # TODO :: why
         pkgs.kdePackages.kdialog
-        # yazi
+      ];
+    }
+    (lib.mkIf yazi.enable {
+      programs.app2unit.enable = true;
+      home.packages = [
         pkgs.resvg # svg preview
         pkgs.poppler # pdf preview
       ];
-
-    }
-    (lib.mkIf dolphin.enable {
-      home.packages = [
-        pkgs.qt6.qtwayland
-        pkgs.kdePackages.dolphin
-      ]
-      ++ (with pkgs.kdePackages; [
-        dolphin-plugins
-        kdegraphics-thumbnailers
-        ark
-      ])
-      ++ (with pkgs; [
-        p7zip
-      ]);
-      desktop.scratchpads = {
-        "Shift+Slash" = {
-          criteria = {
-            app_id = "org.kde.dolphin";
+      programs.yazi = {
+        settings = {
+          opener = {
+            "open" = [
+              {
+                run = "app2unit-open \"$@\"";
+                desc = "Open";
+              }
+            ];
           };
-          resize = 83;
-          startup = "dolphin";
-          systemdCat = true;
         };
       };
     })
     (lib.mkIf nemo.enable {
-      home.packages = with pkgs; [
-        nemo-with-extensions
+      home.packages = [
+        pkgs.nemo-with-extensions
         # cinnamon.nemo-emblems
         # cinnamon.nemo-fileroller
       ];
@@ -91,6 +81,30 @@ in
           systemdCat = true;
           # autostart = true;
           # automove = true;
+        };
+      };
+    })
+    (lib.mkIf dolphin.enable {
+      home.packages = [
+        pkgs.qt6.qtwayland
+        pkgs.kdePackages.dolphin
+        pkgs.p7zip
+      ]
+      ++ (builtins.attrValues {
+        inherit (pkgs.kdePackages)
+          dolphin-plugins
+          kdegraphics-thumbnailers
+          ark
+          ;
+      });
+      desktop.scratchpads = {
+        "Shift+Slash" = {
+          criteria = {
+            app_id = "org.kde.dolphin";
+          };
+          resize = 83;
+          startup = "dolphin";
+          systemdCat = true;
         };
       };
     })

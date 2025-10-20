@@ -1,17 +1,10 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = {
-    home.packages = with pkgs; [rssguard];
+    home.packages = [ pkgs.rssguard ];
     desktop.scratchpads = {
       "Shift+R" = {
         criteria = {
@@ -25,9 +18,9 @@ in {
         startup = "rssguard";
         systemdCat = true;
         automove = true;
-        autostart = true;
+        autostart = false;
       };
     };
   };
-  meta = {};
+  meta = { };
 }

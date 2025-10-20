@@ -27,9 +27,9 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
     ## wallpaper
-    swww = {
-      url = "github:horus645/swww";
-      flake = false;
+    awww = {
+      url = "git+https://codeberg.org/LGFae/awww";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # keyboard
     # xremap = {
@@ -64,6 +64,10 @@
     };
     tokyonight = {
       url = "github:folke/tokyonight.nvim";
+      flake = false;
+    };
+    rose-pine-qt5ct = {
+      url = "github:piperbly/rose-pine-qt5ct";
       flake = false;
     };
     # HACK :: https://github.com/elkowar/eww/pull/1217
@@ -114,14 +118,22 @@
       url = "github:KaylorBen/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    walker = {
+      url = "github:abenz1267/walker";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
-      self,
       nixpkgs,
       ...
     }:
-    with builtins;
     let
       std = nixpkgs.lib;
       systems = [
@@ -143,43 +155,50 @@
       formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
       homeModules.default =
         {
-          config,
-          lib,
           pkgs,
           ...
         }:
         {
           imports = [
+            inputs.caelestia-shell.homeManagerModules.default
             inputs.watch-battery.homeManagerModules.default
             inputs.ashvim.homeManagerModules.default
             inputs.lan-mouse.homeManagerModules.default
             inputs.nixcord.homeModules.default
+            inputs.walker.homeManagerModules.default
             # inputs.stylix.homeModules.stylix
             ./home-manager.nix
           ];
           config = {
-            signal.desktop.editor.helix.src = inputs.helixSrc;
-            programs.direnv.nix-direnv.package = inputs.nix-direnv.packages.${pkgs.system}.nix-direnv;
 
-            # programs.yofi.package = inputs.yofi.packages.${pkgs.system}.default;
+            home.file.".face" = {
+              source = ./assets/avatar.png;
+            };
+
+            signal.desktop.editor.helix.src = inputs.helixSrc;
+            programs.direnv.nix-direnv.package =
+              inputs.nix-direnv.packages.${pkgs.stdenv.hostPlatform.system}.nix-direnv;
+
+            # programs.yofi.package = inputs.yofi.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
             programs.fish.pluginSources = {
               done = inputs.fishDone;
             };
 
-            desktop.wayland.wallpaper.swww.src = inputs.swww;
+            services.awww.package = inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.awww;
 
             desktop.theme.inputs = {
               cava = "${inputs.catppuccin-cava}/frappe.cava";
               i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
               tokyonight = inputs.tokyonight;
+              rose-pine-qt5ct = inputs.rose-pine-qt5ct;
             };
 
-            programs.yazi.package = inputs.yazi.packages.${pkgs.system}.default;
+            programs.yazi.package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-            programs.eww.package = inputs.eww.packages.${pkgs.system}.eww;
+            programs.eww.package = inputs.eww.packages.${pkgs.stdenv.hostPlatform.system}.eww;
 
-            # programs.quickshell.package = inputs.quickshell.packages.${pkgs.system}.default;
+            # programs.quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
           };
         };

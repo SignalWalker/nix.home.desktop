@@ -6,28 +6,38 @@
 }:
 with builtins;
 let
-  std = pkgs.lib;
-  wln = config.desktop.wayland;
-  ntf = wln.notifications;
   theme = config.desktop.theme;
   mako = config.services.mako;
 in
 {
-  options = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
   config = lib.mkIf mako.enable {
-    desktop.notifications = {
-      commands =
-        let
-          makoctl = "${mako.package}/bin/makoctl";
-        in
-        {
-          restore = "${makoctl} restore";
-          dismiss = "${makoctl} dismiss";
-          context = "${makoctl} menu ${pkgs.bemenu}/bin/bemenu -p mako";
+    desktop.keybinds =
+      let
+        makoctl = "${mako.package}/bin/makoctl";
+      in
+      {
+        notificationsRestore = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${makoctl} restore" ];
+          };
         };
-    };
+        notificationsDismiss = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${makoctl} dismiss" ];
+          };
+        };
+        notificationsOpenMenu = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${makoctl} menu ${pkgs.bemenu}/bin/bemenu -p mako" ];
+          };
+        };
+      };
 
     systemd.user.services."mako" = {
       Unit = {

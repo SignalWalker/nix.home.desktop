@@ -1,43 +1,33 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-  wp = config.desktop.wayland.wallpaper;
-in
 {
-  options.desktop.wayland.wallpaper = with lib; {
-    enable = (mkEnableOption "wallpaper") // {
-      default = true;
-    };
-    randomizeCmd = mkOption {
-      type = types.str;
-      default = "echo";
-    };
-    swww = {
-      src = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-      };
-    };
-  };
   imports = lib.listFilePaths ./wallpaper;
-  config = lib.mkIf wp.enable {
-    services.swww = {
+  config = {
+    services.awww = {
       enable = true;
-      # package = lib.mkIf (wp.swww.src != null) (pkgs.swww.overrideAttrs (final: prev: {
-      #   src = wp.swww.src;
-      # }));
       systemd.enable = true;
       img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
     };
-    desktop.wayland.wallpaper.randomizeCmd = "systemctl --user start swww-randomize.service";
+    desktop.keybinds = {
+      wallpaperRandomize = {
+        modifiers = [
+          "MOD3"
+          "ALT"
+        ];
+        keysym = "W";
+        description = "randomize wallpaper";
+        hypr = {
+          enable = true;
+          dispatcher = lib.mkDefault "execr";
+          args = lib.mkDefault [ "systemctl --user start awww-randomize.service" ];
+        };
+      };
+    };
     # services.wpaperd = {
-    #   enable = !config.services.swww.enable;
+    #   enable = !config.services.awww.enable;
     #   systemd = {
     #     enable = true;
     #     target = cfg.systemd.target;
@@ -52,4 +42,3 @@ in
     # };
   };
 }
-

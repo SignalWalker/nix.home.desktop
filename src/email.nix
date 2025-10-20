@@ -1,16 +1,9 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-  accounts = config.accounts.email.accounts;
-in
 {
-  options.signal.desktop.email = with lib; { };
+  options.signal.desktop.email = { };
   disabledModules = [ ];
   imports = [ ];
   config = {
@@ -33,8 +26,8 @@ in
     #   enable = true;
     #   package = pkgs.thunderbird;
     # };
-    home.packages = with pkgs; [
-      thunderbird
+    home.packages = [
+      pkgs.thunderbird
     ];
   };
   meta = { };

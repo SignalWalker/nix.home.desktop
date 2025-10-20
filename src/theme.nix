@@ -1,57 +1,72 @@
 {
   config,
-  osConfig,
   pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options.desktop.theme = with lib; {
-    inputs = mkOption {
-      type = types.attrsOf types.anything;
+  options.desktop.theme = {
+    inputs = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
       default = { };
     };
   };
   imports = lib.listFilePaths ./theme;
-  config = {
-    home.packages = with pkgs; [
-      glib.bin
-    ];
+  config =
+    let
+      inputs = config.desktop.theme.inputs;
+      stylix = config.stylix;
+    in
+    {
+      home.packages = [
+        # TODO :: why
+        pkgs.glib.bin
+      ];
 
-    stylix = {
-      icons = {
+      stylix = {
+        icons = {
+          enable = true;
+          package = pkgs.rose-pine-icon-theme;
+          light = "oomox-RoséPine-Dawn_";
+          dark = "oomox-RoséPine-Moon";
+        };
+        targets.neovim.enable = false;
+      };
+
+      xdg.configFile."hypr/hyprqt6engine.conf" = {
+        text = lib.hm.generators.toHyprconf {
+          attrs = {
+            theme = {
+              color_scheme = "${inputs.rose-pine-qt5ct}/rose-pine.conf";
+              icon_theme = stylix.icons.dark;
+            };
+            misc = {
+
+            };
+          };
+        };
+      };
+
+      gtk = {
         enable = true;
-        package = pkgs.kdePackages.breeze-icons;
-        light = "breeze-dark";
-        dark = "breeze-dark";
+        gtk2 = {
+          configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+        };
+        gtk3 = {
+          bookmarks = map (dir: "file://${dir}") (lib.attrValues config.xdg.userDirs.extraConfig);
+        };
+        gtk4 = { };
       };
-      targets.neovim.enable = false;
-    };
-
-    gtk = {
-      enable = true;
-      gtk2 = {
-        configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+      dconf.settings = {
+        # "org/gtk/settings/file-chooser" = {
+        #   "sort-directories-first" = true;
+        # };
       };
-      gtk3 = {
-        bookmarks = map (dir: "file://${dir}") (std.attrValues config.xdg.userDirs.extraConfig);
+      qt = {
+        enable = true;
       };
-      gtk4 = { };
+      systemd.user.sessionVariables = {
+        "_JAVA_OPTIONS" = "-Dawt.useSystemAAFontSettings=lcd";
+      };
     };
-    dconf.settings = {
-      # "org/gtk/settings/file-chooser" = {
-      #   "sort-directories-first" = true;
-      # };
-    };
-    qt = {
-      enable = true;
-    };
-    systemd.user.sessionVariables = {
-      "_JAVA_OPTIONS" = "-Dawt.useSystemAAFontSettings=lcd";
-    };
-  };
 }

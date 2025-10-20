@@ -1,31 +1,23 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options.signal.media.im = with lib; { };
   imports = lib.listFilePaths ./im;
   config = {
-    home.packages = with pkgs; [
-      slack
-    ];
-    desktop.scratchpads = {
-      "Shift+S" = {
-        criteria = {
-          app_id = "Slack";
-        };
-        resize = 93;
-        startup = "slack";
-        systemdCat = true;
-        automove = true;
-      };
-    };
+    # home.packages = [
+    #   pkgs.slack
+    # ];
+    # desktop.scratchpads = {
+    #   "Shift+S" = {
+    #     criteria = {
+    #       app_id = "Slack";
+    #     };
+    #     resize = 93;
+    #     startup = "slack";
+    #     systemdCat = true;
+    #     automove = true;
+    #   };
+    # };
   };
 }
-

@@ -1,42 +1,34 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
 let
-  std = pkgs.lib;
-  wayland = config.desktop.wayland;
-
   taskbar = config.services.taskbar;
 in
 {
-  options = with lib; {
+  options = {
     services.taskbar = {
-      enable = (mkEnableOption "task/status bar") // {
+      enable = (lib.mkEnableOption "task/status bar") // {
         default = true;
       };
-      type = mkOption {
-        type = types.enum [
+      type = lib.mkOption {
+        type = lib.types.enum [
           "eww"
           "quickshell"
         ];
         default = "quickshell";
       };
       systemd = {
-        serviceName = mkOption {
-          type = types.str;
+        serviceName = lib.mkOption {
+          type = lib.types.str;
           default = "wayland-taskbar";
           readOnly = true;
         };
       };
     };
-    programs.waybar.src = mkOption {
-      type = types.path;
-    };
-    desktop.wayland.taskbar = {
-      enable = mkEnableOption "task/status bar";
+    programs.waybar.src = lib.mkOption {
+      type = lib.types.path;
     };
   };
   imports = lib.listFilePaths ./taskbar;
@@ -49,7 +41,7 @@ in
         BindsTo = [ "tray.target" ];
         After = [ config.wayland.systemd.target ];
       };
-      Service.Slice = "background-graphical.slice";
+      Service.Slice = "background-graphical.slice"; # provided by UWSM
       # service config provided by enabled bar
       Install = {
         WantedBy = [ config.wayland.systemd.target ];
@@ -58,4 +50,3 @@ in
     };
   };
 }
-

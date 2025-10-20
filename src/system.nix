@@ -12,6 +12,7 @@ with builtins;
   config = {
     home.packages = [
       pkgs.gparted
+      pkgs.magic-wormhole
     ];
   };
   meta = { };

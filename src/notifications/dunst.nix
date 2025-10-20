@@ -6,27 +6,38 @@
 }:
 with builtins;
 let
-  std = pkgs.lib;
   dunst = config.services.dunst;
   theme = config.desktop.theme;
 in
 {
-  options = with lib; {
-  };
-  disabledModules = [ ];
-  imports = [ ];
   config = lib.mkIf dunst.enable {
-    desktop.notifications = {
-      commands =
-        let
-          dunstctl = "${dunst.package}/bin/dunstctl";
-        in
-        {
-          restore = "${dunstctl} history-pop";
-          dismiss = "${dunstctl} close";
-          context = "${dunstctl} context";
+    desktop.keybinds =
+      let
+        dunstctl = "${dunst.package}/bin/dunstctl";
+      in
+      {
+        notificationsRestore = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${dunstctl} history-pop" ];
+          };
         };
-    };
+        notificationsDismiss = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${dunstctl} close" ];
+          };
+        };
+        notificationsOpenMenu = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${dunstctl} context" ];
+          };
+        };
+      };
     services.dunst = {
       settings =
         let

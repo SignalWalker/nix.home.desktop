@@ -6,25 +6,23 @@
 }:
 with builtins;
 let
-  std = pkgs.lib;
-  tomlFormat = pkgs.formats.toml { };
-  cfg = config.services.swww;
-  swww-randomize = ./swww/swww-randomize;
+  cfg = config.services.awww;
+  awww-randomize = ./awww/awww-randomize;
 in
 {
-  options.services.swww = with lib; {
-    enable = mkEnableOption "swww wallpaper daemon";
+  options.services.awww = with lib; {
+    enable = mkEnableOption "awww wallpaper daemon";
     package = mkOption {
       type = types.package;
-      default = pkgs.swww;
+      default = pkgs.awww;
     };
     randomizeScript = mkOption {
       type = types.path;
       readOnly = true;
-      default = swww-randomize;
+      default = awww-randomize;
     };
     systemd = {
-      enable = mkEnableOption "swww systemd integration";
+      enable = mkEnableOption "awww systemd integration";
       target = mkOption {
         type = types.str;
         default = config.wayland.systemd.target;
@@ -51,20 +49,20 @@ in
     };
   };
   imports = [ ];
-  disabledModules = [ "services/swww.nix" ];
+  disabledModules = [ "services/awww.nix" ];
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = [
       cfg.package
     ];
-    xdg.binFile."swww-randomize" = {
+    xdg.binFile."awww-randomize" = {
       executable = true;
-      source = swww-randomize;
+      source = awww-randomize;
     };
     systemd.user.services = lib.mkIf cfg.systemd.enable {
-      "swww" = {
+      "awww" = {
         Unit = {
-          Description = "swww wallpaper daemon";
-          Documentation = "man:swww(1)";
+          Description = "awww wallpaper daemon";
+          Documentation = "man:awww(1)";
           PartOf = [ cfg.systemd.target ];
           After = [ cfg.systemd.target ];
         };
@@ -73,23 +71,23 @@ in
         };
         Service = {
           Type = "simple";
-          ExecStart = "${cfg.package}/bin/swww-daemon --quiet --no-cache";
-          ExecStop = "${cfg.package}/bin/swww kill";
+          ExecStart = "${cfg.package}/bin/awww-daemon --quiet --no-cache";
+          ExecStop = "${cfg.package}/bin/awww kill";
           Slice = "background-graphical.slice";
           Restart = "on-failure";
         };
       };
-      "swww-randomize" = {
+      "awww-randomize" = {
         Unit = {
           PartOf = [ cfg.systemd.target ];
-          Requires = [ "swww.service" ];
-          After = [ "swww.service" ];
+          Requires = [ "awww.service" ];
+          After = [ "awww.service" ];
         };
         Service = {
           Environment = [
-            "SWWW_TRANSITION_FPS=${toString cfg.img.fps}"
-            "SWWW_TRANSITION_STEP=${toString cfg.img.step}"
-            "SWWW_TRANSITION_DURATION=1"
+            "AWWW_TRANSITION_FPS=${toString cfg.img.fps}"
+            "AWWW_TRANSITION_STEP=${toString cfg.img.step}"
+            "AWWW_TRANSITION_DURATION=1"
           ];
           Type = "oneshot";
           ExecStart =
@@ -100,19 +98,19 @@ in
                 ]
               );
             in
-            "${py}/bin/python3 ${cfg.randomizeScript} --bin-path ${cfg.package}/bin/swww --animated --max-variance=0.1 ${cfg.img.path}";
+            "${py}/bin/python3 ${cfg.randomizeScript} --bin-path ${cfg.package}/bin/awww --animated --max-variance=0.1 ${cfg.img.path}";
         };
       };
     };
     systemd.user.timers = lib.mkIf cfg.systemd.enable {
-      "swww-randomize" = {
+      "awww-randomize" = {
         Unit = {
           Description = "wallpaper randomizer";
           PartOf = [ cfg.systemd.target ];
-          After = [ "swww.service" ];
+          After = [ "awww.service" ];
         };
         Install = {
-          WantedBy = [ "swww.service" ];
+          WantedBy = [ "awww.service" ];
         };
         Timer = {
           OnUnitActiveSec = cfg.systemd.randomize.interval;

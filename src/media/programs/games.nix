@@ -1,74 +1,61 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options = with lib; { };
+  options = { };
   imports = [ ];
   config = {
-    home.packages = (
-      with pkgs;
-      [
-        # launchers
-        lutris
-        heroic
-        # emulationstation-de # FIX :: disabled due to freeimage cve
-        # emulators
-        ## multi
-        (retroarch.withCores (
-          cores: with cores; [
-            # this is only because i want retroachievements for some systems whose real emulators don't support it (or don't support it well; i.e. bizhawk not allowing hardcore, seemingly)
-            # nintendo
-            nestopia # TODO :: is this really the best one...?
-            snes9x
-            mupen64plus
-            # NEC
-            beetle-pce-fast
-            beetle-pcfx
-            beetle-supergrafx
-            # sega
-            beetle-saturn
-          ]
-        ))
-        ## misc
-        ruffle # flash
-        ## sony
-        # duckstation # psx # TODO :: maintainer decided to be goofy as hell, gotta find a new psx emulator
-        pcsx2 # ps2
-        ppsspp # psp
-        ## nintendo
-        mgba # gb/gbc/gba (no retroachievements)
-        skyemu # gb/gbc/gba/ds (retroachievements)
-        snes9x-gtk # snes
-        dolphin-emu-beta # gcn/wii
-        azahar # 3ds
-        ## sega
-        yabause # saturn
-        flycast # dreamcast
-        # tools
-        parsec-bin
-        moonlight-qt
-        # games
-        space-station-14-launcher
-        # openmw # NOTE :: using openmw-dev; installed through desktop flake
-        # openmw-tes3mp
-        # portmod # openmw mod manager (?)
-        xivlauncher
-        srb2
-        ringracers
-        prismlauncher
-        openrct2
-        openttd
-        cockatrice
-        forge-mtg
-      ]
-    );
+    home.packages = [
+      # launchers
+      # pkgs.lutris
+      # pkgs.heroic
+
+      # pkgs.ruffle # flash
+
+      # pkgs.parsec-bin
+      # pkgs.moonlight-qt
+    ];
+
+    # manage these with `nix profile` instead
+
+    # (pkgs.retroarch.withCores (
+    #   cores: with cores; [
+    #     # this is only because i want retroachievements for some systems whose real emulators don't support it (or don't support it well; i.e. bizhawk not allowing hardcore, seemingly)
+    #     # nintendo
+    #     nestopia # TODO :: is this really the best one...?
+    #     snes9x
+    #     mupen64plus
+    #     # NEC
+    #     beetle-pce-fast
+    #     beetle-pcfx
+    #     beetle-supergrafx
+    #     # sega
+    #     beetle-saturn
+    #   ]
+    # ))
+    # ## sony
+    # pkgs.pcsx2 # ps2
+    # pkgs.ppsspp # psp
+    # ## nintendo
+    # pkgs.mgba # gb/gbc/gba (no retroachievements)
+    # pkgs.skyemu # gb/gbc/gba/ds (retroachievements)
+    # pkgs.snes9x-gtk # snes
+    # pkgs.dolphin-emu-beta # gcn/wii
+    # pkgs.azahar # 3ds
+    # ## sega
+    # pkgs.yabause # saturn
+    # pkgs.flycast # dreamcast
+    # # games
+    # pkgs.space-station-14-launcher
+    # pkgs.xivlauncher
+    # pkgs.srb2
+    # pkgs.ringracers
+    # pkgs.prismlauncher
+    # pkgs.openrct2
+    # pkgs.openttd
+    # pkgs.cockatrice
+    # pkgs.forge-mtg
 
     desktop.windows = [
       {
@@ -85,6 +72,7 @@ in
         };
         floating = true;
       }
+      # TODO :: what is this
       {
         criteria = {
           instance = "tk";

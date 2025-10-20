@@ -9,8 +9,8 @@ import random
 from PIL import Image
 import re
 
-STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff' }
-ANIMATED_EXTENSIONS = { 'webp', 'gif' }
+STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff', 'svg' }
+ANIMATED_EXTENSIONS = { 'avif', 'webp', 'gif' }
 
 # for pretty printing to stderr
 class Color:
@@ -37,7 +37,7 @@ def eprint(msg: str, level: LogLevel = LogLevel.INFO, **kwargs):
 	elif level == LogLevel.INFO: color = Color.GREEN
 	elif level == LogLevel.DEBUG: color = Color.BLUE
 	elif level == LogLevel.TRACE: color = Color.PURPLE
-	print(f"{color}[swww-randomize]{Color.ENDC} {msg}", file=sys.stderr, **kwargs)
+	print(f"{color}[awww-randomize]{Color.ENDC} {msg}", file=sys.stderr, **kwargs)
 
 def recursive_scandir(dir: str, ext):    # dir: str, ext: list
     subfolders, files = [], []
@@ -57,7 +57,7 @@ def recursive_scandir(dir: str, ext):    # dir: str, ext: list
 
     return subfolders, files
 
-def swww(*args, bin_path = "swww", stdout = subprocess.PIPE, stderr = subprocess.PIPE) -> tuple[str, str] | None:
+def awww(*args, bin_path = "awww", stdout = subprocess.PIPE, stderr = subprocess.PIPE) -> tuple[str, str] | None:
     cmd = [bin_path]
     cmd.extend(args)
     eprint(f"cmd: {' '.join(cmd)}");
@@ -68,8 +68,8 @@ def swww(*args, bin_path = "swww", stdout = subprocess.PIPE, stderr = subprocess
         return None
 
 query_reg = re.compile(r"^(?P<name>[^:]*):\s+(?P<id>[^:]+):\s+(?P<width>\d+)x(?P<height>\d+)")
-def swww_query(bin_path = "swww") -> dict[str, tuple[int, int]] | None:
-    query = swww("query", bin_path = bin_path)
+def awww_query(bin_path = "awww") -> dict[str, tuple[int, int]] | None:
+    query = awww("query", bin_path = bin_path)
     if query is None: return None
     screens = {}
     out, _ = query
@@ -82,7 +82,7 @@ def swww_query(bin_path = "swww") -> dict[str, tuple[int, int]] | None:
 
     return screens
 
-def display_img(images: list[str], resize: str, output: str, width: int, height: int, max_variance: float, bin_path: str = "swww") -> tuple[str, str] | None:
+def display_img(images: list[str], resize: str, output: str, width: int, height: int, max_variance: float, bin_path: str = "awww") -> tuple[str, str] | None:
     image = random.choice(images)
 
     eprint(f"applying bg to output {output}: {image}")
@@ -103,13 +103,13 @@ def display_img(images: list[str], resize: str, output: str, width: int, height:
                 eprint("resizing with `fit`")
                 resize = "fit"
 
-    return swww("img", "--transition-type=random", "--filter=Nearest", f"--outputs={output}", f"--resize={resize}", image, bin_path = bin_path, stdout=None, stderr=None)
+    return awww("img", "--transition-type=random", "--filter=Nearest", f"--outputs={output}", f"--resize={resize}", image, bin_path = bin_path, stdout=None, stderr=None)
 
 def main() -> int:
-    parser = argparse.ArgumentParser(prog = "swww-randomize",
+    parser = argparse.ArgumentParser(prog = "awww-randomize",
                                      description = "Switch to a random wallpaper from a given directory.")
     parser.add_argument('-a', '--animated', action='store_true', help="enable animated wallpapers")
-    parser.add_argument('-b', '--bin-path', type=str, help="swww binary path", default="swww")
+    parser.add_argument('-b', '--bin-path', type=str, help="awww binary path", default="awww")
     parser.add_argument('--resize', type=str, default="crop", help="image resizing options")
     parser.add_argument('--max-variance', type=float, default=2, help="variance of image dimensions from screen aspect ratio above which to switch to crop resizing")
     parser.add_argument('directory', help="directory from which to select images")
@@ -128,7 +128,7 @@ def main() -> int:
         eprint(f"failed to get image; error: {error}", LogLevel.ERROR)
         return 1
 
-    screens = swww_query(bin_path = args.bin_path)
+    screens = awww_query(bin_path = args.bin_path)
     if screens is None: return 1
 
     for id, [width, height] in screens.items():

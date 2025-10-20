@@ -1,15 +1,7 @@
 {
-  osConfig,
-  config,
-  pkgs,
-  lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  imports = [];
+{
   # imports = lib.listFilePaths ./services;
   config = {
     services.watch-battery.enable = true;
@@ -18,7 +10,9 @@ in {
     #   indicator = config.services.kdeconnect.enable;
     # };
     # services.blueman-applet.enable = true;
-    services.systembus-notify.enable = true;
+    services.systembus-notify = {
+      enable = true;
+    };
     services.udiskie = {
       enable = true;
       automount = true;

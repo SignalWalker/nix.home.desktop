@@ -4,48 +4,54 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
+let
   cfg = config.services.input-leap;
   srv = cfg.server;
   cli = cfg.client;
-in {
-  options.services.input-leap = with lib; {
-    package = mkOption {
-      type = types.package;
-      default = pkgs.input-leap;
-    };
-    server = {
-      enable = mkEnableOption "input-leap kvm -- server";
-      network.listen = {
-        port = mkOption {
-          type = types.int;
-          default = 24800;
-        };
-        addr = mkOption {
-          type = types.str;
-          default = "[::]";
-        };
+in
+{
+  options.services.input-leap =
+    let
+      inherit (lib) mkOption types mkEnableOption;
+    in
+    {
+      package = mkOption {
+        type = types.package;
+        default = pkgs.input-leap;
       };
-      systemd = {
-        socket = {
-          enable = (mkEnableOption "input-leap server socket") // {default = true;};
-          target = mkOption {
+      server = {
+        enable = mkEnableOption "input-leap kvm -- server";
+        network.listen = {
+          port = mkOption {
+            type = types.int;
+            default = 24800;
+          };
+          addr = mkOption {
             type = types.str;
-            default = config.wayland.systemd.target;
+            default = "[::]";
+          };
+        };
+        systemd = {
+          socket = {
+            enable = (mkEnableOption "input-leap server socket") // {
+              default = true;
+            };
+            target = mkOption {
+              type = types.str;
+              default = config.wayland.systemd.target;
+            };
           };
         };
       };
+      client = {
+        enable = mkEnableOption "input-leap kvm -- client";
+      };
     };
-    client = {
-      enable = mkEnableOption "input-leap kvm -- client";
-    };
-  };
-  imports = [];
+  imports = [ ];
   config = lib.mkMerge [
     # both
     (lib.mkIf (srv.enable || cli.enable) {
-      home.packages = [cfg.package];
+      home.packages = [ cfg.package ];
     })
     # server
     (lib.mkIf srv.enable {
@@ -53,7 +59,7 @@ in {
         services."input-leap-server" = {
           Unit = {
             Description = "Input-Leap KVM Server";
-            PartOf = [srv.systemd.socket.target];
+            PartOf = [ srv.systemd.socket.target ];
           };
           Service = {
             Type = "simple";
@@ -63,10 +69,10 @@ in {
         sockets."input-leap-server" = {
           Unit = {
             Description = "Input-Leap KVM Server";
-            PartOf = [srv.systemd.socket.target];
+            PartOf = [ srv.systemd.socket.target ];
           };
           Install = {
-            WantedBy = [srv.systemd.socket.target];
+            WantedBy = [ srv.systemd.socket.target ];
           };
           Socket = {
             ListenStream = "${srv.network.listen.addr}:${toString srv.network.listen.port}";
@@ -78,6 +84,7 @@ in {
     })
     # client
     (lib.mkIf cli.enable {
-      })
+    })
   ];
 }
+

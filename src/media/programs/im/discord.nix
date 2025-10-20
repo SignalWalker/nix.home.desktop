@@ -1,20 +1,9 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-  discord = config.programs.discord;
-in
 {
-  options = with lib; {
-  };
-  disabledModules = [ ];
-  imports = [ ];
-  config = (
+  config =
     # let
     #   pkg = discord.package.override {
     #     withOpenASAR = discord.openasar.enable;
@@ -53,8 +42,9 @@ in
       # };
 
       home.packages = [
-        pkgs.dorion
+        # pkgs.dorion
         pkgs.vesktop
+        pkgs.dissent
       ];
 
       stylix.targets = {
@@ -65,14 +55,16 @@ in
       desktop.scratchpads = {
         "Shift+D" = {
           criteria = {
-            app_id = "Dorion";
+            class = "so.libdb.dissent";
           };
+          name = "discord";
           resize = 93;
-          startup = "Dorion";
+          startup = "dissent";
           systemdCat = true;
+          autostart = true;
           automove = true;
         };
       };
-    });
+    };
   meta = { };
 }

@@ -1,36 +1,35 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options = with lib; {
-    desktop.notifications = {
-      commands = {
-        restore = mkOption {
-          type = types.str;
-        };
-        dismiss = mkOption {
-          type = types.str;
-        };
-        context = mkOption {
-          type = types.str;
-        };
-      };
-    };
-  };
-  disabledModules = [ ];
   imports = lib.listFilePaths ./notifications;
   config = {
-    services.swayosd = {
-      enable = true;
+    desktop.keybinds = {
+      notificationsRestore = {
+        modifiers = [
+          "MOD3"
+        ];
+        keysym = "N";
+        description = "restore last notification";
+      };
+      notificationsDismiss = {
+        modifiers = [
+          "MOD3"
+          "ALT"
+        ];
+        keysym = "N";
+        description = "dismiss most recent notification";
+      };
+      notificationsOpenMenu = {
+        modifiers = [
+          "MOD3"
+          "CTRL"
+        ];
+        keysym = "N";
+        description = "open context menu for most recent notification";
+      };
     };
   };
   meta = { };
 }
-

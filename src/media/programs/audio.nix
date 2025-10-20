@@ -1,15 +1,10 @@
 {
-  config,
   pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options = with lib; { };
+  options = { };
   disabledModules = [ ];
   imports = lib.listFilePaths ./audio;
   config = {
@@ -27,7 +22,9 @@ in
       };
     };
 
-    programs.wrtag.enable = true;
+    programs.wrtag = {
+      enable = true;
+    };
 
     home.packages = [
       (pkgs.renoise.override {
@@ -37,30 +34,25 @@ in
           hash = "sha256-iXqCgOLxIvPrSSOpZbK8Aa/Ve5CK0oBK4bLsFDiY+oo=";
         };
       })
-    ]
-    ++ [
+      pkgs.furnace
+      pkgs.reaper
+      pkgs.supercollider-with-plugins
+      # lmms # build failure 2025-01-07
+      # sunvox # build failure 2025-09-03
+      # ardour
+      # nicotine-plus # removed due to collision with httm
     ]
     # plugins
     ++ [
       pkgs.sfizz
       pkgs.redux
-      pkgs.CHOWTapeModel
-      pkgs.artyFX
+      # pkgs.CHOWTapeModel # build failure 2025-10-20
+      # pkgs.artyFX # build failure 2025-10-20
+      # pkgs.infamousPlugins # build failure 2025-10-20
       # pkgs.fmsynth
-      pkgs.infamousPlugins
       pkgs.rnnoise-plugin
-    ]
-    ++ (with pkgs; [
-      # lmms # build failure 2025-01-07
-      # sunvox # build failure 2025-09-03
-      furnace
-      # ardour
-      reaper
 
-      supercollider-with-plugins
-
-      # nicotine-plus # removed due to collision with httm
-    ]);
+    ];
   };
   meta = { };
 }

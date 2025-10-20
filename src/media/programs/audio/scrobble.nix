@@ -1,17 +1,9 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
   config = {
     age.secrets."rescrobbledCfg" = {
       file = ./secrets/rescrobbledCfg.age;
@@ -34,5 +26,4 @@ in
       }" "${config.xdg.configHome}/rescrobbled/config.toml"
     '';
   };
-  meta = { };
 }

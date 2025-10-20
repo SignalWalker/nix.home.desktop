@@ -12,4 +12,4 @@ launch --title "compositor" journalctl --follow --no-tail --user --boot --identi
 
 new_tab
 layout vertical
-launch --title "journalctl :: background" journalctl --follow --no-tail --user --boot -u swww -u swww-randomize
+launch --title "journalctl :: background" journalctl --follow --no-tail --user --boot -u awww -u awww-randomize

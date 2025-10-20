@@ -4,22 +4,17 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-  cfg = config.signal.dev.lang.nix;
-in {
-  options.signal.dev.lang.nix = with lib; {
-    enable = (mkEnableOption "Nix language") // {default = true;};
+{
+  options = {
   };
   imports = lib.listFilePaths ./nix;
-  config = lib.mkIf (cfg.enable) {
-    home.packages = with pkgs; [
-      statix
-      agenix
-      snowfallorg.thaw
-      deploy-rs
-      nixfmt-rfc-style
+  config = {
+    home.packages = [
+      pkgs.agenix
+      pkgs.snowfallorg.thaw
+      pkgs.deploy-rs
     ];
-    programs.jq.enable = true;
+    programs.jq.enable = lib.mkDefault true;
   };
 }
+

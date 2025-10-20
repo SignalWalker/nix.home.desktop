@@ -1,32 +1,28 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = {
-    home.packages = with pkgs; [zotero];
+    home.packages = [ pkgs.zotero ];
     desktop.scratchpads = {
       "Shift+Z" = {
         criteria = {
           # class = "Zotero";
           # instance = "Navigator";
           app_id = "Zotero";
-          title = ".*- Zotero";
+        };
+        hypr = {
+          match_by = "class";
+          process_tracking = false;
         };
         resize = 93;
         name = "zotero";
         startup = "zotero";
-        autostart = false;
+        autostart = true;
         automove = true;
       };
     };
   };
-  meta = {};
+  meta = { };
 }

@@ -1,22 +1,18 @@
 {
-  config,
-  osConfig,
   pkgs,
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {
+{
+  options = {
   };
   imports = lib.listFilePaths ./wayland;
   config = {
-    home.packages = with pkgs; [
+    home.packages = [
       # meta
-      wev
-      wl-clipboard
-      xdg-utils
+      pkgs.wev
+      pkgs.wl-clipboard
+      pkgs.xdg-utils
     ];
     xdg.configFile."electron-flags.conf".text = ''
       --enable-features=WaylandWindowDecorations
@@ -24,3 +20,4 @@ in {
     '';
   };
 }
+

@@ -1,20 +1,11 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options.signal.desktop.browser.firefox = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
   config =
     let
-      firefoxCmd = "firefox-beta";
+      firefoxCmd = "firefox";
     in
     {
       desktop.scratchpads = {
@@ -46,9 +37,7 @@ in
       };
       programs.firefox = {
         enable = true;
-        package = pkgs.firefox-beta;
-        # package = pkgs.latest.firefox-nightly-bin;
-        # package = pkgs.firefox-beta-bin;
+        package = pkgs.firefox-bin;
         profiles = {
           main = {
             id = 0;

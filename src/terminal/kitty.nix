@@ -78,7 +78,7 @@ in
           resize = 75;
           startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
           systemdCat = true;
-          autostart = true;
+          autostart = false;
           automove = true;
         };
         "F2" = {
@@ -132,7 +132,7 @@ in
         end
       '';
     };
-    programs.git.extraConfig = {
+    programs.git.settings = {
       diff = {
         tool = "kitty";
         guitool = "kitty.gui";

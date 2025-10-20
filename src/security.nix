@@ -1,21 +1,15 @@
 {
-  config,
   osConfig,
   pkgs,
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = lib.mkMerge [
     (lib.mkIf (osConfig.programs.gnupg.agent.enable or false) {
-      home.packages = with pkgs; [
+      home.packages = [
         # gnupg GUI interface
-        seahorse
+        pkgs.seahorse
       ];
     })
     {
@@ -38,5 +32,6 @@ in {
       # };
     }
   ];
-  meta = {};
+  meta = { };
 }
+

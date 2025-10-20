@@ -5,23 +5,21 @@
   lib,
   ...
 }:
-with builtins;
 let
-  std = pkgs.lib;
   cfg = config.signal.dev.git;
-  crane = config.signal.dev.inputs.crane.lib.${pkgs.system};
+  # crane = config.signal.dev.inputs.crane.lib.${pkgs.stdenv.hostPlatform.system};
   gnupg = osConfig.programs.gnupg or { };
   git = config.programs.git;
-  jj = config.programs.jujutsu;
+  # jj = config.programs.jujutsu;
 in
 {
-  options.signal.dev.git = with lib; {
-    enable = (mkEnableOption "Git configuration") // {
+  options.signal.dev.git = {
+    enable = (lib.mkEnableOption "Git configuration") // {
       default = true;
     };
     onefetch = {
-      src = mkOption {
-        type = types.path;
+      src = lib.mkOption {
+        type = lib.types.path;
       };
     };
   };
@@ -45,11 +43,13 @@ in
       enable = true;
       settings = {
         "user" = {
-          name = git.userName;
-          email = git.userEmail;
+          name = git.settings.user.name;
+          email = git.settings.user.email;
         };
         "ui" = {
           "default-command" = "status";
+          "diff-editor" = "hunk";
+          "merge-editor" = "diffconflicts";
         };
         "snapshot" = {
           "auto-track" = "none()";
@@ -63,6 +63,14 @@ in
           colocate = false;
         };
         "merge-tool" = {
+          # from https://github.com/julienvincent/hunk.nvim#using-with-jujutsu
+          "hunk" = {
+            program = "nvim";
+            "edit-args" = [
+              "-c"
+              "DiffEditor $left $right $output"
+            ];
+          };
           # from https://github.com/rafikdraoui/jj-diffconflicts#invoking-through-jj-resolve
           "diffconflicts" = {
             program = "nvim";
@@ -86,8 +94,24 @@ in
     # };
     programs.git = {
       enable = true;
-      userName = "Ash Walker";
-      userEmail = config.signal.email.git;
+      settings = {
+        user = {
+          name = "Ash Walker";
+          email = config.signal.email.git;
+        };
+        core = {
+          autocrlf = "input";
+        };
+        init = {
+          defaultBranch = "main";
+        };
+        pull = {
+          rebase = true;
+        };
+        merge = {
+          conflictStyle = "diff3";
+        };
+      };
       lfs.enable = true;
       signing = {
         key = lib.mkDefault null;
@@ -110,20 +134,6 @@ in
         "/devenv.local.nix"
         "/devenv.local.yaml"
       ];
-      extraConfig = {
-        core = {
-          autocrlf = "input";
-        };
-        init = {
-          defaultBranch = "main";
-        };
-        pull = {
-          rebase = true;
-        };
-        merge = {
-          conflictStyle = "diff3";
-        };
-      };
     };
   };
 }

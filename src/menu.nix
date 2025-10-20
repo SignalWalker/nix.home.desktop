@@ -1,36 +1,57 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-  wayland = config.desktop.wayland;
-  launcher = config.desktop.launcher;
-in
 {
-  options = with lib; {
-    desktop.launcher = {
-      enable = (mkEnableOption "desktop launcher") // {
-        default = true;
-      };
-      run = mkOption {
-        type = types.str;
-      };
-      drun = mkOption {
-        type = types.str;
-        default = launcher.run;
+  # options = with lib; {
+  #   desktop.launcher = {
+  #     enable = (mkEnableOption "desktop launcher") // {
+  #       default = true;
+  #     };
+  #     run = mkOption {
+  #       type = types.str;
+  #     };
+  #     drun = mkOption {
+  #       type = types.str;
+  #       default = launcher.run;
+  #     };
+  #   };
+  # };
+  config = {
+    programs.walker = {
+      enable = true;
+      runAsService = true;
+      config = {
+        providers = {
+          default = [ "desktopapplications" ];
+        };
       };
     };
-  };
-  disabledModules = [ ];
-  imports = [ ];
-  config = lib.mkIf launcher.enable {
-    # desktop.launcher = {
-    #   fuzzel.enable = true;
-    # };
+    desktop.keybinds = {
+      launcherRun = {
+        modifiers = [ "MOD3" ];
+        keysym = "D";
+        description = "open application launcher";
+        hypr = {
+          enable = true;
+          dispatcher = lib.mkDefault "execr";
+          args = lib.mkDefault [ "walker" ];
+        };
+      };
+      launcherRunAlt = {
+        modifiers = [
+          "MOD3"
+          "ALT"
+        ];
+        keysym = "D";
+        description = "open application launcher (alt)";
+        hypr = {
+          enable = true;
+          dispatcher = lib.mkDefault "execr";
+          args = lib.mkDefault [ "walker" ];
+        };
+      };
+    };
   };
   meta = { };
 }

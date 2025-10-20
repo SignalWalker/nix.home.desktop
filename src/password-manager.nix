@@ -1,19 +1,11 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = {
-    home.packages = with pkgs; [
-      bitwarden
-      # authy
+    home.packages = [
+      pkgs.bitwarden-desktop
     ];
 
     desktop.scratchpads = {
@@ -24,7 +16,9 @@ in {
       #   automove = false;
       # };
       "Shift+P" = {
-        criteria = {app_id = "Bitwarden";};
+        criteria = {
+          app_id = "Bitwarden";
+        };
         resize = 75;
         startup = "bitwarden";
         systemdCat = true;
@@ -33,5 +27,4 @@ in {
       };
     };
   };
-  meta = {};
 }

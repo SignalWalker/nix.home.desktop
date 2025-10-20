@@ -1,16 +1,10 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-  beetcfg = config.programs.beets.settings;
-in
 {
-  options = with lib; { };
+  options = { };
   imports = [ ];
   config =
     let
@@ -18,8 +12,8 @@ in
     in
     {
       programs.beets = {
-        enable = false; # disabled because it's not building rn (2022-07-05) (2025-10-04)
-        package = pkgs.beetsPackages.beets-unstable;
+        enable = true;
+        package = pkgs.beets;
         # .overrideAttrs (final: prev: {
         #   src = config.signal.media.flakeInputs.beetsSrc;
         #   patches = [];

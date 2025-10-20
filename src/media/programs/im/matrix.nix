@@ -1,40 +1,25 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-  cfg = config.signal.media.im.matrix;
-in {
-  options.signal.media.im.matrix = with lib; {
-    enable = (mkEnableOption "Matrix") // {default = true;};
-    package = mkOption {
-      type = types.package;
-      default = pkgs.element-desktop;
-    };
-  };
-  disabledModules = [];
-  imports = [];
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      cfg.package
+{
+  config = {
+    home.packages = [
+      pkgs.fractal
     ];
 
     desktop.scratchpads = {
       "Shift+M" = {
         criteria = {
-          app_id = "Element";
+          app_id = "org.gnome.Fractal";
         };
         resize = 93;
-        startup = "element-desktop";
+        startup = "fractal";
         systemdCat = true;
-        autostart = false;
+        autostart = true;
         automove = true;
       };
     };
   };
-  meta = {};
+  meta = { };
 }
-

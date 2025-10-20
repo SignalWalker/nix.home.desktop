@@ -1,30 +1,17 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
-with builtins;
-let
-  std = pkgs.lib;
-in
 {
-  options = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
   config = {
-    home.packages = with pkgs; [
+    home.packages = [
       # jellyfin-media-player
-      aseprite-unfree
-      gimp
-      krita
-      blender
     ];
 
     programs.obs-studio = {
       enable = true;
       plugins = (
-        attrValues {
+        builtins.attrValues {
           inherit (pkgs.obs-studio-plugins)
             wlrobs
             obs-pipewire-audio-capture

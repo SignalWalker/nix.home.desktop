@@ -1,12 +1,10 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
 with builtins;
 let
-  std = pkgs.lib;
   launcher = config.desktop.launcher;
   fuzzel = config.programs.fuzzel;
 in
