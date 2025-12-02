@@ -10,10 +10,10 @@
     };
 
     # services
-    watch-battery = {
-      url = "git+https://git.ashwalker.net/ash/watch-battery";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # watch-battery = {
+    #   url = "git+https://git.ashwalker.net/ash/watch-battery";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # wayland
     yofi = {
       type = "github";
@@ -161,7 +161,7 @@
         {
           imports = [
             inputs.caelestia-shell.homeManagerModules.default
-            inputs.watch-battery.homeManagerModules.default
+            # inputs.watch-battery.homeManagerModules.default
             inputs.ashvim.homeManagerModules.default
             inputs.lan-mouse.homeManagerModules.default
             inputs.nixcord.homeModules.default

@@ -25,14 +25,6 @@
       enable = false;
     };
 
-    desktop.windows = [
-      {
-        criteria = {
-          app_id = "com.github.iwalton3.jellyfin-media-player";
-        };
-        inhibit_idle = "visible";
-      }
-    ];
   };
   meta = { };
 }

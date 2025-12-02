@@ -161,14 +161,6 @@ in
           monitor = [
             ",preferred,auto,1"
           ];
-          # TODO :: impl config.desktop.windows
-          windowrulev2 = [
-            "idleinhibit fullscreen, class:.*"
-            "idleinhibit focus, class:scratch_term"
-
-            "float,class:(clipse)"
-            "size 622 652,class:(clipse)"
-          ];
           # mouse binds
           bindm = [
             "MOD3,mouse:272,movewindow"
@@ -181,6 +173,21 @@ in
           ];
         };
       };
+    }
+    # desktop.windows
+    {
+      # TODO
+      # wayland.windowManager.hyprland.settings.extraConfig =
+      #   let
+      #     toMatch = name: crit: "match:${name} = ${crit}";
+      #     toWinRules = win: ''
+      #       windowrule {
+      #         name = ${win.name}
+      #
+      #       }
+      #     '';
+      #   in
+      #   lib.concatStringsSep "\n" (map (toWinRules) config.desktop.windows);
     }
     {
       # desktop.keybinds

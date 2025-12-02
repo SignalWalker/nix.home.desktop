@@ -57,31 +57,6 @@
     # pkgs.cockatrice
     # pkgs.forge-mtg
 
-    desktop.windows = [
-      {
-        criteria = {
-          title = "Steam - Update News";
-          class = "steam";
-        };
-        floating = true;
-      }
-      {
-        criteria = {
-          title = "Steam Settings";
-          class = "steam";
-        };
-        floating = true;
-      }
-      # TODO :: what is this
-      {
-        criteria = {
-          instance = "tk";
-          class = "Tk";
-        };
-        floating = true;
-      }
-    ];
-
     programs.mangohud = {
       enable = true;
       enableSessionWide = false;

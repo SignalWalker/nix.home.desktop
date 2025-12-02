@@ -22,15 +22,6 @@
           systemdCat = true;
         };
       };
-      desktop.windows = [
-        {
-          criteria = {
-            app_id = "^firefox*";
-            title = "Extension: .*";
-          };
-          floating = true;
-        }
-      ];
       systemd.user.sessionVariables = {
         BROWSER = firefoxCmd;
         MOZ_DBUS_REMOTE = 1;

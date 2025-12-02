@@ -1,13 +1,12 @@
-inputs@{
+{
   config,
   pkgs,
   lib,
   ...
 }:
-with builtins;
 let
   cfg = config.desktop.terminal;
-  kcfg = config.desktop.terminal.kitty;
+  # kcfg = config.desktop.terminal.kitty;
   kitty = config.programs.kitty;
   kittenAliases = ''
     alias ssh="kitty +kitten ssh"
@@ -20,15 +19,19 @@ let
   '';
 in
 {
-  options = with lib; {
-    desktop.terminal.kitty = { };
-    programs.kitty = {
-      themes = mkOption {
-        type = types.attrsOf types.path;
-        default = { };
+  options =
+    let
+      inherit (lib) mkOption types;
+    in
+    {
+      desktop.terminal.kitty = { };
+      programs.kitty = {
+        themes = mkOption {
+          type = types.attrsOf types.path;
+          default = { };
+        };
       };
     };
-  };
   config = lib.mkIf (cfg.app == "kitty") {
     # TODO :: assert that themefile exists
     # assertions = [
@@ -48,6 +51,16 @@ in
       preview_images = true;
       preview_images_method = "kitty";
     };
+    desktop.windows = [
+      {
+        criteria = {
+          appId = "scratch_term";
+        };
+        properties = {
+          inhibitIdle = "focus";
+        };
+      }
+    ];
     desktop.scratchpads =
       let
         editorPad = {
@@ -100,7 +113,7 @@ in
     xdg.configFile = {
       "kitty/open-actions.conf".source = ./kitty/open-actions.conf;
     }
-    // (foldl' (
+    // (builtins.foldl' (
       acc: name:
       let
         theme = kitty.themes.${name};
@@ -111,7 +124,7 @@ in
           source = theme;
         };
       }
-    ) { } (attrNames kitty.themes));
+    ) { } (builtins.attrNames kitty.themes));
     xdg.binFile."kg" = {
       executable = true;
       source = ./kitty/kg;

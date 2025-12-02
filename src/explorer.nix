@@ -33,14 +33,6 @@ in
   imports = [ ];
   config = lib.mkMerge [
     {
-      desktop.windows = [
-        {
-          criteria = {
-            app_id = "file-roller";
-          };
-          floating = true;
-        }
-      ];
       home.packages = [
         # TODO :: why
         pkgs.kdePackages.kdialog
@@ -57,7 +49,7 @@ in
           opener = {
             "open" = [
               {
-                run = "app2unit-open \"$@\"";
+                run = "app2unit-open $@";
                 desc = "Open";
               }
             ];

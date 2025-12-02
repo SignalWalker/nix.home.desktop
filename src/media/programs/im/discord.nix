@@ -42,9 +42,9 @@
       # };
 
       home.packages = [
-        # pkgs.dorion
+        pkgs.dorion
         pkgs.vesktop
-        pkgs.dissent
+        # pkgs.dissent # weird build issue 2025-11-19
       ];
 
       stylix.targets = {
@@ -55,13 +55,14 @@
       desktop.scratchpads = {
         "Shift+D" = {
           criteria = {
-            class = "so.libdb.dissent";
+            # class = "so.libdb.dissent";
+            app_id = "Dorion";
           };
           name = "discord";
           resize = 93;
-          startup = "dissent";
+          startup = "Dorion";
           systemdCat = true;
-          autostart = true;
+          autostart = false;
           automove = true;
         };
       };

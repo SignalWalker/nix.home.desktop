@@ -65,7 +65,7 @@ in
     })
     (lib.mkIf cael.enable {
       services.taskbar.enable = false;
-      services.watch-battery.enable = lib.mkForce false;
+      # services.watch-battery.enable = lib.mkForce false;
       services.swayosd.enable = false;
       desktop.wayland.idle.enable = false;
     })

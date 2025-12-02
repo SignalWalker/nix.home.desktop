@@ -4,30 +4,14 @@
   lib,
   ...
 }:
-with builtins;
 let
-  std = pkgs.lib;
   anki = config.programs.anki;
 in
 {
-  options = with lib; {
-  };
-  disabledModules = [ ];
-  imports = [ ];
   config = {
     programs.anki = {
       enable = true;
     };
-    desktop.windows = [
-      {
-        criteria = {
-          instance = "anki";
-          class = "Anki";
-          title = "(Preferences)|(Add)";
-        };
-        floating = true;
-      }
-    ];
     desktop.scratchpads = {
       "Shift+A" = {
         criteria = {

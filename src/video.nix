@@ -4,12 +4,14 @@
   lib,
   ...
 }:
-with builtins; let
+with builtins;
+let
   std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+in
+{
+  options = with lib; { };
+  disabledModules = [ ];
+  imports = [ ];
   config = {
     programs.mpv = {
       enable = true;
@@ -23,16 +25,6 @@ in {
         };
       };
     };
-    desktop.windows = [
-      {
-        criteria = {app_id = "mpv";};
-        floating = true;
-      }
-      {
-        criteria = {app_id = "imv";};
-        floating = true;
-      }
-    ];
   };
-  meta = {};
+  meta = { };
 }

@@ -4,23 +4,9 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = {
-    home.packages = [pkgs.bottles];
-    desktop.windows = [
-      {
-        criteria = {
-          app_id = "com.usebottles.bottles";
-          title = "Select Bottle";
-        };
-        floating = true;
-      }
-    ];
+    home.packages = [ pkgs.bottles ];
     xdg.binFile."wine-bottles" = {
       executable = true;
       text = ''
@@ -29,5 +15,5 @@ in {
       '';
     };
   };
-  meta = {};
+  meta = { };
 }
