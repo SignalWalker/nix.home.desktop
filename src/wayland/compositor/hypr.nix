@@ -5,30 +5,33 @@
   lib,
   ...
 }:
-with builtins;
 let
+  inherit (builtins) toString attrValues;
   scratchpads = config.desktop.scratchpads;
   hypr = config.wayland.windowManager.hyprland;
+  hyprPkg = if hypr.package == null then osConfig.programs.hyprland.package else hypr.package;
   pypr = hypr.pyprland;
   toml = pkgs.formats.toml { };
 in
 {
-  options = with lib; {
-    wayland.windowManager.hyprland = {
-      pyprland = {
-        enable = (mkEnableOption "pyprland") // {
-          default = true;
-        };
-        package = mkPackageOption pkgs "pyprland" { };
-        settings = mkOption {
-          type = toml.type;
-          default = { };
+  options =
+    let
+      inherit (lib) mkEnableOption mkOption mkPackageOption;
+    in
+    {
+      wayland.windowManager.hyprland = {
+        pyprland = {
+          enable = (mkEnableOption "pyprland") // {
+            default = true;
+          };
+          package = mkPackageOption pkgs "pyprland" { };
+          settings = mkOption {
+            type = toml.type;
+            default = { };
+          };
         };
       };
     };
-  };
-  disabledModules = [ ];
-  imports = [ ];
   config = lib.mkMerge [
     {
       home.pointerCursor.hyprcursor = {
@@ -215,11 +218,12 @@ in
       wayland.windowManager.hyprland = {
         pyprland.settings = {
           pyprland = {
+            "hyprland_version" = builtins.head (lib.splitString "+" hyprPkg.version);
             plugins = [
               "scratchpads"
             ];
           };
-          scratchpads = foldl' (
+          scratchpads = lib.foldl' (
             acc: pad:
             let
             in
@@ -231,7 +235,7 @@ in
                   class = lib.mkIf (pad.hypr.class != null) pad.hypr.class;
                   size = lib.mkIf (
                     pad.resize != null
-                  ) "${toString (elemAt pad.resize 0)}% ${toString (elemAt pad.resize 1)}%";
+                  ) "${toString (lib.elemAt pad.resize 0)}% ${toString (lib.elemAt pad.resize 1)}%";
                   unfocus = lib.mkIf (pad.hypr.unfocus != "") pad.hypr.unfocus;
                   excludes = lib.mkIf (pad.hypr.excludes != [ ]) pad.hypr.excludes;
                   match_by = lib.mkIf (pad.hypr.match_by != null) pad.hypr.match_by;

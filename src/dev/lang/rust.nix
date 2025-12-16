@@ -32,6 +32,9 @@ in
     };
   };
   imports = [ ];
+  disabledModules = [
+    "programs/cargo.nix"
+  ];
   config = lib.mkMerge [
     {
       programs.rustup = {

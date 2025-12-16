@@ -49,8 +49,10 @@ in
           opener = {
             "open" = [
               {
-                run = "app2unit-open $@";
+                run = "app2unit-open \"$@\"";
                 desc = "Open";
+                orphan = true;
+                for = "linux";
               }
             ];
           };
