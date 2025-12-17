@@ -27,13 +27,13 @@
     };
 
     home.packages = [
-      (pkgs.renoise.override {
-        releasePath = pkgs.requireFile {
-          name = "rns_352_linux_x86_64.tar.gz";
-          url = "https://backstage.renoise.com/frontend/app/index.html#/product/rns";
-          hash = "sha256-iXqCgOLxIvPrSSOpZbK8Aa/Ve5CK0oBK4bLsFDiY+oo=";
-        };
-      })
+      # (pkgs.renoise.override {
+      #   releasePath = pkgs.requireFile {
+      #     name = "rns_352_linux_x86_64.tar.gz";
+      #     url = "https://backstage.renoise.com/frontend/app/index.html#/product/rns";
+      #     hash = "sha256-iXqCgOLxIvPrSSOpZbK8Aa/Ve5CK0oBK4bLsFDiY+oo=";
+      #   };
+      # })
       pkgs.furnace
       pkgs.reaper
       pkgs.supercollider-with-plugins
