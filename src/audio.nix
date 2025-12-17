@@ -42,7 +42,7 @@
         pkgs.pavucontrol
         pkgs.pwvucontrol
         pkgs.pulseaudio # for pactl
-        pkgs.coppwr
+        # pkgs.coppwr
         pkgs.qpwgraph
         pkgs.easyeffects
       ];

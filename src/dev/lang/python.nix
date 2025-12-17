@@ -1,22 +1,17 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
-with builtins;
 let
   uv = config.programs.uv;
 in
 {
-  options = { };
-  disabledModules = [ ];
-  imports = [ ];
   config = lib.mkMerge [
     {
-      home.packages = [
-        pkgs.python3
-      ];
+      # home.packages = [
+      #   pkgs.python3
+      # ];
       programs.uv = {
         enable = true;
         settings = { };

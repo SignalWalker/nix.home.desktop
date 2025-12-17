@@ -4,27 +4,33 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
+let
   docs = config.signal.desktop.notes.docs;
-in {
-  options = with lib; {
-    signal.desktop.notes.docs = {
-      enable = (mkEnableOption "Zeal documentation browser") // {default = true;};
-      package = mkOption {
-        type = types.package;
-        default = pkgs.zeal;
-      };
-      docsets = mkOption {
-        type = types.listOf types.package;
-        default = [];
+in
+{
+  options =
+    let
+      inherit (lib) mkEnableOption mkOption types;
+    in
+    {
+      signal.desktop.notes.docs = {
+        enable = (mkEnableOption "Zeal documentation browser") // {
+          default = false;
+        };
+        package = mkOption {
+          type = types.package;
+          default = pkgs.zeal;
+        };
+        docsets = mkOption {
+          type = types.listOf types.package;
+          default = [ ];
+        };
       };
     };
-  };
-  disabledModules = [];
-  imports = [];
+  disabledModules = [ ];
+  imports = [ ];
   config = lib.mkIf docs.enable {
-    home.packages = [docs.package];
+    home.packages = [ docs.package ];
     desktop.scratchpads = {
       "Shift+X" = {
         criteria = {
@@ -39,5 +45,6 @@ in {
       };
     };
   };
-  meta = {};
+  meta = { };
 }
+
