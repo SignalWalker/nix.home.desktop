@@ -46,7 +46,7 @@ in
     }
     (lib.mkIf rustup.enable {
       home.packages = [
-        rustup.package
+        # rustup.package
       ];
       systemd.user.sessionVariables = {
         RUSTUP_HOME = rustup.home;

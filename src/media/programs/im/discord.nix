@@ -43,7 +43,7 @@
 
       home.packages = [
         # pkgs.dorion
-        pkgs.vesktop
+        # pkgs.vesktop
         # pkgs.dissent # weird build issue 2025-11-19
       ];
 

@@ -33,7 +33,7 @@
         hypr = {
           enable = true;
           dispatcher = "execr";
-          args = [ "uwsm-app -s a -a clipse kitty --app-id=clipse clipse" ];
+          args = [ "app2unit -s a -a clipse -- kitty --app-id=clipse clipse" ];
         };
       };
     };

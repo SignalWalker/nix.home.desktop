@@ -28,7 +28,7 @@ in
           "use-bold" = true;
           "filter-desktop" = true;
           "terminal" = "kitty";
-          "launch-prefix" = "uwsm-app -- ";
+          "launch-prefix" = "app2unit -- ";
         };
       };
     };

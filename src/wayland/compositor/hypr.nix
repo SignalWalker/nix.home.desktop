@@ -34,6 +34,9 @@ in
     };
   config = lib.mkMerge [
     {
+      programs.app2unit = {
+        enable = true;
+      };
       home.pointerCursor.hyprcursor = {
         enable = true;
       };
@@ -172,13 +175,22 @@ in
             "MOD3CTRLALT,mouse:272,resizewindow 1"
           ];
           "exec-once" = [
-            "uwsm-app -s b clipse -listen"
+            "app2unit -s b -- clipse -listen"
           ];
         };
       };
     }
     # desktop.windows
     {
+      # wayland.windowManager.hyprland.settings.windowrule = [
+      #   {
+      #     name = "clipse-float-center";
+      #     "match:class" = "clipse";
+      #     float = true;
+      #     size = "(monitor_w*0.33) (monitor_h*0.5)";
+      #     center = true;
+      #   }
+      # ];
       # TODO
       # wayland.windowManager.hyprland.settings.extraConfig =
       #   let
@@ -231,7 +243,7 @@ in
               acc
               // {
                 "${pad.name}" = {
-                  command = "uwsm-app -a '${pad.name}' -- ${pad.startup}";
+                  command = "app2unit -a '${pad.name}' -- ${pad.startup}";
                   class = lib.mkIf (pad.hypr.class != null) pad.hypr.class;
                   size = lib.mkIf (
                     pad.resize != null
@@ -255,7 +267,7 @@ in
         };
         settings = {
           "exec-once" = [
-            "uwsm-app -s b ${pypr.package}/bin/pypr"
+            "app2unit -s b -- ${pypr.package}/bin/pypr"
           ];
         };
       };

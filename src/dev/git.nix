@@ -87,6 +87,17 @@ in
             "merge-tool-edits-conflict-markers" = true;
           };
         };
+        aliases = {
+          # move branch bookmark to previous change
+          "tug" = [
+            "bookmark"
+            "move"
+            "--from"
+            "heads(::@- & bookmarks())"
+            "--to"
+            "@-"
+          ];
+        };
       };
     };
     # home.shellAliases = {

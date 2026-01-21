@@ -9,6 +9,7 @@ import random
 from PIL import Image
 import re
 
+POWER_DIR = "/sys/class/power_supply"
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff', 'svg' }
 ANIMATED_EXTENSIONS = { 'avif', 'webp', 'gif' }
 
@@ -38,6 +39,31 @@ def eprint(msg: str, level: LogLevel = LogLevel.INFO, **kwargs):
 	elif level == LogLevel.DEBUG: color = Color.BLUE
 	elif level == LogLevel.TRACE: color = Color.PURPLE
 	print(f"{color}[awww-randomize]{Color.ENDC} {msg}", file=sys.stderr, **kwargs)
+
+def get_battery_status(path: str) -> dict:
+    res = {}
+    with open(os.path.join(path, "uevent")) as uevent:
+        for line in uevent:
+            data = line.split("=", maxsplit=1)
+            res[data[0].strip()] = data[1].strip()
+    return res
+
+def should_prioritize_animated_wallpapers() -> bool:
+    bat = None
+    # find first battery
+    for f in os.scandir(POWER_DIR):
+        if f.is_dir() and f.name.startswith("BAT"):
+            bat = f
+            break
+    # No battery found; assume we're on desktop or something
+    if bat is None:
+        return False
+
+    status = get_battery_status(bat)
+    if status["POWER_SUPPLY_STATUS"] != "Discharging":
+        return True
+
+    return (float(status["POWER_SUPPLY_CHARGE_NOW"]) / max(float(status["POWER_SUPPLY_CHARGE_FULL"]), 1)) >= 0.75
 
 def recursive_scandir(dir: str, ext):    # dir: str, ext: list
     subfolders, files = [], []
@@ -115,9 +141,18 @@ def main() -> int:
     parser.add_argument('directory', help="directory from which to select images")
     args = parser.parse_args()
 
-    extensions = STATIC_EXTENSIONS
+    extensions = {}
+
     if args.animated:
-        extensions = extensions | ANIMATED_EXTENSIONS
+        if should_prioritize_animated_wallpapers():
+            eprint("power supply connected; using only animated wallpapers...")
+            extensions = ANIMATED_EXTENSIONS
+        else:
+            eprint("power supply not connected; allowing static wallpapers...")
+            extensions = STATIC_EXTENSIONS | ANIMATED_EXTENSIONS
+    else:
+        eprint("ignoring animated wallpapers...")
+        extensions = STATIC_EXTENSIONS
 
     eprint(f"directory: {args.directory}", LogLevel.DEBUG)
     eprint(f"extensions: {extensions}", LogLevel.DEBUG)

@@ -91,6 +91,7 @@ in
     };
   };
   config = {
+    programs.app2unit.enable = true;
     home.packages = [
       pkgs.playerctl
       pkgs.light
@@ -236,7 +237,7 @@ in
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "uwsm-app -T" ];
+            args = lib.mkDefault [ "app2unit -T" ];
           };
         };
         terminalOpenAlt = {
@@ -260,7 +261,7 @@ in
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
+            args = lib.mkDefault [ "app2unit -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
           };
         };
         # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
@@ -271,7 +272,7 @@ in
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "uwsm-app -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
+            args = lib.mkDefault [ "app2unit -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
           };
         };
         # BRIGHTNESS
