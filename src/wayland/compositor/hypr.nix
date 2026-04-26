@@ -162,7 +162,7 @@ in
             no_donation_nag = true;
           };
           experimental = {
-            xx_color_management_v4 = true;
+            # xx_color_management_v4 = true;
           };
           monitor = [
             ",preferred,auto,1"

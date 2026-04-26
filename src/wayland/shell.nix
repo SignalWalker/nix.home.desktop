@@ -161,19 +161,20 @@ in
             args = [ "caelestia:mediaNext" ];
           };
         };
-        # brightness
-        brightnessDown = {
-          hypr = {
-            dispatcher = "global";
-            args = [ "caelestia:brightnessDown" ];
-          };
-        };
-        brightnessUp = {
-          hypr = {
-            dispatcher = "global";
-            args = [ "caelestia:brightnessUp" ];
-          };
-        };
+        # NOTE :: disabling this because it doesn't work as well as i'd like
+        # # brightness
+        # brightnessDown = {
+        #   hypr = {
+        #     dispatcher = "global";
+        #     args = [ "caelestia:brightnessDown" ];
+        #   };
+        # };
+        # brightnessUp = {
+        #   hypr = {
+        #     dispatcher = "global";
+        #     args = [ "caelestia:brightnessUp" ];
+        #   };
+        # };
         # system
         sessionLock = {
           hypr = {
