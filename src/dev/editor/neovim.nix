@@ -4,15 +4,14 @@
   lib,
   ...
 }:
-with builtins;
 {
-  options = with lib; {
+  options = {
   };
   imports = [ ];
   config = {
     programs.ashvim = {
       enable = true;
-      configPath = "${config.xdg.userDirs.extraConfig.XDG_PROJECTS_DIR}/cfg/neovim";
+      configPath = "${config.xdg.userDirs.extraConfig.PROJECTS}/cfg/neovim";
     };
   };
 }

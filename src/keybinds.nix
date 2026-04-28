@@ -94,7 +94,7 @@ in
     programs.app2unit.enable = true;
     home.packages = [
       pkgs.playerctl
-      pkgs.light
+      pkgs.brightnessctl
     ];
     # TODO :: detect collisions
     desktop.keybinds = lib.mkMerge [
@@ -284,7 +284,7 @@ in
             enable = true;
             repeat = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "light -U 2" ];
+            args = lib.mkDefault [ "brightnessctl set -2%" ];
           };
         };
         brightnessUp = {
@@ -295,7 +295,7 @@ in
             enable = true;
             repeat = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "light -A 2" ];
+            args = lib.mkDefault [ "brightnessctl set +2%" ];
           };
         };
         brightnessMin = {
@@ -306,7 +306,7 @@ in
             enable = true;
             locked = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "light -S 1" ];
+            args = lib.mkDefault [ "brightnessctl set 1" ];
           };
         };
         brightnessMax = {
@@ -317,7 +317,7 @@ in
             enable = true;
             locked = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "light -S 100" ];
+            args = lib.mkDefault [ "brightnessctl set 100%" ];
           };
         };
       }

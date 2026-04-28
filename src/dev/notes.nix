@@ -10,7 +10,7 @@
     ];
     desktop.scratchpads =
       let
-        notesDir = config.xdg.userDirs.extraConfig.XDG_NOTES_DIR;
+        notesDir = config.xdg.userDirs.extraConfig.NOTES;
       in
       {
         "Shift+N" = {

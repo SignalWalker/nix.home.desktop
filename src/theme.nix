@@ -33,6 +33,14 @@
         targets.neovim.enable = false;
       };
 
+      # HACK :: workaround for https://github.com/nix-community/stylix/issues/2287
+      xdg.autostart.entries = [
+        config.xdg.configFile."autostart/stylix-activate-gnome.desktop".source
+        config.xdg.configFile."autostart/stylix-activate-kde.desktop".source
+      ];
+      xdg.configFile."autostart/stylix-activate-gnome.desktop".enable = false;
+      xdg.configFile."autostart/stylix-activate-kde.desktop".enable = false;
+
       xdg.configFile."hypr/hyprqt6engine.conf" = {
         text = lib.hm.generators.toHyprconf {
           attrs = {
@@ -55,7 +63,8 @@
         gtk3 = {
           bookmarks = map (dir: "file://${dir}") (lib.attrValues config.xdg.userDirs.extraConfig);
         };
-        gtk4 = { };
+        gtk4 = {
+        };
       };
       dconf.settings = {
         # "org/gtk/settings/file-chooser" = {

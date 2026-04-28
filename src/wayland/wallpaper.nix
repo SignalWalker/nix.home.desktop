@@ -9,7 +9,7 @@
     services.awww = {
       enable = true;
       systemd.enable = true;
-      img.path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
+      img.path = config.xdg.userDirs.extraConfig."WALLPAPERS";
     };
     desktop.keybinds = {
       wallpaperRandomize = {
@@ -34,7 +34,7 @@
     #   };
     #   settings = {
     #     default = {
-    #       path = config.xdg.userDirs.extraConfig."XDG_WALLPAPERS_DIR";
+    #       path = config.xdg.userDirs.extraConfig."WALLPAPERS";
     #       duration = "30m";
     #       apply-shadow = false;
     #     };

@@ -29,7 +29,7 @@
       makePython = pkgs: pkgs.python3.withPackages (ps: [ ]);
     in
     {
-      formatter = lib.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
+      formatter = lib.mapAttrs (system: pkgs: pkgs.nixfmt) nixpkgsFor;
       devShells = lib.mapAttrs (
         system: pkgs:
         let

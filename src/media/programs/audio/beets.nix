@@ -55,9 +55,9 @@
             ignored = [ "length" ];
           };
           paths = {
-            default = "$albumartist/$album%aunique{}/$disc-$\{track\}.$title";
+            default = "$albumartist/$album%aunique{}/$disc-\${track}.$title";
             singleton = "$artist/$title";
-            comp = "multiple/$album%aunique{}/$disc-$\{track\}.$title";
+            comp = "multiple/$album%aunique{}/$disc-\${track}.$title";
           };
           plugins = [
             # sources
@@ -124,7 +124,7 @@
             format = "opus";
             formats = {
               opus = {
-                command = "${pkgs.opusTools}/bin/opusenc --music \"$source\" \"$dest\"";
+                command = "${pkgs.opus-tools}/bin/opusenc --music \"$source\" \"$dest\"";
                 extension = "ogg";
               };
             };

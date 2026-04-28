@@ -9,16 +9,15 @@
       nixpkgs,
       ...
     }:
-    with builtins;
     let
-      std = nixpkgs.lib;
+      lib = nixpkgs.lib;
       systems = [
         "aarch64-darwin"
         "aarch64-linux"
         "x86_64-darwin"
         "x86_64-linux"
       ];
-      nixpkgsFor = std.genAttrs systems (
+      nixpkgsFor = lib.genAttrs systems (
         system:
         import nixpkgs {
           localSystem = builtins.currentSystem or system;
@@ -30,11 +29,10 @@
       pname = "package";
     in
     {
-      formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt-rfc-style) nixpkgsFor;
-      packages = std.mapAttrs (
+      formatter = lib.mapAttrs (system: pkgs: pkgs.nixfmt) nixpkgsFor;
+      packages = lib.mapAttrs (
         system: pkgs:
         let
-          std = pkgs.lib;
           stdenv = makeStdenv pkgs;
         in
         {
@@ -45,7 +43,7 @@
           default = self.packages.${system}.${pname};
         }
       ) nixpkgsFor;
-      devShells = std.mapAttrs (
+      devShells = lib.mapAttrs (
         system: pkgs:
         let
           selfPkgs = self.packages.${system};
