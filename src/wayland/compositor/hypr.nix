@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (builtins) toString attrValues;
+  inherit (builtins) attrValues;
   scratchpads = config.desktop.scratchpads;
   hypr = config.wayland.windowManager.hyprland;
   hyprPkg = if hypr.package == null then osConfig.programs.hyprland.package else hypr.package;
@@ -224,7 +224,7 @@ in
       home.packages = [
         pypr.package
       ];
-      xdg.configFile."hypr/pyprland.toml" = {
+      xdg.configFile."pypr/config.toml" = {
         source = toml.generate "pyprland.toml" pypr.settings;
       };
       wayland.windowManager.hyprland = {

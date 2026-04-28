@@ -26,56 +26,9 @@
             "scale": 1
         },
         "transparency": {
-            "enabled": false,
             "base": 0.85,
+            "enabled": false,
             "layers": 0.4
-        }
-    },
-    "general": {
-        "apps": {
-            "terminal": ["kitty"],
-            "audio": ["pwvucontrol"],
-            "playback": ["mpv"],
-            "explorer": ["nemo"]
-        },
-        "battery": {
-            "warnLevels": [
-                {
-                    "level": 20,
-                    "title": "Battery",
-                    "message": "Warning: Battery low.",
-                    "icon": "battery_android_frame_2"
-                },
-                {
-                    "level": 10,
-                    "title": "Battery",
-                    "message": "Warning: Battery low. Seek charger now.",
-                    "icon": "battery_android_frame_1"
-                },
-                {
-                    "level": 5,
-                    "title": "Battery",
-                    "message": "Critical: Battery dire. Seek charger now.",
-                    "icon": "battery_android_alert",
-                    "critical": true
-                }
-            ],
-            "criticalLevel": 3
-        },
-        "idle": {
-            "lockBeforeSleep": true,
-            "inhibitWhenAudio": false,
-            "timeouts": [
-                {
-                    "timeout": 180,
-                    "idleAction": "dpms off",
-                    "returnAction": "dpms on"
-                },
-                {
-                    "timeout": 300,
-                    "idleAction": "lock"
-                }
-            ]
         }
     },
     "background": {
@@ -84,9 +37,9 @@
         },
         "enabled": false,
         "visualiser": {
+            "autoHide": true,
             "blur": false,
             "enabled": false,
-            "autoHide": true,
             "rounding": 1,
             "spacing": 1
         }
@@ -98,40 +51,40 @@
         "dragThreshold": 20,
         "entries": [
             {
-                "id": "logo",
-                "enabled": true
+                "enabled": true,
+                "id": "logo"
             },
             {
-                "id": "workspaces",
-                "enabled": true
+                "enabled": true,
+                "id": "workspaces"
             },
             {
-                "id": "spacer",
-                "enabled": true
+                "enabled": true,
+                "id": "spacer"
             },
             {
-                "id": "activeWindow",
-                "enabled": true
+                "enabled": true,
+                "id": "activeWindow"
             },
             {
-                "id": "spacer",
-                "enabled": true
+                "enabled": true,
+                "id": "spacer"
             },
             {
-                "id": "tray",
-                "enabled": true
+                "enabled": true,
+                "id": "tray"
             },
             {
-                "id": "clock",
-                "enabled": true
+                "enabled": true,
+                "id": "clock"
             },
             {
-                "id": "statusIcons",
-                "enabled": true
+                "enabled": true,
+                "id": "statusIcons"
             },
             {
-                "id": "power",
-                "enabled": false
+                "enabled": false,
+                "id": "power"
             }
         ],
         "persistent": true,
@@ -142,8 +95,8 @@
         },
         "scrollActions": {
             "brightness": true,
-            "workspaces": true,
-            "volume": true
+            "volume": true,
+            "workspaces": true
         },
         "showOnHover": true,
         "status": {
@@ -151,14 +104,15 @@
             "showBattery": true,
             "showBluetooth": true,
             "showKbLayout": false,
+            "showLockStatus": true,
             "showMicrophone": true,
-            "showNetwork": true,
-            "showLockStatus": true
+            "showNetwork": true
         },
         "tray": {
             "background": false,
             "compact": false,
-            "iconSubs": [],
+            "iconSubs": [
+            ],
             "recolour": false
         },
         "workspaces": {
@@ -173,8 +127,8 @@
             "shown": 5,
             "specialWorkspaceIcons": [
                 {
-                    "name": "steam",
-                    "icon": "sports_esports"
+                    "icon": "sports_esports",
+                    "name": "steam"
                 }
             ]
         }
@@ -184,10 +138,207 @@
         "thickness": 1
     },
     "dashboard": {
-        "enabled": true,
         "dragThreshold": 50,
+        "enabled": true,
         "mediaUpdateInterval": 500,
         "showOnHover": true
+    },
+    "general": {
+        "apps": {
+            "audio": [
+                "pwvucontrol"
+            ],
+            "explorer": [
+                "nemo"
+            ],
+            "playback": [
+                "mpv"
+            ],
+            "terminal": [
+                "kitty"
+            ]
+        },
+        "battery": {
+            "criticalLevel": 3,
+            "warnLevels": [
+                {
+                    "icon": "battery_android_frame_2",
+                    "level": 20,
+                    "message": "Warning: Battery low.",
+                    "title": "Battery"
+                },
+                {
+                    "icon": "battery_android_frame_1",
+                    "level": 10,
+                    "message": "Warning: Battery low. Seek charger now.",
+                    "title": "Battery"
+                },
+                {
+                    "critical": true,
+                    "icon": "battery_android_alert",
+                    "level": 5,
+                    "message": "Critical: Battery dire. Seek charger now.",
+                    "title": "Battery"
+                }
+            ]
+        },
+        "idle": {
+            "inhibitWhenAudio": false,
+            "lockBeforeSleep": true,
+            "timeouts": [
+                {
+                    "idleAction": "dpms off",
+                    "returnAction": "dpms on",
+                    "timeout": 180
+                },
+                {
+                    "idleAction": "lock",
+                    "timeout": 300
+                }
+            ]
+        }
+    },
+    "launcher": {
+        "actionPrefix": ">",
+        "actions": [
+            {
+                "command": [
+                    "autocomplete",
+                    "calc"
+                ],
+                "dangerous": false,
+                "description": "Do simple math equations (powered by Qalc)",
+                "enabled": true,
+                "icon": "calculate",
+                "name": "Calculator"
+            },
+            {
+                "command": [
+                    "autocomplete",
+                    "scheme"
+                ],
+                "dangerous": false,
+                "description": "Change the current colour scheme",
+                "enabled": true,
+                "icon": "palette",
+                "name": "Scheme"
+            },
+            {
+                "command": [
+                    "autocomplete",
+                    "variant"
+                ],
+                "dangerous": false,
+                "description": "Change the current scheme variant",
+                "enabled": true,
+                "icon": "colors",
+                "name": "Variant"
+            },
+            {
+                "command": [
+                    "autocomplete",
+                    "transparency"
+                ],
+                "dangerous": false,
+                "description": "Change shell transparency",
+                "enabled": true,
+                "icon": "opacity",
+                "name": "Transparency"
+            },
+            {
+                "command": [
+                    "setMode",
+                    "light"
+                ],
+                "dangerous": false,
+                "description": "Change the scheme to light mode",
+                "enabled": true,
+                "icon": "light_mode",
+                "name": "Light"
+            },
+            {
+                "command": [
+                    "setMode",
+                    "dark"
+                ],
+                "dangerous": false,
+                "description": "Change the scheme to dark mode",
+                "enabled": true,
+                "icon": "dark_mode",
+                "name": "Dark"
+            },
+            {
+                "command": [
+                    "systemctl",
+                    "poweroff"
+                ],
+                "dangerous": true,
+                "description": "Shutdown the system",
+                "enabled": true,
+                "icon": "power_settings_new",
+                "name": "Shutdown"
+            },
+            {
+                "command": [
+                    "systemctl",
+                    "reboot"
+                ],
+                "dangerous": true,
+                "description": "Reboot the system",
+                "enabled": true,
+                "icon": "cached",
+                "name": "Reboot"
+            },
+            {
+                "command": [
+                    "uwsm",
+                    "stop"
+                ],
+                "dangerous": true,
+                "description": "Log out of the current session",
+                "enabled": true,
+                "icon": "exit_to_app",
+                "name": "Logout"
+            },
+            {
+                "command": [
+                    "loginctl",
+                    "lock-session"
+                ],
+                "dangerous": false,
+                "description": "Lock the current session",
+                "enabled": true,
+                "icon": "lock",
+                "name": "Lock"
+            },
+            {
+                "command": [
+                    "systemctl",
+                    "suspend"
+                ],
+                "dangerous": false,
+                "description": "Suspend the system",
+                "enabled": true,
+                "icon": "bedtime",
+                "name": "Suspend"
+            }
+        ],
+        "dragThreshold": 50,
+        "enableDangerousActions": false,
+        "hiddenApps": [
+        ],
+        "maxShown": 7,
+        "maxWallpapers": 9,
+        "showOnHover": false,
+        "specialPrefix": "@",
+        "useFuzzy": {
+            "actions": false,
+            "apps": true,
+            "schemes": false,
+            "variants": false,
+            "wallpapers": false
+        },
+        "vimKeybinds": true
     },
     "lock": {
         "recolourLogo": true
@@ -200,9 +351,9 @@
         "expire": true
     },
     "osd": {
-        "enabled": true,
         "enableBrightness": true,
         "enableMicrophone": true,
+        "enabled": true,
         "hideDelay": 2000
     },
     "paths": {
@@ -212,26 +363,39 @@
     },
     "services": {
         "audioIncrement": 0.1,
-        "maxVolume": 1.0,
         "defaultPlayer": "Tauon",
         "gpuType": "",
-        "playerAliases": [{ "from": "com.github.th_ch.youtube_music", "to": "YT Music" }],
-        "weatherLocation": "atlanta",
+        "maxVolume": 1,
+        "playerAliases": [
+            {
+                "from": "com.github.th_ch.youtube_music",
+                "to": "YT Music"
+            }
+        ],
+        "smartScheme": false,
         "useFahrenheit": false,
         "useTwelveHourClock": false,
-        "smartScheme": false,
-        "visualiserBars": 45
+        "visualiserBars": 45,
+        "weatherLocation": "atlanta"
     },
     "session": {
+        "commands": {
+            "logout": [
+                "uwsm",
+                "stop"
+            ],
+            "reboot": [
+                "systemctl",
+                "reboot"
+            ],
+            "shutdown": [
+                "systemctl",
+                "poweroff"
+            ]
+        },
         "dragThreshold": 30,
         "enabled": true,
-        "vimKeybinds": true,
-        "commands": {
-            "logout": ["uwsm", "stop"],
-            "suspend": ["systemctl", "suspend"],
-            "reboot": ["systemctl", "reboot"],
-            "shutdown": ["systemctl", "poweroff"]
-        }
+        "vimKeybinds": true
     },
     "sidebar": {
         "dragThreshold": 80,
@@ -249,127 +413,19 @@
             "dndChanged": true,
             "gameModeChanged": true,
             "kbLayoutChanged": true,
+            "nowPlaying": true,
             "numLockChanged": true,
-            "vpnChanged": true,
-            "nowPlaying": true
+            "vpnChanged": true
         },
         "vpn": {
             "enabled": false,
             "provider": [
                 {
-                    "name": "wireguard",
+                    "displayName": "Wireguard (Your VPN)",
                     "interface": "your-connection-name",
-                    "displayName": "Wireguard (Your VPN)"
+                    "name": "wireguard"
                 }
             ]
         }
-    },
-    "launcher": {
-        "actionPrefix": ">",
-        "actions": [
-            {
-                "name": "Calculator",
-                "icon": "calculate",
-                "description": "Do simple math equations (powered by Qalc)",
-                "command": ["autocomplete", "calc"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Scheme",
-                "icon": "palette",
-                "description": "Change the current colour scheme",
-                "command": ["autocomplete", "scheme"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Variant",
-                "icon": "colors",
-                "description": "Change the current scheme variant",
-                "command": ["autocomplete", "variant"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Transparency",
-                "icon": "opacity",
-                "description": "Change shell transparency",
-                "command": ["autocomplete", "transparency"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Light",
-                "icon": "light_mode",
-                "description": "Change the scheme to light mode",
-                "command": ["setMode", "light"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Dark",
-                "icon": "dark_mode",
-                "description": "Change the scheme to dark mode",
-                "command": ["setMode", "dark"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Shutdown",
-                "icon": "power_settings_new",
-                "description": "Shutdown the system",
-                "command": ["systemctl", "poweroff"],
-                "enabled": true,
-                "dangerous": true
-            },
-            {
-                "name": "Reboot",
-                "icon": "cached",
-                "description": "Reboot the system",
-                "command": ["systemctl", "reboot"],
-                "enabled": true,
-                "dangerous": true
-            },
-            {
-                "name": "Logout",
-                "icon": "exit_to_app",
-                "description": "Log out of the current session",
-                "command": ["uwsm", "stop"],
-                "enabled": true,
-                "dangerous": true
-            },
-            {
-                "name": "Lock",
-                "icon": "lock",
-                "description": "Lock the current session",
-                "command": ["loginctl", "lock-session"],
-                "enabled": true,
-                "dangerous": false
-            },
-            {
-                "name": "Suspend",
-                "icon": "bedtime",
-                "description": "Suspend the system",
-                "command": ["systemctl", "suspend"],
-                "enabled": true,
-                "dangerous": false
-            }
-        ],
-        "dragThreshold": 50,
-        "vimKeybinds": true,
-        "enableDangerousActions": false,
-        "maxShown": 7,
-        "maxWallpapers": 9,
-        "specialPrefix": "@",
-        "useFuzzy": {
-            "apps": true,
-            "actions": false,
-            "schemes": false,
-            "variants": false,
-            "wallpapers": false
-        },
-        "showOnHover": false,
-        "hiddenApps": []
     }
 }

@@ -125,6 +125,7 @@ in
       };
       lfs.enable = true;
       signing = {
+        format = "openpgp";
         key = lib.mkDefault null;
         signer = if (gnupg.agent.enable or false) then "${gnupg.package}/bin/gpg" else "/usr/bin/gpg";
         signByDefault = true;

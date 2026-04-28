@@ -5,7 +5,7 @@
 {
   config = {
     home.packages = [
-      pkgs.fractal
+      # pkgs.fractal
     ];
 
     desktop.scratchpads = {
@@ -16,7 +16,7 @@
         resize = 93;
         startup = "fractal";
         systemdCat = true;
-        autostart = true;
+        autostart = false;
         automove = true;
       };
     };
