@@ -182,15 +182,30 @@ in
     }
     # desktop.windows
     {
-      # wayland.windowManager.hyprland.settings.windowrule = [
-      #   {
-      #     name = "clipse-float-center";
-      #     "match:class" = "clipse";
-      #     float = true;
-      #     size = "(monitor_w*0.33) (monitor_h*0.5)";
-      #     center = true;
-      #   }
-      # ];
+      wayland.windowManager.hyprland.settings.windowrule = [
+        {
+          name = "float-everything-by-default-because-everything-assumes-floating-wm";
+          "match:initial_class" = ".*";
+          float = true;
+        }
+        {
+          name = "clipse-float-center";
+          "match:class" = "clipse";
+          float = true;
+          size = "(monitor_w*0.33) (monitor_h*0.5)";
+          center = true;
+        }
+        {
+          name = "float-modal";
+          "match:modal" = true;
+          float = true;
+        }
+        {
+          name = "float-wine";
+          "match:initial_class" = ".*\\\\.exe$";
+          float = true;
+        }
+      ];
       # TODO
       # wayland.windowManager.hyprland.settings.extraConfig =
       #   let

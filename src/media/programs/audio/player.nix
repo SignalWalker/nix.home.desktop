@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-with builtins;
 let
   music = config.xdg.userDirs.music;
   mpd = config.services.mpd;
@@ -22,7 +21,8 @@ in
         })
       ])
       [
-        pkgs.tauon
+        # pkgs.tauon
+        pkgs.fooyin
       ]
     ];
     programs.quodlibet = {
@@ -42,14 +42,15 @@ in
         criteria = {
           # app_id = "io.github.quodlibet.QuodLibet";
           # title = "^(.* - )?Quod Libet";
-          app_id = "tauonmb";
+          # app_id = "tauonmb";
+          # app_id = "Psysonic";
+          app_id = "org.fooyin.fooyin";
         };
         resize = 75;
-        startup = "tauon";
+        startup = "fooyin";
         systemdCat = true;
         automove = true;
       };
     };
   };
 }
-

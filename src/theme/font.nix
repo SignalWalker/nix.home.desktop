@@ -126,6 +126,14 @@ in
     # };
     fonts.fontconfig = {
       enable = true;
+      subpixelRendering = "rgb";
+      antialiasing = true; # TODO :: disable for bitmap fonts
+    };
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        "font-hinting" = "none";
+        "font-antialiasing" = "rgba";
+      };
     };
     desktop.theme.font = {
       fonts = {
@@ -442,4 +450,3 @@ in
   };
   meta = { };
 }
-

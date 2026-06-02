@@ -284,7 +284,7 @@ in
             enable = true;
             repeat = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "brightnessctl set -2%" ];
+            args = lib.mkDefault [ "brightnessctl set 2%-" ];
           };
         };
         brightnessUp = {

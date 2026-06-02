@@ -119,15 +119,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # shell
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # app launcher
     walker = {
       url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # psysonic = {
+    #   url = "github:Psychotoxical/psysonic";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
   outputs =
     inputs@{
@@ -170,6 +177,10 @@
             ./home-manager.nix
           ];
           config = {
+
+            # home.packages = [
+            #   inputs.psysonic.packages.${pkgs.stdenv.hostPlatform.system}.psysonic
+            # ];
 
             home.file.".face" = {
               source = ./assets/avatar.png;
