@@ -22,7 +22,7 @@
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "execr";
-          args = lib.mkDefault [ "systemctl --user start awww-randomize.service" ];
+          args = lib.mkDefault [ "wallmaster randomize" ];
         };
       };
     };

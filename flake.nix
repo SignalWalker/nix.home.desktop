@@ -135,110 +135,93 @@
     #   url = "github:Psychotoxical/psysonic";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+
+    pyproject = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.pyproject-nix.follows = "pyproject";
+    };
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
-    inputs@{
-      nixpkgs,
-      ...
-    }:
-    let
-      std = nixpkgs.lib;
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-      nixpkgsFor = std.genAttrs systems (
-        system:
-        import nixpkgs {
-          localSystem = builtins.currentSystem or system;
-          crossSystem = system;
-          overlays = [ ];
-        }
-      );
-    in
-    {
-      formatter = std.mapAttrs (system: pkgs: pkgs.nixfmt) nixpkgsFor;
-      homeModules.default =
-        {
-          pkgs,
-          ...
-        }:
-        {
-          imports = [
-            inputs.caelestia-shell.homeManagerModules.default
-            # inputs.watch-battery.homeManagerModules.default
-            inputs.ashvim.homeManagerModules.default
-            inputs.lan-mouse.homeManagerModules.default
-            inputs.nixcord.homeModules.default
-            inputs.walker.homeManagerModules.default
-            # inputs.stylix.homeModules.stylix
-            ./home-manager.nix
-          ];
-          config = {
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      top@{
+        ...
+      }:
+      {
 
-            # home.packages = [
-            #   inputs.psysonic.packages.${pkgs.stdenv.hostPlatform.system}.psysonic
-            # ];
-
-            home.file.".face" = {
-              source = ./assets/avatar.png;
-            };
-
-            signal.desktop.editor.helix.src = inputs.helixSrc;
-            programs.direnv.nix-direnv.package =
-              inputs.nix-direnv.packages.${pkgs.stdenv.hostPlatform.system}.nix-direnv;
-
-            # programs.yofi.package = inputs.yofi.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-            programs.fish.pluginSources = {
-              done = inputs.fishDone;
-            };
-
-            services.awww.package = inputs.awww.packages.${pkgs.stdenv.hostPlatform.system}.awww;
-
-            desktop.theme.inputs = {
-              cava = "${inputs.catppuccin-cava}/frappe.cava";
-              i3 = "${inputs.catppuccin-i3}/themes/catppuccin-frappe";
-              tokyonight = inputs.tokyonight;
-              rose-pine-qt5ct = inputs.rose-pine-qt5ct;
-            };
-
-            programs.yazi.package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-            programs.eww.package = inputs.eww.packages.${pkgs.stdenv.hostPlatform.system}.eww;
-
-            # programs.quickshell.package = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-          };
+        flake = {
+          homeModules.default = (import ./home-module.nix) inputs;
         };
-      devShells = std.mapAttrs (
-        system: pkgs:
-        let
-          qt = pkgs.qt6;
-          qtEnv = qt.env "qt-custom-${qt.qtbase.version}" [
-            qt.qtdeclarative
-            qt.qtsvg
-            qt.qtimageformats
-            qt.qtmultimedia
-            qt.qt5compat
-            pkgs.libglvnd
-          ];
-        in
-        {
-          default = pkgs.mkShell {
-            buildInputs = [
-              qtEnv
-              pkgs.quickshell
-            ];
-            shellHook = ''
-              # Required for qmlls to find the correct type declarations
-              export QMLLS_BUILD_DIRS=${qtEnv}/lib/qt-6/qml/:${pkgs.quickshell}/lib/qt-6/qml/
-              export QML_IMPORT_PATH=$PWD/src/wayland/taskbar/quickshell
-            '';
+        systems = [ "x86_64-linux" ];
+        perSystem =
+          { pkgs, ... }:
+          {
+            formatter = pkgs.nixfmt;
+            packages = {
+              # why is it so hard to package python applications...
+              wallmaster =
+                let
+                  lib = inputs.nixpkgs.lib;
+                  pyproject = inputs.pyproject;
+                  uv = inputs.uv2nix;
+                  workspace = uv.lib.workspace.loadWorkspace { workspaceRoot = ./pkg/wallmaster; };
+                  overlay = workspace.mkPyprojectOverlay {
+                    sourcePreference = "wheel";
+                  };
+                  python = pkgs.python3;
+                  pythonSet =
+                    (pkgs.callPackage pyproject.build.packages {
+                      inherit python;
+                    }).overrideScope
+                      (
+                        lib.composeManyExtensions [
+                          inputs.pyproject-build-systems.overlays.wheel
+                          overlay
+                        ]
+                      );
+                in
+                (pkgs.callPackages pyproject.build.util { }).mkApplication {
+                  venv = pythonSet.mkVirtualEnv "wallmaster-env" workspace.deps.default;
+                  package = pythonSet.wallmaster;
+                };
+            };
+            devShells =
+              let
+                qt = pkgs.qt6;
+                qtEnv = qt.env "qt-custom-${qt.qtbase.version}" [
+                  qt.qtdeclarative
+                  qt.qtsvg
+                  qt.qtimageformats
+                  qt.qtmultimedia
+                  qt.qt5compat
+                  pkgs.libglvnd
+                ];
+              in
+              {
+                default = pkgs.mkShell {
+                  buildInputs = [
+                    qtEnv
+                    pkgs.quickshell
+                  ];
+                  shellHook = ''
+                    # Required for qmlls to find the correct type declarations
+                    export QMLLS_BUILD_DIRS=${qtEnv}/lib/qt-6/qml/:${pkgs.quickshell}/lib/qt-6/qml/
+                    export QML_IMPORT_PATH=$PWD/src/wayland/taskbar/quickshell
+                  '';
+                };
+              };
           };
-        }
-      ) nixpkgsFor;
-    };
+      }
+    );
 }

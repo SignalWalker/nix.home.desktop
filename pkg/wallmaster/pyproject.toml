@@ -1,0 +1,12 @@
+[project]
+name = "wallmaster"
+version = "1.0.0"
+requires-python = ">=3.13"
+dependencies = ["pillow>=12.2.0", "typer>=0.26.7"]
+
+[project.scripts]
+wallmaster = "wallmaster.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.11.19,<0.12"]
+build-backend = "uv_build"

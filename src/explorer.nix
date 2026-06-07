@@ -43,15 +43,104 @@ in
       home.packages = [
         pkgs.resvg # svg preview
         pkgs.poppler # pdf preview
+        pkgs.ripdrag # drag-and-drop
       ];
+      xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
+        [filechooser]
+        cmd=${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
+        env=PATH="$PATH:/run/current-system/sw/bin"
+        create_help_file=1
+        default_dir=$HOME
+        open_mode=suggested
+        save_mode=suggested
+      '';
       programs.yazi = {
+        keymap = {
+          mgr = {
+            prepend_keymap = [
+              {
+                on = "y";
+                run = [
+                  "shell -- for path in %s; do echo \"file://$path\"; done | wl-copy -t text/uri-list"
+                  "yank"
+                ];
+              }
+              {
+                on = "<C-n>";
+                run = [
+                  "shell -- ripdrag %s -x 2>/dev/null &"
+                ];
+              }
+            ];
+          };
+        };
         settings = {
+          open = {
+            prepend_rules = [
+              {
+                mime = "application/executable";
+                use = [
+                  "run"
+                ];
+              }
+              {
+                mime = "application/pie-executable";
+                use = [
+                  "run"
+                ];
+              }
+              {
+                mime = "application/x-executable";
+                use = [
+                  "run"
+                ];
+              }
+              {
+                mime = "text/html";
+                use = [
+                  "open"
+                  "edit"
+                ];
+              }
+              {
+                mime = "image/*";
+                use = [
+                  "open"
+                  "set-wallpaper"
+                ];
+              }
+            ];
+            append_rules = [
+              {
+                url = "*"; # fallback
+                use = [
+                  "open"
+                ];
+              }
+            ];
+          };
           opener = {
+            "run" = [
+              {
+                run = "app2unit -s a %s";
+                desc = "Run";
+                orphan = true;
+                for = "linux";
+              }
+            ];
             "open" = [
               {
-                run = "app2unit-open \"$@\"";
+                run = "app2unit-open %s";
                 desc = "Open";
                 orphan = true;
+                for = "linux";
+              }
+            ];
+            "set-wallpaper" = [
+              {
+                run = "wallmaster set %s";
+                desc = "Set as wallpaper";
+                orphan = false;
                 for = "linux";
               }
             ];
