@@ -291,8 +291,9 @@
             },
             {
                 "command": [
-                    "uwsm",
-                    "stop"
+                    "loginctl",
+                    "terminate-user",
+                    ""
                 ],
                 "dangerous": true,
                 "description": "Log out of the current session",
