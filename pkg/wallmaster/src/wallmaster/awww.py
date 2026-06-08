@@ -7,7 +7,6 @@ from .log import eprint
 def awww(*args, bin_path = "awww", stdout = subprocess.PIPE, stderr = subprocess.PIPE) -> tuple[str, str] | None:
     cmd = [bin_path]
     cmd.extend(args)
-    eprint(f"cmd: {' '.join(cmd)}");
     try:
         res = subprocess.run(cmd, stdout=stdout, stderr=stderr, encoding="utf-8")
         return (res.stdout.strip() if stdout == subprocess.PIPE else "", res.stderr.strip() if stderr == subprocess.PIPE else "")

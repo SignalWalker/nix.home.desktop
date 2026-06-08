@@ -7,7 +7,7 @@ from enum import Enum
 from PIL import Image
 from .awww import awww_query, awww
 from .log import eprint, LogLevel
-from .system import recursive_scandir
+from .system import recursive_scandir, get_user_dir
 from .battery import is_battery_charged
 
 class AnimationLevel(str, Enum):
@@ -46,14 +46,10 @@ def base(log_level: LogLevel = LogLevel.INFO, bin_path: str = "awww"):
     state["log_level"] = log_level
     state["bin_path"] = bin_path
 
-dir_arg = typer.Argument(
-            envvar = "XDG_WALLPAPERS_DIR",
-            exists = True,
-            file_okay = False,
-            dir_okay = True,
-            readable = True,
-            resolve_path = True
-            )
+def get_wallpaper_dir() -> Path:
+    return get_user_dir("WALLPAPERS")
+
+dir_arg = typer.Argument(default_factory=get_wallpaper_dir)
 
 @app.command("list")
 def list_all(directory: Annotated[Path, dir_arg], animation: AnimationLevel = AnimationLevel.allow_while_charged):
@@ -91,14 +87,14 @@ def display_img(image: Path, output: str, width: int, height: int, resize: bool,
             img_ratio = img_w / img_h
             scr_ratio = width / height
             variance = abs(scr_ratio - img_ratio)
-            eprint(f"image dimensions: {img_w}x{img_h} ({img_ratio})")
-            eprint(f"screen dimensions: {width}x{height} ({scr_ratio})")
-            eprint(f"variance: {variance}")
+            eprint(f"\timage dimensions: {img_w}x{img_h} ({img_ratio})")
+            eprint(f"\tscreen dimensions: {width}x{height} ({scr_ratio})")
+            eprint(f"\tvariance: {variance}")
             if variance > max_variance:
-                eprint("resizing with `crop`")
+                eprint("\tresizing with `crop`")
                 resize_arg = "crop"
             else:
-                eprint("resizing with `fit`")
+                eprint("\tresizing with `fit`")
                 resize_arg = "fit"
     awww_args = ["img", "--transition-type=random", "--filter=Nearest", f"--outputs={output}", f"--resize={resize_arg}", str(image)]
     if dry_run:

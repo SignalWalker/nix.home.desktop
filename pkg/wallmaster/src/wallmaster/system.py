@@ -1,3 +1,5 @@
+import sys
+import subprocess
 import os
 
 def recursive_scandir(dir: str, ext: set[str]):    # dir: str, ext: list
@@ -17,3 +19,11 @@ def recursive_scandir(dir: str, ext: set[str]):    # dir: str, ext: list
         files.extend(f)
 
     return subfolders, files
+
+def get_user_dir(name: str) -> str | None:
+    cmd = ["xdg-user-dir", name]
+    try:
+        res = subprocess.run(cmd, stdout = subprocess.PIPE, encoding="utf-8")
+        return res.stdout.strip()
+    except subprocess.CalledProcessError:
+        return None
