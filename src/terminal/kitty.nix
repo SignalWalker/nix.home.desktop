@@ -104,7 +104,7 @@ in
           autostart = true;
           automove = true;
         };
-        "XF86Calculator" = editorPad;
+        "XF86Calculator" = editorPad; # NOTE :: on the gmmk, this is f3
         # HACK :: framework keyboard doesn't have a calculator button :c
         # this is the gear button on f12
         "XF86AudioMedia" = editorPad;

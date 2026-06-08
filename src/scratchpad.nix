@@ -7,7 +7,6 @@
 let
   inherit (builtins)
     mapAttrs
-    toString
     elemAt
     attrNames
     filter
@@ -18,7 +17,6 @@ let
         {
           config,
           lib,
-          pkgs,
           name,
           ...
         }:
