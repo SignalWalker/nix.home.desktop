@@ -76,7 +76,7 @@ in
         };
         settings = {
           debug = {
-            disable_logs = false;
+            disable_logs = true;
             enable_stdout_logs = false;
           };
           general = {
@@ -174,9 +174,6 @@ in
             # resize and keep aspect ratio
             "MOD3CTRLALT,mouse:272,resizewindow 1"
           ];
-          "exec-once" = [
-            "app2unit -s b -- clipse -listen"
-          ];
         };
       };
     }
@@ -184,7 +181,7 @@ in
     {
       wayland.windowManager.hyprland.settings.windowrule = [
         {
-          name = "float-everything-by-default-because-everything-assumes-floating-wm";
+          name = "float-everything-by-default-because-most-apps-assume-floating-wm";
           "match:initial_class" = ".*";
           float = true;
         }
