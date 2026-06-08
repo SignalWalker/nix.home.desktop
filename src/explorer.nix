@@ -15,15 +15,17 @@
       pkgs.ripdrag # drag-and-drop
       pkgs.kdePackages.kdialog # TODO :: why
     ];
-    "Shift+Slash" = {
-      criteria = {
-        app_id = "scratch_explorer";
+    desktop.scratchpads = {
+      "Shift+Slash" = {
+        criteria = {
+          app_id = "scratch_explorer";
+        };
+        resize = 83;
+        startup = "kitty --class scratch_explorer yazi";
+        systemdCat = true;
+        autostart = false;
+        automove = true;
       };
-      resize = 83;
-      startup = "kitty --class scratch_explorer yazi";
-      systemdCat = true;
-      autostart = false;
-      automove = true;
     };
     # this makes XDG use yazi as the file selector
     # NOTE :: the PATH line is a workaround for NixOS: https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser/issues/56#issuecomment-3697512117
