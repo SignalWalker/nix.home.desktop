@@ -82,6 +82,7 @@ let
       )
     ];
   };
+  keybinds = config.desktop.keybinds;
 in
 {
   options = {
@@ -261,7 +262,9 @@ in
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "app2unit -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
+            args = lib.mkDefault [
+              "app2unit -T --app-id=Neovim -- ${config.systemd.user.sessionVariables.EDITOR}"
+            ];
           };
         };
         # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
@@ -272,7 +275,7 @@ in
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "execr";
-            args = lib.mkDefault [ "app2unit -T -- ${config.systemd.user.sessionVariables.EDITOR}" ];
+            args = lib.mkDefault keybinds.editorOpen.hypr.args;
           };
         };
         # BRIGHTNESS
