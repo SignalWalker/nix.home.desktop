@@ -1,11 +1,12 @@
 {
   config,
+  lib,
   ...
 }:
 {
   config = {
     services.clipse = {
-      enable = true;
+      enable = lib.mkDefault true;
       systemdTarget = config.wayland.systemd.target;
       imageDisplay = {
         type = "kitty";
@@ -32,8 +33,8 @@
         description = "show clipboard history";
         hypr = {
           enable = true;
-          dispatcher = "execr";
-          args = [ "app2unit -s a -a clipse -- kitty --app-id=clipse clipse" ];
+          dispatcher = lib.mkDefault "execr";
+          args = lib.mkDefault [ "app2unit -s a -a clipse -- kitty --app-id=clipse clipse" ];
         };
       };
     };

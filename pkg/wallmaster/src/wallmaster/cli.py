@@ -6,6 +6,7 @@ from pathlib import Path
 from enum import Enum
 from PIL import Image
 from .awww import awww_query, awww
+from .noctalia import noctalia_set_wallpaper
 from .log import eprint, LogLevel
 from .system import recursive_scandir, get_user_dir
 from .battery import is_battery_charged
@@ -101,6 +102,7 @@ def display_img(image: Path, output: str, width: int, height: int, resize: bool,
         eprint(awww_args)
     else:
         awww(*awww_args, bin_path = state["bin_path"], stdout=None, stderr=None)
+        noctalia_set_wallpaper(output, image)
 
 @app.command("set")
 def set_wallpaper(image: Annotated[Path, typer.Argument(exists=True,

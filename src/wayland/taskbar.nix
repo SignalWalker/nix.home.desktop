@@ -10,7 +10,7 @@ in
   options = {
     services.taskbar = {
       enable = (lib.mkEnableOption "task/status bar") // {
-        default = true;
+        default = false;
       };
       type = lib.mkOption {
         type = lib.types.enum [

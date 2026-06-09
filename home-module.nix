@@ -5,7 +5,8 @@ inputs:
 }:
 {
   imports = [
-    inputs.caelestia-shell.homeManagerModules.default
+    inputs.noctalia.homeModules.default
+
     # inputs.watch-battery.homeManagerModules.default
     inputs.ashvim.homeManagerModules.default
     inputs.lan-mouse.homeManagerModules.default
