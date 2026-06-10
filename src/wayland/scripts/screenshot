@@ -3,4 +3,4 @@ set -e
 img="$(grimshot save $1)"
 echo "Saved screenshot to $img"
 wl-copy --trim-newline < $img
-notify-send --hint=STRING:image-path:$img Screenshot $img
+notify-send --app-name=Screenshot --urgency=low --hint=STRING:image-path:$img Screenshot $img
