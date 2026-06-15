@@ -15,66 +15,79 @@ let
           ...
         }:
         {
-          options = {
-            modifiers = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-            };
-            keysym = lib.mkOption {
-              type = lib.types.str;
-            };
-            description = lib.mkOption {
-              type = lib.types.str;
-              default = name;
-            };
-            hypr =
-              let
-                hypr = config.hypr;
-              in
-              {
-                enable = lib.mkEnableOption "hyprland keybind";
-                locked = lib.mkEnableOption "use while screen locked";
-                repeat = lib.mkEnableOption "repetition";
-                dispatcher = lib.mkOption {
-                  type = lib.types.str;
-                };
-                args = lib.mkOption {
-                  type = lib.types.uniq (lib.types.listOf lib.types.str);
-                };
-                bindFlags = lib.mkOption {
-                  type = lib.types.str;
-                  readOnly = true;
-                  # TODO :: more flags
-                  default =
-                    (lib.optionalString hypr.locked "l")
-                    + (lib.optionalString hypr.repeat "e")
-                    + (lib.optionalString (config.description != "") "d");
-                };
-                bindString = lib.mkOption {
-                  type = lib.types.str;
-                  readOnly = true;
-                  default =
-                    let
-                      args = [
-                        (lib.concatStringsSep " " config.modifiers)
-                        config.keysym
-                      ]
-                      ++ (lib.optional (config.description != "") config.description)
-                      ++ [
-                        hypr.dispatcher
-                      ]
-                      ++ hypr.args;
-                    in
-                    lib.concatStringsSep ", " args;
-                };
+          options =
+            let
+              toLua = lib.generators.toLua { };
+              inherit (lib) mkLuaInline;
+            in
+            {
+              modifiers = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
               };
-          };
+              keysym = lib.mkOption {
+                type = lib.types.str;
+              };
+              description = lib.mkOption {
+                type = lib.types.str;
+                default = name;
+              };
+              hypr =
+                let
+                  hypr = config.hypr;
+                in
+                {
+                  enable = lib.mkEnableOption "hyprland keybind";
+                  flags = {
+                    description = lib.mkOption {
+                      type = lib.types.str;
+                      readOnly = true;
+                      default = config.description;
+                    };
+                    locked = lib.mkEnableOption "use while screen locked";
+                    release = lib.mkEnableOption "will trigger on release of a key";
+                    click = lib.mkEnableOption "Will trigger on release of a key or button as long as the mouse cursor stays inside binds:drag_threshold";
+                    drag = lib.mkEnableOption "Will trigger on release of a key or button as long as the mouse cursor moves outside binds:drag_threshold.";
+                    long_press = lib.mkEnableOption "Will trigger on long press of a key.";
+                    repeating = lib.mkEnableOption "Will repeat when held.";
+                    non_consuming = lib.mkEnableOption "Key/mouse events will be passed to the active window in addition to triggering the dispatcher.";
+                    auto_consuming = lib.mkEnableOption "Key/mouse events will be passed to the active window if the dispatcher doesn’t succeed.";
+                    transparent = lib.mkEnableOption "Cannot be shadowed by other binds.";
+                    ignore_mods = lib.mkEnableOption "Will ignore modifiers.";
+                    dont_inhibit = lib.mkEnableOption "Bypasses the app’s requests to inhibit keybinds.";
+                    submap_universal = lib.mkEnableOption "Will be active no matter the submap.";
+                    device = lib.mkEnableOption "Allow binds to be set per device.";
+                  };
+                  dispatcher = lib.mkOption {
+                    type = lib.types.addCheck lib.types.str (dsp: dsp != "execr" && dsp != "exec");
+                  };
+                  args = lib.mkOption {
+                    type = lib.types.uniq (lib.types.listOf lib.types.anything);
+                  };
+                  bindCall = lib.mkOption {
+                    type = lib.types.str;
+                    readOnly = true;
+                    default =
+                      let
+                        keys = toLua (lib.concatStringsSep " + " (config.modifiers ++ [ config.keysym ]));
+                        dispatchArgs = lib.concatMapStringsSep ", " toLua hypr.args;
+                        dispatchCall = "hl.dsp.${hypr.dispatcher}(${dispatchArgs})";
+                        flags = toLua (lib.filterAttrs (name: val: val != null && val != false) hypr.flags);
+                      in
+                      "hl.bind(${keys}, ${dispatchCall}, ${flags})";
+                  };
+                };
+            };
           config = {
             # TODO :: check arg count for dispatcher?
             # assertions = [
             #   {
-            #     assertion = lib.allUnique config.modifiers;
-            #     message = "keybind modifiers must be unique";
+            #     assertion = config.hypr.enable -> config.hypr.dispatcher != "execr";
+            #     message = "hypr dispatcher should be exec_raw instead of execr";
+            #   }
+            #   {
+            #     assertion = config.hypr.enable -> config.hypr.dispatcher != "exec";
+            #     message = "hypr dispatcher should be exec_cmd instead of exec";
             #   }
             # ];
           };
@@ -110,8 +123,8 @@ in
           description = "kill active window";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "killactive";
-            args = lib.mkDefault [ ];
+            dispatcher = lib.mkDefault "window.close";
+            args = lib.mkDefault [ { } ];
           };
         };
         windowKillForce = {
@@ -124,8 +137,8 @@ in
           description = "force kill active window";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "forcekillactive";
-            args = lib.mkDefault [ ];
+            dispatcher = lib.mkDefault "window.kill";
+            args = lib.mkDefault [ { } ];
           };
         };
         windowFullscreenToggle = {
@@ -136,8 +149,13 @@ in
           description = "toggle active window fullscreen";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "fullscreen";
-            args = lib.mkDefault [ "0" ];
+            dispatcher = lib.mkDefault "window.fullscreen";
+            args = lib.mkDefault [
+              {
+                mode = "fullscreen";
+                action = "toggle";
+              }
+            ];
           };
         };
         windowMaximizeToggle = {
@@ -149,8 +167,13 @@ in
           description = "toggle active window maximize";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "fullscreen";
-            args = lib.mkDefault [ "1" ];
+            dispatcher = lib.mkDefault "window.fullscreen";
+            args = lib.mkDefault [
+              {
+                mode = "maximized";
+                action = "toggle";
+              }
+            ];
           };
         };
         windowFloatingToggle = {
@@ -162,8 +185,8 @@ in
           description = "toggle active window floating";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "togglefloating";
-            args = lib.mkDefault [ "active" ];
+            dispatcher = lib.mkDefault "window.float";
+            args = lib.mkDefault [ { action = "toggle"; } ];
           };
         };
         windowPinToggle = {
@@ -175,8 +198,8 @@ in
           description = "toggle active window pin";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "pin";
-            args = lib.mkDefault [ "active" ];
+            dispatcher = lib.mkDefault "window.pin";
+            args = lib.mkDefault [ { } ];
           };
         };
         windowCenter = {
@@ -187,8 +210,8 @@ in
           description = "center active window";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "centerwindow";
-            args = lib.mkDefault [ ];
+            dispatcher = lib.mkDefault "window.center";
+            args = lib.mkDefault [ { } ];
           };
         };
         windowFocusPrevious = {
@@ -199,9 +222,11 @@ in
           description = "focus previous window";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "cyclenext";
-            args = lib.mkDefault [ "prev" ];
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "window.cycle_next";
+            args = lib.mkDefault [ { next = false; } ];
           };
         };
         windowFocusNext = {
@@ -212,9 +237,11 @@ in
           description = "focus next window";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "cyclenext";
-            args = lib.mkDefault [ ];
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "window.cycle_next";
+            args = lib.mkDefault [ { } ];
           };
         };
         workspacePrevious = {
@@ -225,9 +252,11 @@ in
           description = "go to previous workspace";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "workspace";
-            args = lib.mkDefault [ "previous" ];
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "focus";
+            args = lib.mkDefault [ { workspace = "previous_per_monitor"; } ];
           };
         };
         # TERMINAL
@@ -237,7 +266,7 @@ in
           description = "open terminal";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "app2unit -T" ];
           };
         };
@@ -250,7 +279,7 @@ in
           description = "open terminal (directly)";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "kitty" ];
           };
         };
@@ -261,7 +290,7 @@ in
           description = "open editor";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [
               "app2unit -T --app-id=Neovim -- ${config.systemd.user.sessionVariables.EDITOR}"
             ];
@@ -274,7 +303,7 @@ in
           description = "open editor";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault keybinds.editorOpen.hypr.args;
           };
         };
@@ -285,8 +314,10 @@ in
           description = "lower brightness";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set 2%-" ];
           };
         };
@@ -296,8 +327,10 @@ in
           description = "raise brightness";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set +2%" ];
           };
         };
@@ -307,8 +340,10 @@ in
           description = "minimize brightness";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set 1" ];
           };
         };
@@ -318,8 +353,10 @@ in
           description = "maximize brightness";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set 100%" ];
           };
         };
@@ -339,8 +376,12 @@ in
             description = "focus workspace ${wsStr}";
             hypr = {
               enable = true;
-              dispatcher = lib.mkDefault "workspace";
-              args = lib.mkDefault [ wsStr ];
+              dispatcher = lib.mkDefault "focus";
+              args = lib.mkDefault [
+                {
+                  workspace = ws;
+                }
+              ];
             };
           };
           "windowSendToWs_${wsStr}" = {
@@ -352,8 +393,13 @@ in
             description = "send active window to workspace ${wsStr}";
             hypr = {
               enable = true;
-              dispatcher = lib.mkDefault "movetoworkspacesilent";
-              args = lib.mkDefault [ wsStr ];
+              dispatcher = lib.mkDefault "window.move";
+              args = lib.mkDefault [
+                {
+                  workspace = ws;
+                  follow = false;
+                }
+              ];
             };
           };
         }
@@ -363,29 +409,53 @@ in
         let
 
           dirMap = {
-            "u" = {
+            "up" = {
               name = "Up";
               key = "K";
-              move = "exact 0% -1%";
-              resize = "0% -1%";
+              move = {
+                x = "0%";
+                y = "-1%";
+              };
+              resize = {
+                x = "0%";
+                y = "-1%";
+              };
             };
-            "d" = {
+            "down" = {
               name = "Down";
               key = "J";
-              move = "exact 0% 1%";
-              resize = "0% 1%";
+              move = {
+                x = "0%";
+                y = "1%";
+              };
+              resize = {
+                x = "0%";
+                y = "1%";
+              };
             };
-            "l" = {
+            "left" = {
               name = "Left";
               key = "H";
-              move = "exact -1% 0%";
-              resize = "-1% 0%";
+              move = {
+                x = "-1%";
+                y = "0%";
+              };
+              resize = {
+                x = "-1%";
+                y = "0%";
+              };
             };
-            "r" = {
+            "right" = {
               name = "Right";
               key = "L";
-              move = "exact 1% 0%";
-              resize = "1% 0%";
+              move = {
+                x = "1%";
+                y = "0%";
+              };
+              resize = {
+                x = "1%";
+                y = "0%";
+              };
             };
           };
         in
@@ -402,9 +472,11 @@ in
               description = "focus window ${lowerName}";
               hypr = {
                 enable = true;
-                repeat = true;
-                dispatcher = lib.mkDefault "movefocus";
-                args = lib.mkDefault [ dir ];
+                flags = {
+                  repeating = true;
+                };
+                dispatcher = lib.mkDefault "focus";
+                args = lib.mkDefault [ { direction = dir; } ];
               };
             };
             "windowMove${specs.name}" = {
@@ -416,46 +488,60 @@ in
               description = "move active window ${lowerName}";
               hypr = {
                 enable = true;
-                repeat = true;
-                dispatcher = lib.mkDefault "movewindow";
-                args = lib.mkDefault [ dir ];
+                flags = {
+                  repeating = true;
+                };
+                dispatcher = lib.mkDefault "window.move";
+                args = lib.mkDefault [ { direction = dir; } ];
               };
             };
-            "windowShift${specs.name}" = {
-              modifiers = [
-                "MOD3"
-                "ALT"
-                "SHIFT"
-              ];
-              keysym = specs.key;
-              description = "shift active window ${lowerName}";
-              hypr = {
-                enable = true;
-                repeat = true;
-                dispatcher = lib.mkDefault "movewindowpixel";
-                args = lib.mkDefault [
-                  specs.move
-                  "activewindow"
-                ];
-              };
-            };
-            "windowResize${specs.name}" = {
-              modifiers = [
-                "MOD3"
-                "CTRL"
-              ];
-              keysym = specs.key;
-              description = "resize active window ${lowerName}";
-              hypr = {
-                enable = true;
-                repeat = true;
-                dispatcher = lib.mkDefault "resizewindowpixel";
-                args = lib.mkDefault [
-                  specs.resize
-                  "activewindow"
-                ];
-              };
-            };
+            # "windowShift${specs.name}" = {
+            #   modifiers = [
+            #     "MOD3"
+            #     "ALT"
+            #     "SHIFT"
+            #   ];
+            #   keysym = specs.key;
+            #   description = "shift active window ${lowerName}";
+            #   hypr = {
+            #     enable = true;
+            #     flags = {
+            #       repeating = true;
+            #     };
+            #     dispatcher = lib.mkDefault "window.move";
+            #     args = lib.mkDefault [
+            #       (
+            #         {
+            #           relative = true;
+            #         }
+            #         // specs.move
+            #       )
+            #     ];
+            #   };
+            # };
+            # "windowResize${specs.name}" = {
+            #   modifiers = [
+            #     "MOD3"
+            #     "CTRL"
+            #   ];
+            #   keysym = specs.key;
+            #   description = "resize active window ${lowerName}";
+            #   hypr = {
+            #     enable = true;
+            #     flags = {
+            #       repeating = true;
+            #     };
+            #     dispatcher = lib.mkDefault "window.resize";
+            #     args = lib.mkDefault [
+            #       (
+            #         {
+            #           relative = true;
+            #         }
+            #         // specs.resize
+            #       )
+            #     ];
+            #   };
+            # };
           }
         ) { } dirMap)
       )

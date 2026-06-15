@@ -22,7 +22,7 @@
           description = "screenshot active window";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "${script} active" ];
           };
         };
@@ -32,7 +32,7 @@
           description = "screenshot selected region";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "${script} area" ];
           };
         };
@@ -42,7 +42,7 @@
           description = "screenshot active output";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "${script} output" ];
           };
         };
@@ -55,7 +55,7 @@
           description = "screenshot all outputs";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "${script} screen" ];
           };
         };

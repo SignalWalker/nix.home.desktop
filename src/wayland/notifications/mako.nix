@@ -19,21 +19,21 @@ in
         notificationsRestore = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${makoctl} restore" ];
           };
         };
         notificationsDismiss = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${makoctl} dismiss" ];
           };
         };
         notificationsOpenMenu = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${makoctl} menu ${pkgs.bemenu}/bin/bemenu -p mako" ];
           };
         };

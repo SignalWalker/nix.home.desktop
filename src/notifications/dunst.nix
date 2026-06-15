@@ -19,21 +19,21 @@ in
         notificationsRestore = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${dunstctl} history-pop" ];
           };
         };
         notificationsDismiss = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${dunstctl} close" ];
           };
         };
         notificationsOpenMenu = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${dunstctl} context" ];
           };
         };

@@ -15,7 +15,7 @@
         description = "lock session";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "execr";
+          dispatcher = lib.mkDefault "exec_raw";
           args = lib.mkDefault [ "swaylock --effect-scale 0.5 --effect-blur 5x3" ];
         };
       };

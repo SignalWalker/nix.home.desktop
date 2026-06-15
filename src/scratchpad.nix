@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -189,7 +188,7 @@ in
         description = "toggle generic scratchpad";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "togglespecialworkspace";
+          dispatcher = lib.mkDefault "workspace.toggle_special";
           args = lib.mkDefault [ "scratchpad" ];
         };
       };
@@ -202,8 +201,13 @@ in
         description = "send active window to generic scratchpad";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "movetoworkspacesilent";
-          args = lib.mkDefault [ "special:scratchpad" ];
+          dispatcher = lib.mkDefault "window.move";
+          args = lib.mkDefault [
+            {
+              workspace = "special:scratchpad";
+              follow = false;
+            }
+          ];
         };
       };
     }
@@ -226,7 +230,7 @@ in
           description = "toggle scratchpad: ${pad.name}";
           hypr = {
             enable = config.wayland.windowManager.hyprland.pyprland.enable;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "pypr toggle ${pad.name}" ];
           };
         };

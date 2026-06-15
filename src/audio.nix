@@ -55,8 +55,10 @@
           description = "rewind media";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "playerctl -s previous" ];
           };
         };
@@ -66,8 +68,10 @@
           description = "play/pause media";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "playerctl -s play-pause" ];
           };
         };
@@ -77,8 +81,10 @@
           description = "fast-forward media";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "playerctl -s next" ];
           };
         };
@@ -88,9 +94,11 @@
           description = "raise volume";
           hypr = {
             enable = true;
-            repeat = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "pactl set-sink-volume @DEFAULT_SINK@ +1dB" ];
           };
         };
@@ -100,9 +108,11 @@
           description = "lower volume";
           hypr = {
             enable = true;
-            repeat = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "pactl set-sink-volume @DEFAULT_SINK@ -1dB" ];
           };
         };
@@ -112,8 +122,10 @@
           description = "mute audio";
           hypr = {
             enable = true;
-            locked = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              locked = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" ];
           };
         };
@@ -123,8 +135,10 @@
           description = "lower mic volume";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 1%-" ];
           };
         };
@@ -134,8 +148,10 @@
           description = "raise mic volume";
           hypr = {
             enable = true;
-            repeat = true;
-            dispatcher = lib.mkDefault "execr";
+            flags = {
+              repeating = true;
+            };
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 1%+" ];
           };
         };
@@ -145,7 +161,7 @@
           description = "mute microphone";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" ];
           };
         };
@@ -155,7 +171,7 @@
           description = "mute microphone";
           hypr = {
             enable = true;
-            dispatcher = lib.mkDefault "execr";
+            dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" ];
           };
         };

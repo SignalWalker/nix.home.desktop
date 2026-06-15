@@ -33,7 +33,7 @@
         description = "show clipboard history";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "execr";
+          dispatcher = lib.mkDefault "exec_raw";
           args = lib.mkDefault [ "app2unit -s a -a clipse -- kitty --app-id=clipse clipse" ];
         };
       };

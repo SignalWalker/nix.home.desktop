@@ -37,7 +37,7 @@
         description = "open application launcher";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "execr";
+          dispatcher = lib.mkDefault "exec_raw";
           args = lib.mkDefault [ "walker" ];
         };
       };
@@ -50,7 +50,7 @@
         description = "open application launcher (alt)";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "execr";
+          dispatcher = lib.mkDefault "exec_raw";
           args = lib.mkDefault [ "walker" ];
         };
       };

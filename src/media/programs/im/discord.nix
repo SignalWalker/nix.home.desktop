@@ -52,6 +52,7 @@
         vencord.enable = false;
       };
 
+      # NOTE :: this only works if you disable the splash screen in vesktop settings
       desktop.scratchpads = {
         "Shift+D" = {
           criteria = {

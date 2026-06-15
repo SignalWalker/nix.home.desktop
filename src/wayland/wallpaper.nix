@@ -21,7 +21,7 @@
         description = "randomize wallpaper";
         hypr = {
           enable = true;
-          dispatcher = lib.mkDefault "execr";
+          dispatcher = lib.mkDefault "exec_raw";
           args = lib.mkDefault [ "wallmaster randomize" ];
         };
       };
