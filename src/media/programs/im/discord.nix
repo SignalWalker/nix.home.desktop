@@ -55,13 +55,11 @@
       desktop.scratchpads = {
         "Shift+D" = {
           criteria = {
-            # class = "so.libdb.dissent";
-            app_id = "Dorion";
+            app_id = "vesktop";
           };
           name = "discord";
           resize = 93;
-          startup = "Dorion";
-          systemdCat = true;
+          startup = "vesktop";
           autostart = false;
           automove = true;
         };
