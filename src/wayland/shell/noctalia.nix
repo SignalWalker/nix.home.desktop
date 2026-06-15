@@ -129,6 +129,7 @@ in
               "brightness"
               "nightlight"
               "caffeine"
+              "wallmaster-override"
               "battery"
               "power-profile"
               "session"
@@ -138,6 +139,12 @@ in
         widget = {
           "media" = {
             hide_when_no_media = true;
+          };
+          "wallmaster-override" = {
+            command = "wallmaster toggle-override";
+            glyph = "mountain";
+            tooltip = "Toggle wallmaster animation preference";
+            type = "custom_button";
           };
         };
         # not touching widgets rn because they're positioned by logical pixels
@@ -154,56 +161,56 @@ in
         launcherRunAlt = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle launcher" ];
           };
         };
         sessionLock = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} session lock" ];
           };
         };
         clipboardHistoryShow = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle clipboard" ];
           };
         };
         notificationsRestore = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle control-center notifications" ];
           };
         };
         notificationsDismiss = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} notification-clear-active" ];
           };
         };
         controlCenterToggle = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle control-center" ];
           };
         };
         sessionMenuToggle = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle session" ];
           };
         };
         dashboardToggle = {
           hypr = {
             enable = true;
-            dispatcher = "execr";
+            dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle control-center" ];
           };
         };
