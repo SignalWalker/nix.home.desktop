@@ -47,10 +47,14 @@ in
                 shortcut = "2";
               }
               {
+                action = "reboot";
+                shortcut = "3";
+              }
+              {
                 action = "shutdown";
                 # command = "systemctl poweroff";
                 destructive = true;
-                shortcut = "3";
+                shortcut = "4";
               }
             ];
           };
@@ -99,6 +103,9 @@ in
             };
           };
         };
+        battery = {
+          warning_threshold = 15;
+        };
         bar = {
           order = [ "main" ];
           "main" = {
@@ -144,6 +151,13 @@ in
         msg = "noctalia msg";
       in
       {
+        launcherRunAlt = {
+          hypr = {
+            enable = true;
+            dispatcher = "execr";
+            args = [ "${msg} panel-toggle launcher" ];
+          };
+        };
         sessionLock = {
           hypr = {
             enable = true;
