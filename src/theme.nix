@@ -55,9 +55,9 @@
         gtk3 = {
           bookmarks = map (dir: "file://${dir}") (lib.attrValues config.xdg.userDirs.extraConfig);
         };
-        gtk4 = {
-          theme = null; # not officially supported by gtk4; can cause problems
-        };
+        # gtk4 = {
+        #   theme = null; # not officially supported by gtk4; can cause problems
+        # };
       };
       dconf.settings = {
         # "org/gtk/settings/file-chooser" = {
