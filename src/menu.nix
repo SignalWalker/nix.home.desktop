@@ -18,6 +18,9 @@
   #   };
   # };
   config = {
+    programs.elephant = {
+      # enable = true; # NOTE :: enabled by walker
+    };
     programs.walker = {
       enable = true;
       runAsService = true;
