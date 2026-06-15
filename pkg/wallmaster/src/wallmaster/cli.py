@@ -3,19 +3,13 @@ import os
 import random
 from typing import Annotated
 from pathlib import Path
-from enum import Enum
 from PIL import Image
 from .awww import awww_query, awww
 from .noctalia import noctalia_set_wallpaper
 from .log import eprint, LogLevel
-from .system import recursive_scandir, get_user_dir
+from .system import recursive_scandir, get_user_dir, get_animation_override, set_animation_override, get_override_path
 from .battery import is_battery_charged
-
-class AnimationLevel(str, Enum):
-    disable = "disable"
-    allow_while_charged = "allow_while_charged"
-    allow = "allow"
-    prefer = "prefer"
+from .conf import AnimationLevel
 
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff', 'svg' }
 ANIMATED_EXTENSIONS = { 'avif', 'webp', 'gif' }
@@ -35,7 +29,10 @@ def get_allowed_extensions(animation: AnimationLevel) -> set[str]:
             return ANIMATED_EXTENSIONS
 
 def get_images(directory: Path, animation: AnimationLevel) -> list[Path]:
-    _, images = recursive_scandir(directory, get_allowed_extensions(animation))
+    anim_override = get_animation_override(animation)
+    if anim_override != animation:
+        eprint(f"found animation level override: {anim_override}")
+    _, images = recursive_scandir(directory, get_allowed_extensions(anim_override))
     return images
 
 
@@ -147,6 +144,18 @@ def randomize(directory: Annotated[Path, dir_arg], outputs: list[str] = [], dry_
             eprint(f"displaying image on output {id}")
             display_img(image, id, width, height, resize, max_variance, dry_run = dry_run)
             print(image)
+
+@app.command()
+def override(animation_level: AnimationLevel):
+    set_animation_override(animation_level)
+
+@app.command()
+def toggle_override():
+    ov_path = get_override_path()
+    if ov_path.exists():
+        ov_path.unlink()
+    else:
+        set_animation_override(AnimationLevel.prefer)
 
 if __name__ == "__main__":
     app()
