@@ -127,7 +127,7 @@ in
             disable_splash_rendering = true;
             disable_hyprland_logo = true;
             enable_anr_dialog = false;
-            vfr = true;
+            # vfr = true;
             vrr = 2;
           };
           binds = {
@@ -202,7 +202,20 @@ in
           "match:initial_class" = ".*\\\\.exe$";
           float = true;
         }
-      ];
+      ]
+      ++ (map
+        (initial_class: {
+          name = "dont-float-${initial_class}";
+          "match:initial_class" = initial_class;
+          float = false;
+        })
+        [
+          "Neovim"
+          "org.godotengine.Editor"
+          "org.duckstation.DuckStation"
+          "dolphin-emu"
+        ]
+      );
       # TODO
       # wayland.windowManager.hyprland.settings.extraConfig =
       #   let
