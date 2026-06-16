@@ -59,7 +59,16 @@ let
                     device = lib.mkEnableOption "Allow binds to be set per device.";
                   };
                   dispatcher = lib.mkOption {
-                    type = lib.types.addCheck lib.types.str (dsp: dsp != "execr" && dsp != "exec");
+                    type = lib.types.coercedTo lib.types.str (ident: { inherit ident; }) (
+                      lib.types.attrTag {
+                        expr = lib.mkOption {
+                          type = lib.types.luaInline;
+                        };
+                        ident = lib.mkOption {
+                          type = lib.types.str;
+                        };
+                      }
+                    );
                   };
                   args = lib.mkOption {
                     type = lib.types.uniq (lib.types.listOf lib.types.anything);
@@ -71,7 +80,11 @@ let
                       let
                         keys = toLua (lib.concatStringsSep " + " (config.modifiers ++ [ config.keysym ]));
                         dispatchArgs = lib.concatMapStringsSep ", " toLua hypr.args;
-                        dispatchCall = "hl.dsp.${hypr.dispatcher}(${dispatchArgs})";
+                        dispatchCall =
+                          if hypr.dispatcher ? expr then
+                            toLua hypr.dispatcher.expr
+                          else
+                            "hl.dsp.${hypr.dispatcher.ident}(${dispatchArgs})";
                         flags = toLua (lib.filterAttrs (name: val: val != null && val != false) hypr.flags);
                       in
                       "hl.bind(${keys}, ${dispatchCall}, ${flags})";
@@ -257,6 +270,55 @@ in
             };
             dispatcher = lib.mkDefault "focus";
             args = lib.mkDefault [ { workspace = "previous_per_monitor"; } ];
+          };
+        };
+        layoutCycle = {
+          modifiers = [
+            "MOD3"
+          ];
+          keysym = "Tab";
+          description = "cycle workspace layout";
+          hypr = {
+            enable = true;
+            dispatcher = {
+              expr = lib.mkLuaInline ''
+                function()
+                  local layouts     = { "scrolling", "dwindle", "master", "monocle" }
+                  local workspace   = hl.get_active_workspace()
+                  if hl.get_active_special_workspace() then
+                    workspace = hl.get_active_special_workspace()
+                  end
+
+                  local next_layout = "dwindle"
+
+                  if not workspace then
+                      return
+                  end
+
+                  for i = 1, #layouts do
+                      if layouts[i] == workspace.tiled_layout then
+                          local next_layout_idx = (i % #layouts) + 1
+                          next_layout = layouts[next_layout_idx]
+                          break
+                      end
+                  end
+
+                  local workspace_name = nil
+                  if workspace.special then
+                    workspace_name = tostring(workspace.name)
+                  else
+                    workspace_name = tostring(workspace.id)
+                  end
+
+                  hl.notification.create({
+                    text = "Cycling workspace " .. workspace_name .. " to layout " .. next_layout,
+                    duration = 1000,
+                  })
+
+                  hl.workspace_rule({ workspace = workspace_name, layout = next_layout })
+                end
+              '';
+            };
           };
         };
         # TERMINAL

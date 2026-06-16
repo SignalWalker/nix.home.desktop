@@ -182,6 +182,7 @@ in
     {
       desktop.windows = {
         floatEverything = {
+          priority = 0;
           criteria = {
             initialClass = ".*";
           };
@@ -210,9 +211,27 @@ in
             hypr.dynamic.noFocus = true;
           };
         };
-      };
+      }
+      // (builtins.listToAttrs (
+        map
+          (class: {
+            name = "dontFloat${class}";
+            value = {
+              criteria = {
+                initialClass = class;
+              };
+              effects = {
+                hypr.static.float = false;
+              };
+            };
+          })
+          [
+            "Neovim"
+            "kitty"
+          ]
+      ));
       wayland.windowManager.hyprland.extraLuaFiles = lib.mapAttrs' (key: rule: {
-        name = "ui.windows.${rule.name}";
+        name = "ui.windows.${rule.hypr.fileName}";
         value = {
           autoLoad = true;
           content = rule.hypr.lua;

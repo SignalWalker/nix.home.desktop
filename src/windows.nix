@@ -151,6 +151,10 @@ let
               name = mkOption {
                 type = types.str;
               };
+              priority = mkOption {
+                type = types.int;
+                default = 50;
+              };
               criteria = {
                 class = mkNullable regex "";
                 title = mkNullable regex "";
@@ -241,6 +245,16 @@ let
                 };
               };
               hypr = {
+                fileName = lib.mkOption {
+                  type = types.str;
+                  readOnly = true;
+                  default =
+                    let
+                      fName = builtins.replaceStrings [ "." "/" ] [ "_" "_" ] config.name;
+                      pStr = if config.priority < 10 then "0${toString config.priority}" else toString config.priority;
+                    in
+                    "${pStr}-${fName}";
+                };
                 lua = lib.mkOption {
                   type = types.str;
                   readOnly = true;
