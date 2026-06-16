@@ -51,16 +51,16 @@ in
       preview_images = true;
       preview_images_method = "kitty";
     };
-    desktop.windows = [
-      {
+    desktop.windows = {
+      scratchTermInhibitsIdle = {
         criteria = {
-          appId = "scratch_term";
+          class = "scratch_term";
         };
-        properties = {
-          inhibitIdle = "focus";
+        effects = {
+          hypr.dynamic.idleInhibit = "focus";
         };
-      }
-    ];
+      };
+    };
     desktop.scratchpads =
       let
         editorPad = {

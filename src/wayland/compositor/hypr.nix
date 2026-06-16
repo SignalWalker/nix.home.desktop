@@ -180,85 +180,44 @@ in
     }
     # desktop.windows
     {
-      wayland.windowManager.hyprland.extraLuaFiles."window" = {
-        autoLoad = true;
-        content = ''
-          hl.window_rule({
-            name = "float-everything",
-            match = {
-              initial_class = ".*",
-            },
-            float = true
-          })
-          hl.window_rule({
-              name  = "suppress-maximize-events",
-              match = { class = ".*" },
-              suppress_event = "maximize",
-          })
-          hl.window_rule({
-            -- Fix some dragging issues with XWayland
-            name  = "fix-xwayland-drags",
-            match = {
-              class      = "^$",
-              title      = "^$",
-              xwayland   = true,
-              float      = true,
-              fullscreen = false,
-              pin        = false,
-            },
-            no_focus = true,
-          })
-        '';
+      desktop.windows = {
+        floatEverything = {
+          criteria = {
+            initialClass = ".*";
+          };
+          effects = {
+            hypr.static.float = true;
+          };
+        };
+        suppressMaximizeEvents = {
+          criteria = {
+            initialClass = ".*";
+          };
+          effects = {
+            hypr.static.suppressEvent = "maximize";
+          };
+        };
+        fixXwaylandDrags = {
+          criteria = {
+            class = "^$";
+            title = "^$";
+            xwayland = true;
+            float = true;
+            fullscreen = false;
+            pin = false;
+          };
+          effects = {
+            hypr.dynamic.noFocus = true;
+          };
+        };
       };
-      # wayland.windowManager.hyprland.settings.windowrule = [
-      #   {
-      #     name = "float-everything-by-default-because-most-apps-assume-floating-wm";
-      #     "match:initial_class" = ".*";
-      #     float = true;
-      #   }
-      #   {
-      #     name = "clipse-float-center";
-      #     "match:class" = "clipse";
-      #     float = true;
-      #     size = "(monitor_w*0.33) (monitor_h*0.5)";
-      #     center = true;
-      #   }
-      #   {
-      #     name = "float-modal";
-      #     "match:modal" = true;
-      #     float = true;
-      #   }
-      #   {
-      #     name = "float-wine";
-      #     "match:initial_class" = ".*\\\\.exe$";
-      #     float = true;
-      #   }
-      # ]
-      # ++ (map
-      #   (initial_class: {
-      #     name = "dont-float-${initial_class}";
-      #     "match:initial_class" = initial_class;
-      #     float = false;
-      #   })
-      #   [
-      #     "Neovim"
-      #     "org.godotengine.Editor"
-      #     "org.duckstation.DuckStation"
-      #     "dolphin-emu"
-      #   ]
-      # );
-      # TODO
-      # wayland.windowManager.hyprland.settings.extraConfig =
-      #   let
-      #     toMatch = name: crit: "match:${name} = ${crit}";
-      #     toWinRules = win: ''
-      #       windowrule {
-      #         name = ${win.name}
-      #
-      #       }
-      #     '';
-      #   in
-      #   lib.concatStringsSep "\n" (map (toWinRules) config.desktop.windows);
+      wayland.windowManager.hyprland.extraLuaFiles = lib.mapAttrs' (key: rule: {
+        name = "ui.windows.${rule.name}";
+        value = {
+          autoLoad = true;
+          content = rule.hypr.lua;
+        };
+      }) config.desktop.windows;
     }
     {
       wayland.windowManager.hyprland.extraLuaFiles = {
@@ -279,12 +238,6 @@ in
           content = kb.hypr.bindCall;
         };
       }) (lib.filterAttrs (name: val: val.hypr.enable) config.desktop.keybinds));
-      # wayland.windowManager.hyprland.extraLuaFiles."ui.keybinds" = {
-      #   autoLoad = true;
-      #   content = lib.concatMapAttrsStringSep "\n" (name: kb: kb.hypr.bindCall) (
-      #     lib.filterAttrs (name: val: val.hypr.enable) config.desktop.keybinds
-      #   );
-      # };
     }
     (lib.mkIf pypr.enable {
       home.packages = [

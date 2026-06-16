@@ -1,9 +1,18 @@
 {
-  pkgs,
   ...
 }:
 {
   config = {
+    desktop.windows = {
+      floatWine = {
+        criteria = {
+          initialClass = ".*\\\\.exe$";
+        };
+        effects = {
+          hypr.static.float = true;
+        };
+      };
+    };
     # home.packages = [ pkgs.bottles ];
     # xdg.binFile."wine-bottles" = {
     #   executable = true;

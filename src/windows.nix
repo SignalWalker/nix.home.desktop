@@ -1,36 +1,150 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
 let
-
   window = lib.types.submoduleWith {
     modules = [
       (
         {
-          config,
           lib,
-          pkgs,
+          name,
+          config,
           ...
         }:
         {
+          config = lib.mkIf (name != null) {
+            inherit name;
+          };
           options =
             let
-              inherit (lib) mkOption types mkEnableOption;
+              inherit (lib) types mkOption;
+              # syntax: https://github.com/google/re2/wiki/Syntax
               regex = types.str;
               fullscreenState = types.enum [
-                "none"
-                "maximize"
-                "fullscreen"
-                "maximize_and_fullscreen"
+                0
+                1
+                2
+                3
               ];
+              workspace = types.str;
+              mkNullable =
+                type: description:
+                mkOption {
+                  type = types.nullOr type;
+                  inherit description;
+                  default = null;
+                };
               content = types.enum [
                 "none"
                 "photo"
                 "video"
                 "game"
+              ];
+
+              mkSubmodule =
+                md:
+                lib.types.submoduleWith {
+                  modules = [ md ];
+                };
+              mkSubmoduleWithOpts =
+                optFn:
+                mkSubmodule (
+                  { lib, ... }: {
+                    options = optFn lib;
+                  }
+                );
+
+              moveSizeDef = mkSubmoduleWithOpts (
+                lib:
+                let
+                  inherit (lib) types mkOption;
+                in
+                {
+                  x = mkOption {
+                    type = types.str;
+                  };
+                  y = mkOption {
+                    type = types.str;
+                  };
+                }
+              );
+              fullscreenStateClientInternal = mkSubmoduleWithOpts (
+                lib:
+                let
+                  inherit (lib) mkOption;
+                in
+                {
+                  client = mkOption {
+                    type = fullscreenState;
+                  };
+                  internal = mkOption {
+                    type = fullscreenState;
+                  };
+                }
+              );
+
+              monitorSetDef = mkSubmoduleWithOpts (
+                lib:
+                let
+                  inherit (lib) types mkOption;
+                in
+                {
+                  monitor = mkOption {
+                    type = types.str;
+                  };
+                  silent = mkOption {
+                    type = types.bool;
+                    default = false;
+                  };
+                }
+              );
+              workspaceSetDef = mkSubmoduleWithOpts (
+                lib:
+                let
+                  inherit (lib) types mkOption;
+                in
+                {
+                  workspace = mkOption {
+                    type = workspace;
+                  };
+                  silent = mkOption {
+                    type = types.bool;
+                    default = false;
+                  };
+                }
+              );
+              tagSetDef = mkSubmoduleWithOpts (
+                lib:
+                let
+                  inherit (lib) types mkOption;
+                in
+                {
+                  value = mkOption {
+                    type = types.str;
+                  };
+                  action = mkOption {
+                    type = types.enum [
+                      "set"
+                      "unset"
+                      "toggle"
+                    ];
+                  };
+                }
+              );
+              event = types.enum [
+                "fullscreen"
+                "maximize"
+                "activate"
+                "activatefocus"
+                "fullscreenoutput"
+              ];
+
+              idleInhibit = types.enum [
+                "none"
+                "always"
+                "focus"
+                "fullscreen"
               ];
             in
             {
@@ -38,218 +152,145 @@ let
                 type = types.str;
               };
               criteria = {
-                appId = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
-                };
-                class = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
-                };
-                title = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
-                };
-                initialClass = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
-                };
-                initialTitle = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
-                };
-                tag = mkOption {
-                  type = types.nullOr types.str;
-                  default = null;
-                };
-                xWayland = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                float = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                fullscreen = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                pin = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                focus = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                group = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                modal = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                fullscreenStateClient = mkOption {
-                  type = types.nullOr fullscreenState;
-                  default = null;
-                };
-                fullscreenStateInternal = mkOption {
-                  type = types.nullOr fullscreenState;
-                  default = null;
-                };
-                content = mkOption {
-                  type = types.nullOr content;
-                  default = null;
-                };
-                xdgTag = mkOption {
-                  type = types.nullOr regex;
-                  default = null;
+                class = mkNullable regex "";
+                title = mkNullable regex "";
+                initialClass = mkNullable regex "";
+                initialTitle = mkNullable regex "";
+                tag = mkNullable types.str "";
+                xwayland = mkNullable types.bool "";
+                float = mkNullable types.bool "";
+                fullscreen = mkNullable types.bool "";
+                pin = mkNullable types.bool "";
+                focus = mkNullable types.bool "";
+                group = mkNullable types.bool "";
+                modal = mkNullable types.bool "";
+                fullscreenStateClient = mkNullable fullscreenState "";
+                fullscreenStateInternal = mkNullable fullscreenState "";
+                workspace = mkNullable workspace "";
+                content = mkNullable content "";
+                xdgTag = mkNullable regex "";
+              };
+              effects = {
+                hypr = {
+                  static = {
+                    float = mkNullable types.bool "";
+                    tile = mkNullable types.bool "";
+                    fullscreen = mkNullable types.bool "";
+                    maximize = mkNullable types.bool "";
+                    fullscreenState = mkNullable fullscreenStateClientInternal "";
+                    move = mkNullable moveSizeDef "";
+                    size = mkNullable moveSizeDef "";
+                    center = mkNullable types.bool "";
+                    pseudo = mkNullable types.bool "pseudotile the window";
+                    monitor = mkNullable monitorSetDef "";
+                    workspace = mkNullable workspaceSetDef "";
+                    noInitialFocus = mkNullable types.bool "";
+                    pin = mkNullable types.bool "";
+                    group = mkNullable types.str "";
+                    suppressEvent = mkNullable event "";
+                    content = mkNullable content "";
+                    noCloseFor = mkNullable types.int "makes the window uncloseable by `killactive` for the given amount of time (ms)";
+                    scrollingWidth = mkNullable types.float "set the column width (when opened in a scrolling layout)";
+                  };
+                  dynamic = {
+                    persistentSize = mkNullable types.bool "";
+                    noMaxSize = mkNullable types.bool "";
+                    stayFocused = mkNullable types.bool "";
+                    animation = mkNullable types.str "";
+                    # borderColor = mkNullable types.
+                    idleInhibit = mkNullable idleInhibit "";
+                    # opacity = mkNul
+                    tag = mkNullable tagSetDef "";
+                    # maxSize = mkNullable
+                    # minSize =
+                    borderSize = mkNullable types.int "";
+                    rounding = mkNullable types.int "";
+                    roundingPower = mkNullable types.float "";
+                    allowsInput = mkNullable types.bool "force an xwayland window to receive input even if it asks not to";
+                    dimAround = mkNullable types.bool "";
+                    decorate = mkNullable types.bool "";
+                    focusOnActivate = mkNullable types.bool "";
+                    keepAspectRatio = mkNullable types.bool "";
+                    nearestNeighbor = mkNullable types.bool "";
+                    noAnim = mkNullable types.bool "";
+                    noBlur = mkNullable types.bool "";
+                    noDim = mkNullable types.bool "";
+                    noFocus = mkNullable types.bool "";
+                    noFollowMouse = mkNullable types.bool "";
+                    noShadow = mkNullable types.bool "";
+                    noShortcutsInhibit = mkNullable types.bool "";
+                    noScreenShare = mkNullable types.bool "";
+                    noVrr = mkNullable types.bool "";
+                    noAutoHdr = mkNullable types.bool "";
+                    opaque = mkNullable types.bool "";
+                    forceRgbx = mkNullable types.bool "";
+                    syncFullscreen = mkNullable types.bool "";
+                    immediate = mkNullable types.bool "";
+                    xray = mkNullable types.bool "";
+                    renderUnfocused = mkNullable types.bool "";
+                    scrollMouse = mkNullable types.float "";
+                    scrollTouchpad = mkNullable types.float "";
+                    confinePointer = mkNullable types.bool "";
+                    tonemap = mkNullable (types.enum [
+                      "on"
+                      "off"
+                      "clamp"
+                      "limited"
+                    ]) "";
+                  };
                 };
               };
-              properties = {
-                float = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                tile = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                fullscreen = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                maximize = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                center = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                pseudoTile = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                monitor = mkOption {
-                  type = types.nullOr types.str;
-                  default = null;
-                };
-                initialFocus = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                pin = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                persistentSize = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                immediate = mkOption {
-                  type = types.nullOr types.bool;
-                  default = null;
-                };
-                content = mkOption {
-                  type = types.nullOr content;
-                  default = null;
-                };
-                scrollFactor = {
-                  touchpad = mkOption {
-                    type = types.nullOr types.float;
-                    default = null;
-                  };
-                  mouse = mkOption {
-                    type = types.nullOr types.float;
-                    default = null;
-                  };
-                };
-                idleInhibit = mkOption {
-                  type = types.nullOr (
-                    types.enum [
-                      "none"
-                      "always"
-                      "focus"
-                      "fullscreen"
-                    ]
-                  );
-                  default = null;
-                };
-                scalingMode = mkOption {
-                  type = types.nullOr (
-                    types.enum [
-                      "nearestNeighbor"
-                    ]
-                  );
-                  default = null;
-                };
-                fullscreenState = mkOption {
-                  type = types.nullOr (
-                    types.submoduleWith {
-                      modules = [
-                        (
-                          { lib, ... }:
-                          {
-                            options = {
-                              internal = lib.mkOption {
-                                type = fullscreenState;
-                              };
-                              client = lib.mkOption {
-                                type = fullscreenState;
-                              };
-                            };
-                          }
-                        )
-                      ];
-                    }
-                  );
-                  default = null;
-                };
-                move = mkOption {
-                  type = types.nullOr (
-                    types.submoduleWith {
-                      modules = [
-                        (
-                          { lib, ... }:
-                          {
-                            options = {
-                              x = lib.mkOption {
-                                type = lib.types.str;
-                              };
-                              y = lib.mkOption {
-                                type = lib.types.str;
-                              };
-                            };
-                          }
-                        )
-                      ];
-                    }
-                  );
-                  default = null;
-                };
-                size = mkOption {
-                  type = types.nullOr (
-                    types.submoduleWith {
-                      modules = [
-                        (
-                          { lib, ... }:
-                          {
-                            options = {
-                              width = lib.mkOption {
-                                type = lib.types.str;
-                              };
-                              height = lib.mkOption {
-                                type = lib.types.str;
-                              };
-                            };
-                          }
-                        )
-                      ];
-                    }
-                  );
-                  default = null;
+              hypr = {
+                lua = lib.mkOption {
+                  type = types.str;
+                  readOnly = true;
+                  default =
+                    let
+                      toLua = lib.generators.toLua { };
+                      toSnakeCase =
+                        let
+                          inherit (lib)
+                            isString
+                            typeOf
+                            splitStringBy
+                            match
+                            toLower
+                            addContextFrom
+                            concatMapStringsSep
+                            ;
+                        in
+                        str:
+                        lib.throwIfNot (isString str) "toSnakeCase only accepts string values, but got ${typeOf str}" (
+                          let
+                            isUpper = c: match "[[:upper:]]" c != null;
+                            parts = splitStringBy (prev: curr: isUpper curr) true str;
+                          in
+                          concatMapStringsSep "_" (part: addContextFrom str (toLower part)) parts
+                        );
+                      filterNull = lib.filterAttrs (key: val: val != null);
+                      matchRules = lib.mapAttrs' (key: val: {
+                        name = toSnakeCase key;
+                        value = val;
+                      }) (filterNull config.criteria);
+                      effectRules =
+                        let
+                          toEffects =
+                            set:
+                            lib.mapAttrs' (key: val: {
+                              name = toSnakeCase key;
+                              value = val;
+                            }) (filterNull set);
+                        in
+                        (toEffects config.effects.hypr.static) // (toEffects config.effects.hypr.dynamic);
+                      args = toLua (
+                        effectRules
+                        // {
+                          name = config.name;
+                          match = matchRules;
+                        }
+                      );
+                    in
+                    "hl.window_rule(${args})";
                 };
               };
             };
@@ -265,51 +306,29 @@ in
     in
     {
       desktop.windows = mkOption {
-        type = types.listOf window;
-        default = [ ];
+        type = types.attrsOf window;
+        default = { };
       };
     };
-  disabledModules = [ ];
-  imports = [ ];
   config = {
-    desktop.windows = [
-      {
-        name = "nearest_neighbor";
+    desktop.windows = {
+      fullscreenInhibitsIdle = {
         criteria = {
-          appId = ".*";
+          focus = true;
         };
-        properties = {
-          scalingMode = "nearestNeighbor";
+        effects = {
+          hypr.dynamic.idleInhibit = "fullscreen";
         };
-      }
-      {
-        name = "fullscreen_inhibits_idle";
-        criteria = {
-          fullscreen = true;
-        };
-        properties = {
-          idleInhibit = "fullscreen";
-        };
-      }
-      {
-        name = "float_modals";
+      };
+      floatModals = {
         criteria = {
           modal = true;
         };
-        properties = {
-          float = true;
+        effects = {
+          hypr.static.float = true;
         };
-      }
-      # {
-      #   criteria = {
-      #     appId = "xdg-desktop-portal-gtk";
-      #     title = "Open Files";
-      #   };
-      #   properties = {
-      #     float = true;
-      #   };
-      # }
-    ];
+      };
+    };
   };
   meta = { };
 }

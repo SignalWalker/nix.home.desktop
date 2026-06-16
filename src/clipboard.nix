@@ -12,20 +12,6 @@
         type = "kitty";
       };
     };
-    desktop.windows = [
-      {
-        criteria = {
-          appId = "clipse";
-        };
-        properties = {
-          float = true;
-          size = {
-            width = "622";
-            height = "652";
-          };
-        };
-      }
-    ];
     desktop.keybinds = {
       clipboardHistoryShow = {
         modifiers = [ "MOD3" ];
@@ -40,3 +26,4 @@
     };
   };
 }
+
