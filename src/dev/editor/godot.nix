@@ -6,7 +6,7 @@
     desktop.windows = {
       godotFloatGameWindow = {
         criteria = {
-          initialTitle = "Godot";
+          initialClass = "org.godotengine.Editor";
           title = ".*DEBUG.*";
         };
         effects = {
