@@ -67,6 +67,16 @@ let
                   y = mkOption {
                     type = types.str;
                   };
+                  __toLua = mkOption {
+                    type = types.functionTo (types.luaInline);
+                    readOnly = true;
+                    default =
+                      { self, toLua }:
+                      lib.mkLuaInline (toLua [
+                        self.x
+                        self.y
+                      ]);
+                  };
                 }
               );
               fullscreenStateClientInternal = mkSubmoduleWithOpts (
@@ -292,7 +302,14 @@ let
                             set:
                             lib.mapAttrs' (key: val: {
                               name = toSnakeCase key;
-                              value = val;
+                              value =
+                                if lib.isAttrs val && val ? __toLua then
+                                  val.__toLua {
+                                    self = val;
+                                    inherit toLua;
+                                  }
+                                else
+                                  val;
                             }) (filterNull set);
                         in
                         (toEffects config.effects.hypr.static) // (toEffects config.effects.hypr.dynamic);
