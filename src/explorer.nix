@@ -27,6 +27,24 @@
         automove = true;
       };
     };
+    desktop.windows = {
+      termFileChooser = {
+        criteria = {
+          # this is set in ${pkgs.xdg-desktop-portal-termfilechooser}/share/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
+          initialTitle = "termfilechooser";
+        };
+        effects = {
+          hypr.static = {
+            float = true;
+            center = true;
+            size = {
+              x = "monitor_w * 0.5";
+              y = "monitor_h * 0.5";
+            };
+          };
+        };
+      };
+    };
     # this makes XDG use yazi as the file selector
     # NOTE :: the PATH line is a workaround for NixOS: https://github.com/hunkyburrito/xdg-desktop-portal-termfilechooser/issues/56#issuecomment-3697512117
     xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
