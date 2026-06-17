@@ -214,20 +214,39 @@ in
       }
       // (builtins.listToAttrs (
         map
-          (class: {
-            name = "dontFloat${class}";
-            value = {
-              criteria = {
-                initialClass = class;
+          (
+            criteria:
+            let
+              name =
+                if lib.isString criteria then
+                  criteria
+                else
+                  criteria.initialClass or criteria.class or criteria.initialTitle or criteria.title;
+            in
+            {
+              name = "dontFloat${name}";
+              value = {
+                priority = 49;
+                criteria =
+                  if lib.isString criteria then
+                    {
+                      initialClass = criteria;
+                    }
+                  else
+                    criteria;
+                effects = {
+                  hypr.static.float = false;
+                };
               };
-              effects = {
-                hypr.static.float = false;
-              };
-            };
-          })
+            }
+          )
           [
             "Neovim"
             "kitty"
+            {
+              initialClass = "org.godotengine.Editor";
+              initialTitle = "Godot";
+            }
           ]
       ));
       wayland.windowManager.hyprland.extraLuaFiles = lib.mapAttrs' (key: rule: {
