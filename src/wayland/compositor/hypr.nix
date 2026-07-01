@@ -247,6 +247,8 @@ in
               initialClass = "org.godotengine.Editor";
               initialTitle = "Godot";
             }
+            "org.prismlauncher.PrismLauncher"
+            "com.libretro.RetroArch"
           ]
       ));
       wayland.windowManager.hyprland.extraLuaFiles = lib.mapAttrs' (key: rule: {
