@@ -136,6 +136,7 @@ in
         "/.exrc"
         "/.nvim.lua"
         "/.nvimrc"
+        "/.neoconf.json"
         # direnv
         "/.envrc"
         # godot
