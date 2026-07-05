@@ -12,13 +12,22 @@
           hypr.dynamic.scrollTouchpad = 0.05;
         };
       };
-      godotFloatGameWindow = {
+      godotFixGameWindow = {
         criteria = {
           initialClass = "org.godotengine.Editor";
-          title = ".*DEBUG.*";
+          initialTitle = ".*DEBUG.*";
         };
         effects = {
-          hypr.static.float = true;
+          hypr.static = {
+            float = true;
+            size = {
+              x = "monitor_w * 0.25";
+              y = "monitor_h * 0.25";
+            };
+          };
+          hypr.dynamic = {
+            persistentSize = true;
+          };
         };
       };
     };
