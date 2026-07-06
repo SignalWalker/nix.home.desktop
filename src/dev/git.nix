@@ -34,10 +34,11 @@ in
       # };
     };
     home.packages = [
-      # gitoxide
       pkgs.gh
       pkgs.glab
       pkgs.git-filter-repo
+      # jujutsu filesystem notifs
+      pkgs.watchman
     ];
     programs.jujutsu = {
       enable = true;
@@ -50,6 +51,7 @@ in
           "default-command" = "status";
           "diff-editor" = "hunk";
           "merge-editor" = "diffconflicts";
+          "diff-formatter" = "kitty";
         };
         "snapshot" = {
           "auto-track" = "none()";
@@ -62,7 +64,30 @@ in
           "sign-on-push" = true;
           colocate = false;
         };
+        "fsmonitor" = {
+          backend = "watchman";
+          watchman = {
+            "register-snapshot-trigger" = true;
+          };
+        };
+        revsets = {
+          "bookmark-advance-to" = "closest_pushable(@)";
+        };
+        "revset-aliases" = {
+          # Closest revision that is mutable, described and either non-empty or a merge
+          "closest_pushable(to)" = ''
+            heads(::to & mutable() & ~description(exact:"") & (~empty() | merges()))
+          '';
+        };
         "merge-tool" = {
+          "kitty" = {
+            program = "kitten";
+            "diff-args" = [
+              "diff"
+              "$left"
+              "$right"
+            ];
+          };
           # from https://github.com/julienvincent/hunk.nvim#using-with-jujutsu
           "hunk" = {
             program = "nvim";
@@ -86,17 +111,6 @@ in
             ];
             "merge-tool-edits-conflict-markers" = true;
           };
-        };
-        aliases = {
-          # move branch bookmark to previous change
-          "tug" = [
-            "bookmark"
-            "move"
-            "--from"
-            "heads(::@- & bookmarks())"
-            "--to"
-            "@-"
-          ];
         };
       };
     };
