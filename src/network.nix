@@ -1,16 +1,9 @@
 {
-  config,
   osConfig,
-  pkgs,
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+{
   config = lib.mkMerge [
     (lib.mkIf osConfig.networking.networkmanager.enable {
       services.network-manager-applet.enable = false;
@@ -18,6 +11,15 @@ in {
     # (lib.mkIf osConfig.networking.wireless.iwd.enable {
     #   home.packages = [pkgs.iwgtk];
     # })
+    {
+      desktop.keybinds = {
+        networkMenuToggle = {
+          modifiers = [ "MOD3" ];
+          keysym = "E";
+          description = "toggle network settings menu";
+        };
+      };
+    }
   ];
-  meta = {};
+  meta = { };
 }

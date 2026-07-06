@@ -16,6 +16,8 @@ in
     desktop.wayland.idle.enable = false;
     services.clipse.enable = false;
 
+    stylix.targets.noctalia.enable = false;
+
     programs.noctalia = {
       systemd.enable = true;
       settings = {
@@ -38,12 +40,10 @@ in
             actions = [
               {
                 action = "lock";
-                # command = builtins.head config.desktop.keybinds.sessionLock.hypr.args;
                 shortcut = "1";
               }
               {
                 action = "logout";
-                # command = "loginctl terminate-user \"\""; # the explicit empty string makes it terminate the current user
                 shortcut = "2";
               }
               {
@@ -52,7 +52,6 @@ in
               }
               {
                 action = "shutdown";
-                # command = "systemctl poweroff";
                 destructive = true;
                 shortcut = "4";
               }
@@ -214,7 +213,29 @@ in
             args = [ "${msg} panel-toggle control-center" ];
           };
         };
+        weatherToggle = {
+          hypr = {
+            enable = true;
+            dispatcher = "exec_raw";
+            args = [ "${msg} panel-toggle control-center weather" ];
+          };
+        };
+        bluetoothMenuToggle = {
+          hypr = {
+            enable = true;
+            dispatcher = "exec_raw";
+            args = [ "${msg} panel-toggle control-center bluetooth" ];
+          };
+        };
+        networkMenuToggle = {
+          hypr = {
+            enable = true;
+            dispatcher = "exec_raw";
+            args = [ "${msg} panel-toggle control-center network" ];
+          };
+        };
       };
   };
   meta = { };
 }
+

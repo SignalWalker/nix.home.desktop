@@ -19,7 +19,7 @@
       desktop.keybinds = {
         dashboardToggle = {
           modifiers = [ "MOD3" ];
-          keysym = "B";
+          keysym = ";";
           description = "toggle shell dashboard";
         };
         sessionMenuToggle = {

@@ -18,7 +18,6 @@ let
           options =
             let
               toLua = lib.generators.toLua { };
-              inherit (lib) mkLuaInline;
             in
             {
               modifiers = lib.mkOption {
@@ -124,6 +123,7 @@ in
       pkgs.brightnessctl
     ];
     # TODO :: detect collisions
+    # TODO :: detect exec without keys
     desktop.keybinds = lib.mkMerge [
       {
         # WINDOW MANAGER
