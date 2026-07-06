@@ -308,6 +308,7 @@ in
           "kitty_mod+alt+h" = "previous_tab";
           "kitty_mod+alt+l" = "next_tab";
           "kitty_mod+alt+v" = "new_tab_with_cwd";
+          "kitty_mod+alt+ctrl+v" = "new_tab";
           "kitty_mod+alt+w" = "close_tab";
           "kitty_mod+alt+ctrl+h" = "move_tab_backward";
           "kitty_mod+alt+ctrl+l" = "move_tab_forward";
@@ -333,6 +334,7 @@ in
           "kitty_mod+f>y" = "kitten hints --program=@";
           "kitty_mod+f>o" = "kitten hints --type=hyperlink";
           "kitty_mod+f>l" = "kitten hints --type=linenum --linenum-action=tab +{line} {path}";
+          "kitty_mod+f>c" = "kitten choose-files";
         };
     };
   };
