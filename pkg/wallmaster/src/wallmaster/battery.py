@@ -10,13 +10,15 @@ def get_battery_status(path: str) -> dict:
             res[data[0].strip()] = data[1].strip()
     return res
 
-def is_battery_charged(charge_min: float = 0.75) -> bool:
-    bat = None
-    # find first battery
+def get_first_battery() -> os.DirEntry | None:
     for f in os.scandir(POWER_DIR):
         if f.is_dir() and f.name.startswith("BAT"):
-            bat = f
-            break
+            return f
+    return None
+
+def is_battery_charged(charge_min: float = 0.75) -> bool:
+    # find first battery
+    bat = get_first_battery()
     # No battery found; assume we're on desktop or something
     if bat is None:
         return True

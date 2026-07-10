@@ -6,56 +6,9 @@
   options = { };
   imports = [ ];
   config = {
-    home.packages = [
-      # launchers
-      # pkgs.lutris
-      # pkgs.heroic
-
-      # pkgs.ruffle # flash
-
-      # pkgs.parsec-bin
-      # pkgs.moonlight-qt
-    ];
-
-    # manage these with `nix profile` instead
-
-    # (pkgs.retroarch.withCores (
-    #   cores: with cores; [
-    #     # this is only because i want retroachievements for some systems whose real emulators don't support it (or don't support it well; i.e. bizhawk not allowing hardcore, seemingly)
-    #     # nintendo
-    #     nestopia # TODO :: is this really the best one...?
-    #     snes9x
-    #     mupen64plus
-    #     # NEC
-    #     beetle-pce-fast
-    #     beetle-pcfx
-    #     beetle-supergrafx
-    #     # sega
-    #     beetle-saturn
-    #   ]
-    # ))
-    # ## sony
-    # pkgs.pcsx2 # ps2
-    # pkgs.ppsspp # psp
-    # ## nintendo
-    # pkgs.mgba # gb/gbc/gba (no retroachievements)
-    # pkgs.skyemu # gb/gbc/gba/ds (retroachievements)
-    # pkgs.snes9x-gtk # snes
-    # pkgs.dolphin-emu-beta # gcn/wii
-    # pkgs.azahar # 3ds
-    # ## sega
-    # pkgs.yabause # saturn
-    # pkgs.flycast # dreamcast
-    # # games
-    # pkgs.space-station-14-launcher
-    # pkgs.xivlauncher
-    # pkgs.srb2
-    # pkgs.ringracers
-    # pkgs.prismlauncher
-    # pkgs.openrct2
-    # pkgs.openttd
-    # pkgs.cockatrice
-    # pkgs.forge-mtg
+    systemd.user.sessionVariables = {
+      PROTON_ENABLE_WAYLAND = 1;
+    };
 
     programs.mangohud = {
       enable = true;

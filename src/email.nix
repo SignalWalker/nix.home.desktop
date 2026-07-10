@@ -26,9 +26,6 @@
     #   enable = true;
     #   package = pkgs.thunderbird;
     # };
-    home.packages = [
-      pkgs.thunderbird
-    ];
   };
   meta = { };
 }

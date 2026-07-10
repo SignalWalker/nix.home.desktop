@@ -23,16 +23,7 @@ in
       };
     };
   };
-  imports = lib.listFilePaths ./git;
   config = lib.mkIf (cfg.enable) {
-    programs.onefetch = {
-      enable = false;
-      # package = crane.buildPackage {
-      #   src = crane.cleanCargoSource cfg.onefetch.src;
-      #   nativeBuildInputs = with pkgs; [cmake installShellFiles pkg-config];
-      #   buildInputs = with pkgs; [zstd];
-      # };
-    };
     home.packages = [
       pkgs.gh
       pkgs.glab
@@ -51,7 +42,12 @@ in
           "default-command" = "status";
           "diff-editor" = "hunk";
           "merge-editor" = "diffconflicts";
-          "diff-formatter" = "kitty";
+          "diff-formatter" = [
+            "kitten"
+            "diff"
+            "$left"
+            "$right"
+          ];
         };
         "snapshot" = {
           "auto-track" = "none()";
@@ -80,7 +76,7 @@ in
           '';
         };
         "merge-tool" = {
-          "kitty" = {
+          "kittydiff" = {
             program = "kitten";
             "diff-args" = [
               "diff"

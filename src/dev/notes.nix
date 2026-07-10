@@ -5,9 +5,6 @@
 }:
 {
   config = {
-    home.packages = [
-      pkgs.obsidian
-    ];
     desktop.scratchpads =
       let
         notesDir = config.xdg.userDirs.extraConfig.NOTES;

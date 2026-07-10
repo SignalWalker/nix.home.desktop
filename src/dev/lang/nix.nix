@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -11,10 +10,9 @@
   config = {
     home.packages = [
       pkgs.agenix
-      pkgs.snowfallorg.thaw
+      # pkgs.snowfallorg.thaw
       pkgs.deploy-rs
     ];
     programs.jq.enable = lib.mkDefault true;
   };
 }
-

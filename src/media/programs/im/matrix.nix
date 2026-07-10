@@ -4,9 +4,6 @@
 }:
 {
   config = {
-    home.packages = [
-      # pkgs.fractal
-    ];
 
     desktop.scratchpads = {
       "Shift+M" = {

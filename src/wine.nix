@@ -13,7 +13,6 @@
         };
       };
     };
-    # home.packages = [ pkgs.bottles ];
     # xdg.binFile."wine-bottles" = {
     #   executable = true;
     #   text = ''

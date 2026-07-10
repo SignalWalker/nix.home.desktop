@@ -4,9 +4,6 @@
 }:
 {
   config = {
-    home.packages = [
-      pkgs.bitwarden-desktop
-    ];
 
     desktop.scratchpads = {
       # "Shift+A" = {

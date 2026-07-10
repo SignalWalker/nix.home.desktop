@@ -8,7 +8,7 @@ from .awww import awww_query, awww
 from .noctalia import noctalia_set_wallpaper
 from .log import eprint, LogLevel
 from .system import recursive_scandir, get_user_dir, get_animation_override, set_animation_override, get_override_path
-from .battery import is_battery_charged
+from .battery import is_battery_charged, get_first_battery
 from .conf import AnimationLevel
 
 STATIC_EXTENSIONS = { 'png', 'jpg', 'jpeg', 'pnm', 'tga', 'tiff', 'bmp', 'ff', 'svg' }
@@ -19,7 +19,11 @@ def get_allowed_extensions(animation: AnimationLevel) -> set[str]:
         case AnimationLevel.disable:
             return STATIC_EXTENSIONS
         case AnimationLevel.allow_while_charged:
-            if is_battery_charged():
+            bat = get_first_battery()
+            if bat is None:
+                # we're on desktop
+                return ANIMATED_EXTENSIONS
+            elif is_battery_charged():
                 return STATIC_EXTENSIONS | ANIMATED_EXTENSIONS
             else:
                 return STATIC_EXTENSIONS

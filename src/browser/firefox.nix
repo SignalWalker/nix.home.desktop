@@ -28,7 +28,7 @@
         MOZ_DBUS_REMOTE = 1;
       };
       programs.firefox = {
-        enable = true;
+        enable = false;
         package = pkgs.firefox-bin;
         configPath = "${config.xdg.configHome}/mozilla/firefox";
         profiles = {

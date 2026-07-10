@@ -4,9 +4,7 @@
   lib,
   ...
 }:
-with builtins;
 let
-  std = pkgs.lib;
   cfg = config.signal.dev.editor;
   editor = lib.types.submoduleWith {
     modules = [
@@ -17,7 +15,7 @@ let
           ...
         }:
         {
-          options = with lib; {
+          options = let inherit (lib) mkOption types; in {
             cmd = {
               term = mkOption { type = types.str; };
               visual = mkOption {
@@ -38,7 +36,7 @@ let
   };
 in
 {
-  options.signal.dev.editor = with lib; {
+  options.signal.dev.editor = let inherit (lib) mkOption mkEnableOption types; in {
     enable = (mkEnableOption "text editor") // {
       default = true;
     };
@@ -51,7 +49,6 @@ in
       default = cfg.editors."neovim";
     };
   };
-  disabledModules = [ ];
   imports = lib.listFilePaths ./editor;
   config = lib.mkIf cfg.enable {
     programs.neovim.defaultEditor = lib.mkForce false; # avoid conflicts trying to set EDITOR

@@ -20,12 +20,12 @@
 
     programs.lan-mouse = {
       enable = false;
-      systemd = false;
+      systemd = true;
     };
 
     systemd.user.services.lan-mouse = lib.mkIf config.programs.lan-mouse.enable {
       Install.WantedBy = [
-        "wayland-session@Hyprland.target"
+        config.wayland.systemd.target
       ];
     };
 
@@ -35,4 +35,3 @@
     # };
   };
 }
-

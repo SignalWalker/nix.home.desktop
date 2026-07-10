@@ -1,25 +1,25 @@
 {
-  lib,
   ...
 }:
 {
-  imports = lib.listFilePaths ./lsp;
   config = {
     services.lspmux = {
       enable = false;
-      settings = {
-        pass_environment = [
-          "*"
-          "!KITTY_*"
-          "!XCURSOR_*"
-          "!STARSHIP_*"
-          "!ATUIN_*"
-          "!OLDPWD"
-          "!DIRENV_DIR"
-          "!LS_COLORS"
-          "!NVIM"
-        ];
-      };
+      settings =
+        let
+          listen = [
+            "127.0.0.1"
+            59996
+          ];
+        in
+        {
+          inherit listen;
+          connect = listen;
+          pass_environment = [
+            "PATH"
+            "LD_LIBRARY_PATH"
+          ];
+        };
     };
   };
   meta = { };

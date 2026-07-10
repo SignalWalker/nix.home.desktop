@@ -4,33 +4,29 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
+let
   musicDir = config.xdg.userDirs.music;
   mpd = config.services.mpd;
-  mopidy = config.services.mopidy.settings;
-in {
-  options = with lib; {};
-  disabledModules = [];
-  imports = [];
+in
+{
   config = {
-    home.packages = lib.mkIf config.services.mopidy.enable [pkgs.mopidy];
+    home.packages = lib.mkIf config.services.mopidy.enable [ pkgs.mopidy ];
     services.mopidy = {
       enable = false;
-      extensionPackages = with pkgs; [
-        mopidy-bandcamp
-        mopidy-jellyfin
-        mopidy-local
-        mopidy-mpd
-        mopidy-mpris
-        mopidy-soundcloud
-        mopidy-youtube
-        mopidy-iris
-        mopidy-muse
+      extensionPackages = [
+        pkgs.mopidy-bandcamp
+        pkgs.mopidy-jellyfin
+        pkgs.mopidy-local
+        pkgs.mopidy-mpd
+        pkgs.mopidy-mpris
+        pkgs.mopidy-soundcloud
+        pkgs.mopidy-youtube
+        pkgs.mopidy-iris
+        pkgs.mopidy-muse
       ];
       settings = {
         file = {
-          media_dirs = ["${musicDir}/library"];
+          media_dirs = [ "${musicDir}/library" ];
           follow_symlinks = true;
         };
         local = {
@@ -59,5 +55,5 @@ in {
       };
     };
   };
-  meta = {};
+  meta = { };
 }

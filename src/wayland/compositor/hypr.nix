@@ -40,29 +40,6 @@ in
       home.pointerCursor.hyprcursor = {
         enable = true;
       };
-      # services.hyprsunset = {
-      #   enable = true;
-      #   transitions = {
-      #     sunrise = {
-      #       calendar = "*-*-* 06:00:00";
-      #       requests = [
-      #         [
-      #           "temperature"
-      #           "6500"
-      #         ]
-      #       ];
-      #     };
-      #     sunset = {
-      #       calendar = "*-*-* 19:00:00";
-      #       requests = [
-      #         [
-      #           "temperature"
-      #           "3500"
-      #         ]
-      #       ];
-      #     };
-      #   };
-      # };
       xdg.configFile."hypr/ash" = {
         source = ./hyprland;
       };
@@ -89,6 +66,7 @@ in
           };
           "hw.monitors" = {
             autoLoad = true;
+            # FIX :: machine-specific monitor config
             content = ''
               hl.monitor({
                 output = "",
@@ -96,7 +74,25 @@ in
                 position = "auto",
                 scale = 1
               });
-            '';
+              hl.monitor({
+                output = "HDMI-A-1",
+                disabled = true
+              });
+              hl.monitor({
+                output = "desc:Dell Inc. DELL U2415 CFV9N73Q0HAS",
+                mode = "preferred",
+                position = "0x0",
+                scale = 1,
+                transform = 0
+              });
+              hl.monitor({
+                output = "desc:Dell Inc. DELL U2415 CFV9N7AJ21LS",
+                mode = "preferred",
+                position = "-1200x-390",
+                scale = 1,
+                transform = 3
+              });
+            ''; # -390 empirically confirmed through highly scientific methods
           };
           "config" = {
             autoLoad = true;
@@ -171,6 +167,9 @@ in
                     tap_to_click = true,
                     drag_lock = false
                   }
+                },
+                scrolling = {
+                  direction = "down"
                 }
               })
             '';
@@ -247,8 +246,13 @@ in
               initialClass = "org.godotengine.Editor";
               initialTitle = "Godot";
             }
+            {
+              initialClass = "blender";
+              initialTitle = "*.- Blender.*";
+            }
             "org.prismlauncher.PrismLauncher"
             "com.libretro.RetroArch"
+            "emacs"
           ]
       ));
       wayland.windowManager.hyprland.extraLuaFiles = lib.mapAttrs' (key: rule: {

@@ -202,6 +202,19 @@ in
             args = lib.mkDefault [ { action = "toggle"; } ];
           };
         };
+        windowFloatingDisable = {
+          modifiers = [
+            "MOD3"
+            "ALT"
+          ];
+          keysym = "Space";
+          description = "disable active window floating";
+          hypr = {
+            enable = true;
+            dispatcher = lib.mkDefault "window.float";
+            args = lib.mkDefault [ { action = "disable"; } ];
+          };
+        };
         windowPinToggle = {
           modifiers = [
             "MOD3"

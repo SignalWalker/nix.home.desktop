@@ -10,8 +10,8 @@
   config = {
     programs.app2unit.enable = true;
     home.packages = [
-      pkgs.resvg # svg preview
-      pkgs.poppler # pdf preview
+      # pkgs.resvg # svg preview
+      # pkgs.poppler # pdf preview
       pkgs.ripdrag # drag-and-drop
       pkgs.kdePackages.kdialog # TODO :: why
     ];

@@ -9,25 +9,7 @@ let
   mpd = config.services.mpd;
 in
 {
-  imports = lib.listFilePaths ./player;
   config = {
-    home.packages = lib.mkMerge [
-      (lib.mkIf mpd.enable [
-        (pkgs.cantata.override {
-          withCdda = true;
-          withCddb = true;
-          withTaglib = true;
-          withMusicbrainz = true;
-        })
-      ])
-      [
-        # pkgs.tauon
-        pkgs.fooyin
-      ]
-    ];
-    programs.quodlibet = {
-      enable = false; # config.system.isNixOS or true;
-    };
     programs.ncmpcpp = {
       enable = mpd.enable;
       package = pkgs.ncmpcpp.override { visualizerSupport = true; };

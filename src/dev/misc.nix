@@ -4,13 +4,9 @@
   lib,
   ...
 }:
-with builtins;
 {
-  options = with lib; { };
-  disabledModules = [ ];
-  imports = [ ];
   config = {
-    home.packages = attrValues {
+    home.packages = lib.attrValues {
       inherit (pkgs)
         # debug
         strace

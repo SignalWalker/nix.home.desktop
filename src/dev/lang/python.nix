@@ -9,9 +9,6 @@ in
 {
   config = lib.mkMerge [
     {
-      # home.packages = [
-      #   pkgs.python3
-      # ];
       programs.uv = {
         enable = true;
         settings = { };

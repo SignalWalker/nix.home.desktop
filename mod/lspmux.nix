@@ -10,7 +10,12 @@ in
 {
   options =
     let
-      inherit (lib) types mkOption mkEnableOption;
+      inherit (lib)
+        types
+        mkOption
+        mkEnableOption
+        mkPackageOption
+        ;
       toml = pkgs.formats.toml { };
     in
     {
@@ -29,5 +34,16 @@ in
     };
   config = lib.mkIf mux.enable {
     xdg.configFile."lspmux/config.toml".source = mux.settingsFile;
+    systemd.user.services."lspmux" = {
+      Unit = {
+        Description = "Language server multiplexer server";
+        PartOf = [ "default.target" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${lib.getExe mux.package} server";
+      };
+      Install.WantedBy = [ "default.target" ];
+    };
   };
 }

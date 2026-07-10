@@ -8,7 +8,7 @@ let
 in
 {
   options = { };
-  disabledModules = [ ];
+  disabledModules = [ "programs/noctalia" ];
   imports = [ ];
   config = lib.mkIf noctalia.enable {
     services.taskbar.enable = false;
@@ -108,9 +108,19 @@ in
         bar = {
           order = [ "main" ];
           "main" = {
-            position = "left";
+            position = "right";
             margin_edge = config.wayland.windowManager.hyprland.settings.general.gaps_out or 4;
             background_opacity = 0.8;
+            auto_hide = true;
+            reserve_space = false;
+            monitor = {
+              "vertical" = {
+                match = "Dell Inc. DELL U2415 CFV9N7AJ21LS";
+                position = "top";
+                auto_hide = true;
+                reserve_space = false;
+              };
+            };
             start = [
               "clock"
               "notifications"
@@ -220,13 +230,13 @@ in
             args = [ "${msg} panel-toggle control-center weather" ];
           };
         };
-        bluetoothMenuToggle = {
-          hypr = {
-            enable = true;
-            dispatcher = "exec_raw";
-            args = [ "${msg} panel-toggle control-center bluetooth" ];
-          };
-        };
+        # bluetoothMenuToggle = {
+        #   hypr = {
+        #     enable = true;
+        #     dispatcher = "exec_raw";
+        #     args = [ "${msg} panel-toggle control-center bluetooth" ];
+        #   };
+        # };
         networkMenuToggle = {
           hypr = {
             enable = true;
@@ -238,4 +248,3 @@ in
   };
   meta = { };
 }
-

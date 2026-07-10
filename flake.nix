@@ -99,10 +99,6 @@
       url = "github:signalwalker/cfg.neovim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ashmacs = {
-      url = "github:signalwalker/cfg.emacs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # file explorer
     yazi = {
@@ -126,9 +122,15 @@
     };
 
     # app launcher
+    # FIX :: stop including elephant explicitly once the buildGoModules fix is released for real
+    elephant = {
+      url = "github:abenz1267/elephant";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     walker = {
       url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.elephant.follows = "elephant";
     };
 
     # psysonic = {

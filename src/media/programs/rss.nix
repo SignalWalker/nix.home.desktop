@@ -4,7 +4,6 @@
 }:
 {
   config = {
-    home.packages = [ pkgs.rssguard ];
     desktop.scratchpads = {
       "Shift+R" = {
         criteria = {

@@ -11,9 +11,6 @@
     #   };
     # in
     {
-      # home.packages = [
-      #   pkg
-      # ];
 
       # programs.vesktop = {
       #   enable = true;
@@ -40,12 +37,6 @@
       #     };
       #   };
       # };
-
-      home.packages = [
-        # pkgs.dorion
-        # pkgs.vesktop
-        # pkgs.dissent # weird build issue 2025-11-19
-      ];
 
       stylix.targets = {
         nixcord.enable = false;

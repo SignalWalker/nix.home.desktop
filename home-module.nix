@@ -1,9 +1,13 @@
 inputs:
 {
   pkgs,
+  lib,
   ...
 }:
 {
+  disabledModules = [
+    "programs/noctalia.nix"
+  ];
   imports = [
     inputs.noctalia.homeModules.default
 
@@ -14,12 +18,9 @@ inputs:
     inputs.walker.homeManagerModules.default
     # inputs.stylix.homeModules.stylix
     ./home-manager.nix
-  ];
+  ]
+  ++ (lib.listFilePaths ./mod);
   config = {
-
-    # home.packages = [
-    #   inputs.psysonic.packages.${pkgs.stdenv.hostPlatform.system}.psysonic
-    # ];
 
     services.wallmaster.package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.wallmaster;
 

@@ -5,9 +5,6 @@
 {
   imports = lib.listFilePaths ./im;
   config = {
-    # home.packages = [
-    #   pkgs.slack
-    # ];
     # desktop.scratchpads = {
     #   "Shift+S" = {
     #     criteria = {

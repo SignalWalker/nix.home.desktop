@@ -3,9 +3,6 @@
 }:
 {
   config = {
-    home.packages = [
-      # pkgs.nwg-displays # GUI output management
-    ];
     services.shikane = {
       enable = true;
       settings = {

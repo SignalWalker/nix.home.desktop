@@ -2,58 +2,49 @@
   description = "";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
   };
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      ...
-    }:
-    let
-      lib = nixpkgs.lib;
-      systems = [
-        "aarch64-darwin"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-      nixpkgsFor = lib.genAttrs systems (
-        system:
-        import nixpkgs {
-          localSystem = builtins.currentSystem or system;
-          crossSystem = system;
-          overlays = [ ];
-        }
-      );
-      makeStdenv = pkgs: pkgs.stdenvAdapters.useMoldLinker pkgs.llvmPackages_latest.stdenv;
-      pname = "package";
-    in
-    {
-      formatter = lib.mapAttrs (system: pkgs: pkgs.nixfmt) nixpkgsFor;
-      packages = lib.mapAttrs (
-        system: pkgs:
-        let
-          stdenv = makeStdenv pkgs;
-        in
-        {
-          ${pname} = stdenv.mkDerivation {
-            inherit pname;
-            src = ./.;
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { ... }: {
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "aarch64-darwin"
+          "x86_64-darwin"
+        ];
+        perSystem =
+          let
+            pname = "package";
+          in
+          {
+            self',
+            pkgs,
+            ...
+          }:
+          let
+            stdenv = pkgs.stdenvAdapters.useMoldLinker pkgs.llvmPackages_latest.stdenv;
+          in
+          {
+            formatter = pkgs.nixfmt;
+            packages = {
+              default = self'.packages.${pname};
+              ${pname} = stdenv.mkDerivation {
+                inherit pname;
+                src = ./.;
+              };
+            };
+            devShells = {
+              default = self'.devShells.${pname};
+              ${pname} = (pkgs.mkShell.override { inherit stdenv; }) {
+                inputsFrom = [ self'.packages.${pname} ];
+              };
+            };
           };
-          default = self.packages.${system}.${pname};
-        }
-      ) nixpkgsFor;
-      devShells = lib.mapAttrs (
-        system: pkgs:
-        let
-          selfPkgs = self.packages.${system};
-          stdenv = makeStdenv pkgs;
-        in
-        {
-          default = (pkgs.mkShell.override { inherit stdenv; }) {
-            inputsFrom = [ selfPkgs.default ];
-          };
-        }
-      ) nixpkgsFor;
-    };
+      }
+    );
 }

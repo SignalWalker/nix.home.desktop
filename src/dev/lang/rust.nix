@@ -13,7 +13,6 @@ in
   options = {
     programs.rustup = {
       enable = lib.mkEnableOption "rustup";
-      package = lib.mkPackageOption pkgs "rustup" { };
       home = lib.mkOption {
         type = lib.types.str;
         default = "${config.xdg.dataHome}/rustup";
@@ -45,9 +44,6 @@ in
       };
     }
     (lib.mkIf rustup.enable {
-      home.packages = [
-        # rustup.package
-      ];
       systemd.user.sessionVariables = {
         RUSTUP_HOME = rustup.home;
       };

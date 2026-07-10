@@ -4,7 +4,6 @@
 }:
 {
   config = {
-    home.packages = [ pkgs.zotero ];
     desktop.scratchpads = {
       "Shift+Z" = {
         criteria = {

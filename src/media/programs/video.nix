@@ -4,9 +4,6 @@
 }:
 {
   config = {
-    home.packages = [
-      # jellyfin-media-player
-    ];
 
     programs.obs-studio = {
       enable = true;
