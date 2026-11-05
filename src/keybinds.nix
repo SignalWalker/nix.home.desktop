@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -77,7 +78,12 @@ let
                     readOnly = true;
                     default =
                       let
-                        keys = toLua (lib.concatStringsSep " + " (config.modifiers ++ [ config.keysym ]));
+                        modifiers =
+                          if osConfig.networking.hostName == "artemis" then
+                            map (modifier: if (lib.toLower modifier) == "mod3" then "MOD4" else modifier) config.modifiers
+                          else
+                            config.modifiers; # FIX :: hacked because for some reason mod3 stopped working on laptop
+                        keys = toLua (lib.concatStringsSep " + " (modifiers ++ [ config.keysym ]));
                         dispatchArgs = lib.concatMapStringsSep ", " toLua hypr.args;
                         dispatchCall =
                           if hypr.dispatcher ? expr then

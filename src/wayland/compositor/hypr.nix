@@ -268,8 +268,8 @@ in
         "ui.keybinds.mouse" = {
           autoLoad = true;
           content = ''
-            hl.bind("MOD3 + mouse:272", hl.dsp.window.drag(), {mouse = true})
-            hl.bind("MOD3 + CTRL + mouse:272", hl.dsp.window.resize(), {mouse = true})
+            hl.bind("MOD4 + mouse:272", hl.dsp.window.drag(), {mouse = true})
+            hl.bind("MOD4 + CTRL + mouse:272", hl.dsp.window.resize(), {mouse = true})
             -- # resize and keep aspect ratio
             -- "MOD3CTRLALT,mouse:272,resizewindow 1"
           '';

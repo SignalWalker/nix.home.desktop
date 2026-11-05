@@ -1,21 +1,27 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
-in {
-  options.signal.desktop.keyboard = with lib; {
-    compositor = {
-      modifier = mkOption {
-        type = types.enum ["Mod1" "Mod2" "Mod3" "Mod4" "Mod5"];
-        default = "Mod3";
+{
+  options.signal.desktop.keyboard =
+    let
+      inherit (lib) mkOption types;
+    in
+    {
+      compositor = {
+        modifier = mkOption {
+          type = types.enum [
+            "Mod1"
+            "Mod2"
+            "Mod3"
+            "Mod4"
+            "Mod5"
+          ];
+          default = "Mod3";
+        };
       };
     };
-  };
-  imports = [];
+  imports = [ ];
   config = {
     home.file.".xkb/symbols/hypersuper".text = ''
       partial modifier_keys xkb_symbols "mods" {
@@ -32,16 +38,5 @@ in {
         include "hypersuper(mods)"
       };
     '';
-
-    # i18n.inputMethod = {
-    #   enabled = "fcitx5";
-    #   fcitx5 = {
-    #     addons = with pkgs; [
-    #       libsForQt5.fcitx5-qt
-    #       fcitx5-gtk
-    #       fcitx5-mozc
-    #     ];
-    #   };
-    # };
   };
 }
