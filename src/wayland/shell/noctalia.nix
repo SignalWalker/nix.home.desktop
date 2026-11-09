@@ -29,13 +29,28 @@ in
           polkit_agent = true; # sure why not
           launch_apps_as_systemd_services = true;
           screen_time_enabled = true;
+          umbriel_audio_provider_enabled = true;
+          # corner_radius_scale = 0.0;
           panel = {
             transparency_mode = "glass"; # fuck it let's be windows 7
             launcher_placement = "floating";
+            launcher_position = "center";
             clipboard_placement = "floating";
+            clipboard_position = "auto";
             control_center_placement = "floating";
             session_placement = "centered";
           };
+          launcher = {
+            fetch_exchange_rates = false;
+          };
+          greeter_sync = {
+            auto_sync = true;
+          };
+          screenshot = {
+            format = "jxl";
+            quality = 100;
+            directory = "${config.xdg.userDirs.pictures}/screenshots";
+        };
           session = {
             actions = [
               {
@@ -60,11 +75,17 @@ in
         };
         control_center = {
           sidebar_section = "none";
+          circular_avatar = false;
+          show_avatar_border = false;
         };
         theme = {
           mode = "auto";
           source = "wallpaper"; # wallmaster handles this
           wallpaper_scheme = "faithful";
+          templates = {
+            enable_builtin_templates = true;
+            builtin_ids = [ "umbriel" ];
+          };
         };
         wallpaper = {
           enabled = false;
@@ -83,9 +104,18 @@ in
           blurred_desktop = false; # just use the wallpaper
           blur_intensity = 0.0;
         };
-        notifications = {
+        notification = {
           enable_daemon = true;
           layer = "overlay";
+          history_retention_hours = 24;
+          follow_focused_output = true;
+        };
+        brightness = {
+          enable_ddcutil = true;
+          sync_all_monitors = true;
+        };
+        audio = {
+          enable_notification_sounds = false;
         };
         idle = {
           behavior = {
@@ -150,7 +180,7 @@ in
             hide_when_no_media = true;
           };
           "wallmaster-override" = {
-            command = "wallmaster toggle-override";
+            left = "wallmaster toggle-override";
             glyph = "mountain";
             tooltip = "Toggle wallmaster animation preference";
             type = "custom_button";
@@ -167,7 +197,33 @@ in
         msg = "noctalia msg";
       in
       {
-        launcherRunAlt = {
+        systemMonitorOpen = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} panel-toggle control-center system"];
+          };
+        };
+        brightnessDown = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} brightness-down"];
+          };
+        };
+        brightnessUp = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} brightness-up"];
+          };
+        };
+        launcherRun = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle launcher" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -175,6 +231,11 @@ in
           };
         };
         sessionLock = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} session lock" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -182,6 +243,11 @@ in
           };
         };
         clipboardHistoryShow = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle clipboard" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -189,6 +255,11 @@ in
           };
         };
         notificationsRestore = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle control-center notifications" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -196,6 +267,11 @@ in
           };
         };
         notificationsDismiss = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} notification-clear-active" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -203,6 +279,11 @@ in
           };
         };
         controlCenterToggle = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle control-center" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -210,6 +291,11 @@ in
           };
         };
         sessionMenuToggle = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle session" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -217,6 +303,11 @@ in
           };
         };
         dashboardToggle = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle control-center" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -224,6 +315,11 @@ in
           };
         };
         weatherToggle = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle control-center weather" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
@@ -238,10 +334,44 @@ in
         #   };
         # };
         networkMenuToggle = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = [ "${msg} panel-toggle control-center network" ];
+          };
           hypr = {
             enable = true;
             dispatcher = "exec_raw";
             args = [ "${msg} panel-toggle control-center network" ];
+          };
+        };
+
+        screenshotActive = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} screenshot-window"];
+          };
+        };
+        screenshotArea = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} screenshot-region"];
+          };
+        };
+        screenshotOutput = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} screenshot-fullscreen"];
+          };
+        };
+        screenshotAll = {
+          umbriel = {
+            enable = true;
+            action = "spawn";
+            args = ["${msg} screenshot-fullscreen all"];
           };
         };
       };

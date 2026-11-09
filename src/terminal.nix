@@ -4,17 +4,16 @@
   lib,
   ...
 }:
-with builtins; let
-  std = pkgs.lib;
+let
   cfg = config.desktop.terminal;
 in {
-  options.desktop.terminal = with lib; {
-    app = mkOption {
-      type = types.enum ["kitty"];
+  options.desktop.terminal = {
+    app = lib.mkOption {
+      type = lib.types.enum ["kitty" "alacritty"];
       default = "kitty";
     };
-    command = mkOption {
-      type = types.str;
+    command = lib.mkOption {
+      type = lib.types.str;
       default = cfg.app;
     };
   };

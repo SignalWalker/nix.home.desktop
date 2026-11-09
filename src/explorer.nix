@@ -21,7 +21,7 @@
           app_id = "scratch_explorer";
         };
         resize = 83;
-        startup = "kitty --class scratch_explorer yazi";
+        startup = "alacritty --class scratch_explorer yazi";
         systemdCat = true;
         autostart = false;
         automove = true;

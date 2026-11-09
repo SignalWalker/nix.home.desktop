@@ -14,9 +14,14 @@
     };
     desktop.keybinds = {
       clipboardHistoryShow = {
-        modifiers = [ "MOD3" ];
+        modifiers = [ "Super" ];
         keysym = "V";
         description = "show clipboard history";
+        umbriel = {
+          enable = true;
+          action = lib.mkDefault "spawn";
+          args = lib.mkDefault [ "app2unit -s a -a clipse -- kitty --app-id=clipse clipse" ];
+        };
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "exec_raw";

@@ -32,9 +32,14 @@
     };
     desktop.keybinds = {
       launcherRun = {
-        modifiers = [ "MOD3" ];
+        modifiers = [ "Super" ];
         keysym = "D";
         description = "open application launcher";
+        umbriel = {
+          enable = true;
+          action = lib.mkDefault "spawn";
+          args = lib.mkDefault [ "walker" ];
+        };
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "exec_raw";
@@ -43,11 +48,16 @@
       };
       launcherRunAlt = {
         modifiers = [
-          "MOD3"
+          "Super"
           "ALT"
         ];
         keysym = "D";
         description = "open application launcher (alt)";
+        umbriel = {
+          enable = true;
+          action = lib.mkDefault "spawn";
+          args = lib.mkDefault [ "walker" ];
+        };
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "exec_raw";

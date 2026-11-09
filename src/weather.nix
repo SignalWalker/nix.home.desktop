@@ -8,7 +8,7 @@
   config = {
     desktop.keybinds = {
       weatherToggle = {
-        modifiers = [ "MOD3" ];
+        modifiers = [ "Super" ];
         keysym = "W";
         description = "toggle weather information";
       };

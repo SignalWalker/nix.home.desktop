@@ -14,7 +14,7 @@
     {
       desktop.keybinds = {
         networkMenuToggle = {
-          modifiers = [ "MOD3" ];
+          modifiers = [ "Super" ];
           keysym = "E";
           description = "toggle network settings menu";
         };

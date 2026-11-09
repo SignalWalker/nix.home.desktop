@@ -19,6 +19,7 @@ let
           options =
             let
               toLua = lib.generators.toLua { };
+              toml = pkgs.formats.toml { };
             in
             {
               modifiers = lib.mkOption {
@@ -32,6 +33,54 @@ let
                 type = lib.types.str;
                 default = name;
               };
+              repeating = lib.mkEnableOption "repeat when held";
+              allowWhileSessionLocked = lib.mkEnableOption "allow while session is locked";
+              allowWhileInhibited = lib.mkEnableOption "allow while shortcuts are inhibited";
+              umbriel =
+                let
+                  umb = config.umbriel;
+                in
+                {
+                  enable = lib.mkEnableOption "umbriel keybind";
+                  action = lib.mkOption {
+                    type = lib.types.str;
+                  };
+                  args = lib.mkOption {
+                    type = lib.types.uniq (lib.types.listOf lib.types.anything);
+                  };
+                  keyStr = lib.mkOption {
+                    type = lib.types.str;
+                    readOnly = true;
+                    default = lib.concatStringsSep "+" (config.modifiers ++ [ config.keysym ]);
+                  };
+                  bindToml = lib.mkOption {
+                    type = toml.type;
+                    readOnly = true;
+                    default =
+                      let
+                        argsStr = lib.concatMapStringsSep " " toString umb.args;
+                      in
+                      {
+                        action = "${umb.action} ${argsStr}";
+                        repeat = config.repeating;
+                        allow_when_locked = config.allowWhileSessionLocked;
+                        allow_when_inhibited = config.allowWhileInhibited;
+                      };
+                    # default =
+                    #   let
+                    #     dispatchArgs = lib.concatMapStringsSep ", " toLua umb.args;
+                    #     dispatchCall =
+                    #       if hypr.dispatcher ? expr then
+                    #         toLua hypr.dispatcher.expr
+                    #       else
+                    #         "hl.dsp.${hypr.dispatcher.ident}(${dispatchArgs})";
+                    #     flags = toLua (lib.filterAttrs (name: val: val != null && val != false) hypr.flags);
+                    #   in {
+                    #     action = "${umb.action}";
+                    #   };
+                    #   "hl.bind(${keys}, ${dispatchCall}, ${flags})";
+                  };
+                };
               hypr =
                 let
                   hypr = config.hypr;
@@ -49,7 +98,6 @@ let
                     click = lib.mkEnableOption "Will trigger on release of a key or button as long as the mouse cursor stays inside binds:drag_threshold";
                     drag = lib.mkEnableOption "Will trigger on release of a key or button as long as the mouse cursor moves outside binds:drag_threshold.";
                     long_press = lib.mkEnableOption "Will trigger on long press of a key.";
-                    repeating = lib.mkEnableOption "Will repeat when held.";
                     non_consuming = lib.mkEnableOption "Key/mouse events will be passed to the active window in addition to triggering the dispatcher.";
                     auto_consuming = lib.mkEnableOption "Key/mouse events will be passed to the active window if the dispatcher doesn’t succeed.";
                     transparent = lib.mkEnableOption "Cannot be shadowed by other binds.";
@@ -78,11 +126,9 @@ let
                     readOnly = true;
                     default =
                       let
-                        modifiers =
-                          if osConfig.networking.hostName == "artemis" then
-                            map (modifier: if (lib.toLower modifier) == "mod3" then "MOD4" else modifier) config.modifiers
-                          else
-                            config.modifiers; # FIX :: hacked because for some reason mod3 stopped working on laptop
+                        modifiers = map (
+                          modifier: if (lib.toLower modifier) == "mod3" then "MOD4" else modifier
+                        ) config.modifiers;
                         keys = toLua (lib.concatStringsSep " + " (modifiers ++ [ config.keysym ]));
                         dispatchArgs = lib.concatMapStringsSep ", " toLua hypr.args;
                         dispatchCall =
@@ -135,11 +181,16 @@ in
         # WINDOW MANAGER
         windowKill = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "SHIFT"
           ];
           keysym = "Q";
-          description = "kill active window";
+          description = "close active window";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-close";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.close";
@@ -148,12 +199,17 @@ in
         };
         windowKillForce = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "SHIFT"
             "CTRL"
           ];
           keysym = "Q";
-          description = "force kill active window";
+          description = "kill active window";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-kill";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.kill";
@@ -162,10 +218,15 @@ in
         };
         windowFullscreenToggle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "F";
           description = "toggle active window fullscreen";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-toggle-fullscreen";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.fullscreen";
@@ -179,11 +240,16 @@ in
         };
         windowMaximizeToggle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "ALT"
           ];
           keysym = "F";
           description = "toggle active window maximize";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-toggle-maximize";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.fullscreen";
@@ -195,13 +261,31 @@ in
             ];
           };
         };
+        windowPrimarySizeSetHalf = {
+          modifiers = [
+            "Super"
+            "Ctrl"
+          ];
+          keysym = "Equal";
+          description = "set window primary extent to 50%";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-set-primary-extent";
+            args = lib.mkDefault [ 0.5 ];
+          };
+        };
         windowFloatingToggle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "SHIFT"
           ];
           keysym = "Space";
           description = "toggle active window floating";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-toggle-floating";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.float";
@@ -210,7 +294,7 @@ in
         };
         windowFloatingDisable = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "ALT"
           ];
           keysym = "Space";
@@ -223,11 +307,16 @@ in
         };
         windowPinToggle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "CTRL"
           ];
           keysym = "P";
           description = "toggle active window pin";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-toggle-pinned";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.pin";
@@ -236,10 +325,15 @@ in
         };
         windowCenter = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "C";
           description = "center active window";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-center";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "window.center";
@@ -248,55 +342,68 @@ in
         };
         windowFocusPrevious = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "BracketLeft";
           description = "focus previous window";
+          repeating = true;
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-focus-previous";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
-            flags = {
-              repeating = true;
-            };
             dispatcher = lib.mkDefault "window.cycle_next";
             args = lib.mkDefault [ { next = false; } ];
           };
         };
         windowFocusNext = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "BracketRight";
           description = "focus next window";
+          repeating = true;
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "window-focus-next";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
-            flags = {
-              repeating = true;
-            };
             dispatcher = lib.mkDefault "window.cycle_next";
             args = lib.mkDefault [ { } ];
           };
         };
         workspacePrevious = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "O";
           description = "go to previous workspace";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "workspace-previous";
+            args = lib.mkDefault [ ];
+          };
           hypr = {
             enable = true;
-            flags = {
-              repeating = true;
-            };
             dispatcher = lib.mkDefault "focus";
             args = lib.mkDefault [ { workspace = "previous_per_monitor"; } ];
           };
         };
         layoutCycle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
           ];
           keysym = "Tab";
           description = "cycle workspace layout";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "workspace-set-layout";
+            args = lib.mkDefault [ "toggle" ];
+          };
           hypr = {
             enable = true;
             dispatcher = {
@@ -342,9 +449,14 @@ in
         };
         # TERMINAL
         terminalOpen = {
-          modifiers = [ "MOD3" ];
+          modifiers = [ "SUPER" ];
           keysym = "Return";
           description = "open terminal";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "app2unit -T" ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "exec_raw";
@@ -353,35 +465,51 @@ in
         };
         terminalOpenAlt = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "ALT"
           ];
           keysym = "Return";
           description = "open terminal (directly)";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "alacritty" ];
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "exec_raw";
-            args = lib.mkDefault [ "kitty" ];
+            args = lib.mkDefault [ "alacritty" ];
           };
         };
         # EDITOR
-        editorOpen = {
-          modifiers = [ "CTRL" ];
-          keysym = "XF86Calculator";
-          description = "open editor";
-          hypr = {
-            enable = true;
-            dispatcher = lib.mkDefault "exec_raw";
-            args = lib.mkDefault [
-              "app2unit -T --app-id=Neovim -- ${config.systemd.user.sessionVariables.EDITOR}"
-            ];
+        editorOpen =
+          {
+            modifiers = [ "CTRL" ];
+            keysym = "XF86Calculator";
+            description = "open editor";
+            umbriel = {
+              enable = true;
+              action = lib.mkDefault "spawn";
+              args = lib.mkDefault [ "emacs" ];
+            };
+            hypr = {
+              enable = true;
+              dispatcher = lib.mkDefault "exec_raw";
+              args = lib.mkDefault [
+                "emacs"
+              ];
+            };
           };
-        };
         # HACK :: framework keyboard doesn't have a calculator button; this is the gear button
         editorOpenAlt = {
           modifiers = [ "CTRL" ];
           keysym = "XF86AudioMedia";
           description = "open editor";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault keybinds.editorOpen.umbriel.args;
+          };
           hypr = {
             enable = true;
             dispatcher = lib.mkDefault "exec_raw";
@@ -393,11 +521,14 @@ in
           modifiers = [ ];
           keysym = "XF86MonBrightnessDown";
           description = "lower brightness";
+          repeating = true;
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "brightnessctl set 2%-" ];
+          };
           hypr = {
             enable = true;
-            flags = {
-              repeating = true;
-            };
             dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set 2%-" ];
           };
@@ -406,11 +537,14 @@ in
           modifiers = [ ];
           keysym = "XF86MonBrightnessUp";
           description = "raise brightness";
+          repeating = true;
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "brightnessctl set +2%" ];
+          };
           hypr = {
             enable = true;
-            flags = {
-              repeating = true;
-            };
             dispatcher = lib.mkDefault "exec_raw";
             args = lib.mkDefault [ "brightnessctl set +2%" ];
           };
@@ -419,6 +553,11 @@ in
           modifiers = [ "CTRL" ];
           keysym = "XF86MonBrightnessDown";
           description = "minimize brightness";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "brightnessctl set 1" ];
+          };
           hypr = {
             enable = true;
             flags = {
@@ -432,6 +571,11 @@ in
           modifiers = [ "CTRL" ];
           keysym = "XF86MonBrightnessUp";
           description = "maximize brightness";
+          umbriel = {
+            enable = true;
+            action = lib.mkDefault "spawn";
+            args = lib.mkDefault [ "brightnessctl set 100%" ];
+          };
           hypr = {
             enable = true;
             flags = {
@@ -452,9 +596,14 @@ in
         acc
         // {
           "workspaceFocus_${wsStr}" = {
-            modifiers = [ "MOD3" ];
+            modifiers = [ "SUPER" ];
             inherit keysym;
             description = "focus workspace ${wsStr}";
+            umbriel = {
+              enable = true;
+              action = lib.mkDefault "workspace-switch";
+              args = lib.mkDefault [ ws ];
+            };
             hypr = {
               enable = true;
               dispatcher = lib.mkDefault "focus";
@@ -467,11 +616,16 @@ in
           };
           "windowSendToWs_${wsStr}" = {
             modifiers = [
-              "MOD3"
+              "SUPER"
               "SHIFT"
             ];
             inherit keysym;
             description = "send active window to workspace ${wsStr}";
+            umbriel = {
+              enable = true;
+              action = lib.mkDefault "window-move-to-workspace";
+              args = lib.mkDefault [ ws ];
+            };
             hypr = {
               enable = true;
               dispatcher = lib.mkDefault "window.move";
@@ -548,37 +702,41 @@ in
           acc
           // {
             "windowFocus${specs.name}" = {
-              modifiers = [ "MOD3" ];
+              modifiers = [ "SUPER" ];
               keysym = specs.key;
               description = "focus window ${lowerName}";
+              umbriel = {
+                enable = true;
+                action = lib.mkDefault "window-focus-or-output-${dir}";
+                args = lib.mkDefault [ ];
+              };
               hypr = {
                 enable = true;
-                flags = {
-                  repeating = true;
-                };
                 dispatcher = lib.mkDefault "focus";
                 args = lib.mkDefault [ { direction = dir; } ];
               };
             };
             "windowMove${specs.name}" = {
               modifiers = [
-                "MOD3"
+                "SUPER"
                 "SHIFT"
               ];
               keysym = specs.key;
               description = "move active window ${lowerName}";
+              umbriel = {
+                enable = true;
+                action = lib.mkDefault "window-move-or-output-${dir}";
+                args = lib.mkDefault [ ];
+              };
               hypr = {
                 enable = true;
-                flags = {
-                  repeating = true;
-                };
                 dispatcher = lib.mkDefault "window.move";
                 args = lib.mkDefault [ { direction = dir; } ];
               };
             };
             # "windowShift${specs.name}" = {
             #   modifiers = [
-            #     "MOD3"
+            #     "SUPER"
             #     "ALT"
             #     "SHIFT"
             #   ];
@@ -602,7 +760,7 @@ in
             # };
             # "windowResize${specs.name}" = {
             #   modifiers = [
-            #     "MOD3"
+            #     "SUPER"
             #     "CTRL"
             #   ];
             #   keysym = specs.key;

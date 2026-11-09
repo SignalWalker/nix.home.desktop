@@ -183,7 +183,7 @@ in
   config = {
     desktop.keybinds = {
       "scratchpadToggleGeneric" = {
-        modifiers = [ "MOD3" ];
+        modifiers = [ "Super" ];
         keysym = "Minus";
         description = "toggle generic scratchpad";
         hypr = {

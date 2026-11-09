@@ -5,7 +5,7 @@
   config = {
     desktop.keybinds = {
       calendarToggle = {
-        modifiers = [ "MOD3" ];
+        modifiers = [ "Super" ];
         keysym = "C";
         description = "toggle shell dashboard";
       };

@@ -8,14 +8,14 @@
     desktop.keybinds = {
       notificationsRestore = {
         modifiers = [
-          "MOD3"
+          "Super"
         ];
         keysym = "N";
         description = "restore last notification";
       };
       notificationsDismiss = {
         modifiers = [
-          "MOD3"
+          "SUPER"
           "ALT"
         ];
         keysym = "N";
@@ -23,7 +23,7 @@
       };
       notificationsOpenMenu = {
         modifiers = [
-          "MOD3"
+          "SUPER"
           "CTRL"
         ];
         keysym = "N";

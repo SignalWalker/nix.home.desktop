@@ -8,11 +8,16 @@
     desktop.keybinds = {
       sessionLock = {
         modifiers = [
-          "MOD3"
+          "SUPER"
           "ALT"
         ];
         keysym = "L";
         description = "lock session";
+        umbriel = {
+          enable = true;
+          action = lib.mkDefault "spawn";
+          args = lib.mkDefault [ "swaylock --effect-scale 0.5 --effect-blur 5x3" ];
+        };
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "exec_raw";

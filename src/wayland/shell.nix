@@ -18,18 +18,18 @@
       # generic keybinds
       desktop.keybinds = {
         dashboardToggle = {
-          modifiers = [ "MOD3" ];
+          modifiers = [ "SUPER" ];
           keysym = "M";
           description = "toggle shell dashboard";
         };
         sessionMenuToggle = {
-          modifiers = [ "MOD3" ];
+          modifiers = [ "SUPER" ];
           keysym = "S";
           description = "toggle session menu";
         };
         controlCenterToggle = {
           modifiers = [
-            "MOD3"
+            "SUPER"
             "CTRL"
           ];
           keysym = "S";

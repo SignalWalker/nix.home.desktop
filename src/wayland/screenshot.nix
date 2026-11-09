@@ -37,7 +37,7 @@
           };
         };
         screenshotOutput = {
-          modifiers = [ "MOD3" ];
+          modifiers = [ "Super" ];
           keysym = "Print";
           description = "screenshot active output";
           hypr = {
@@ -48,7 +48,7 @@
         };
         screenshotAll = {
           modifiers = [
-            "MOD3"
+            "Super"
             "ALT"
           ];
           keysym = "Print";

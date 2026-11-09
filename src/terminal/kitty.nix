@@ -42,7 +42,7 @@ in
     # ];
 
     systemd.user.sessionVariables = {
-      TERMINAL = "kitty";
+      TERMINAL = lib.mkDefault "kitty";
     };
 
     stylix.targets.kitty.variant256Colors = true;
@@ -92,16 +92,6 @@ in
           startup = "kitty --class scratch_logs --session ${./kitty/scratch_logs.session}";
           systemdCat = true;
           autostart = false;
-          automove = true;
-        };
-        "F2" = {
-          criteria = {
-            app_id = "scratch_top";
-          };
-          resize = 83;
-          startup = "kitty --class scratch_top btop";
-          systemdCat = true;
-          autostart = true;
           automove = true;
         };
         "XF86Calculator" = editorPad; # NOTE :: on the gmmk, this is f3
@@ -233,7 +223,7 @@ in
         tab_bar_style = "powerline";
         tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}";
         ## keyboard
-        kitty_mod = "super"; # note: this is actually Mod4, which is Hyper_L when using the keyboard settings defined in this flake (kitty considers Hyper_L to be numlock, for some reason)
+        kitty_mod = "ctrl+shift";
         ## mouse
         mouse_hide_wait = "3.0";
         detect_urls = true;

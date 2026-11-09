@@ -14,11 +14,16 @@
     desktop.keybinds = {
       wallpaperRandomize = {
         modifiers = [
-          "MOD3"
+          "SUPER"
           "ALT"
         ];
         keysym = "W";
         description = "randomize wallpaper";
+        umbriel = {
+          enable = true;
+          action = lib.mkDefault "spawn";
+          args = lib.mkDefault [ "wallmaster randomize" ];
+        };
         hypr = {
           enable = true;
           dispatcher = lib.mkDefault "exec_raw";
