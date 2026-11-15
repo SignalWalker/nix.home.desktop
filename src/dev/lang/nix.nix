@@ -12,6 +12,7 @@
       pkgs.agenix
       # pkgs.snowfallorg.thaw
       pkgs.deploy-rs
+      pkgs.nixfmt
     ];
     programs.jq.enable = lib.mkDefault true;
   };
