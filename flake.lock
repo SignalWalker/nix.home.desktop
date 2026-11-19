@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795069668,
+        "lastModified": 1795107251,
         "narHash": "sha256-Ee24ze9s3/tKv50dAJtGbCewfe9UPNFAhCN2qSNpQeg=",
         "owner": "signalwalker",
         "repo": "cfg.neovim",
-        "rev": "1a46697d97ce7477579fe24262e3fdad3bc910f7",
+        "rev": "ea1913ef8f44aee9f8a4001018b5dab4fdb0cc0c",
         "type": "github"
       },
       "original": {
@@ -404,11 +404,11 @@
     "helixSrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1794992735,
-        "narHash": "sha256-R98uUVsey1MGncK+U0udprpQ1cAjUXK+jkpOxlFfsJ0=",
+        "lastModified": 1795103993,
+        "narHash": "sha256-86dO1RCW5GwD7P1zzZm+XgTE1V+942wbXr4q8QATb98=",
         "owner": "helix-editor",
         "repo": "helix",
-        "rev": "92ba4c070e79e8c1cfaf609dc3588dac0ef187a6",
+        "rev": "9de242bfac2aac9dfd0e4496eb25190e85c24e69",
         "type": "github"
       },
       "original": {
@@ -442,11 +442,11 @@
     "kitty": {
       "flake": false,
       "locked": {
-        "lastModified": 1795060329,
-        "narHash": "sha256-MDE5ApnEb/ZlQdLeLQBt9qK6o+j4yrNzRF+ZIee3/n8=",
+        "lastModified": 1795098377,
+        "narHash": "sha256-6ouIiS5uxbcU3HeTYtHDv9Kug6W+4CGe0Yg3AXAQgD4=",
         "owner": "kovidgoyal",
         "repo": "kitty",
-        "rev": "494e749a4343dc60377726875d5d685f280cc83b",
+        "rev": "0b56ffd3282bc38e6748be1ff70b9334e1b40f33",
         "type": "github"
       },
       "original": {
@@ -664,11 +664,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795054984,
-        "narHash": "sha256-HdIsS5cKWxdSlkKs9UwRZo9JL+JFQl8rHMXxo/cd/d0=",
+        "lastModified": 1795104329,
+        "narHash": "sha256-0tgFAeyHko1Xv0VQwDagyHN+h1epB+dxlHnh+VFTuVk=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "d456755d3bb09be68be67582c5766fb96cb4a1a8",
+        "rev": "d9483363739a33c56e51ee46db8e4238fdf655df",
         "type": "github"
       },
       "original": {
@@ -842,11 +842,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794995857,
-        "narHash": "sha256-XWidHsxcg0iQuGea4URxcPV3rY+dB595L3Xs2xFrsPo=",
+        "lastModified": 1795082704,
+        "narHash": "sha256-YK+6Nl8oR2Fhh3YO3DhBNCN7TmIGWw3tLhk25kfiWw4=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "6b05b928a40211beecaaa294e6f719aa2145a2a8",
+        "rev": "85d4adbbd952fcaf89fed3cb4ba540a4770d6e64",
         "type": "github"
       },
       "original": {
